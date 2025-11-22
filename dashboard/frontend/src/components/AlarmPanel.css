@@ -1,0 +1,226 @@
+.alarm-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+  overflow: auto;
+}
+
+.alarm-header {
+  background: #1e293b;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  border-left: 4px solid #ef4444;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alarm-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0;
+}
+
+.alarm-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.alarm-summary {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+}
+
+.btn-mute {
+  padding: 0.5rem 1rem;
+  border: 2px solid #64748b;
+  border-radius: 0.5rem;
+  background: rgba(100, 116, 139, 0.2);
+  color: #94a3b8;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-mute:hover {
+  background: rgba(100, 116, 139, 0.3);
+  border-color: #94a3b8;
+  transform: translateY(-2px);
+}
+
+.btn-mute.muted {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.btn-mute.muted:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.summary-item {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.summary-item.critical {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.summary-item.warning {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.summary-item.info {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.alarm-list {
+  background: #1e293b;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  flex: 1;
+  overflow: auto;
+}
+
+.no-alarms {
+  text-align: center;
+  padding: 3rem;
+  color: #94a3b8;
+  font-size: 1.125rem;
+}
+
+.alarm-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  border: 2px solid;
+  transition: all 0.2s;
+}
+
+.alarm-item:last-child {
+  margin-bottom: 0;
+}
+
+.alarm-item.alarm-critical {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+}
+
+.alarm-item.alarm-warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: #f59e0b;
+}
+
+.alarm-item.alarm-info {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: #10b981;
+}
+
+.alarm-item.acknowledged {
+  opacity: 0.6;
+}
+
+.alarm-icon {
+  font-size: 2rem;
+}
+
+.alarm-content {
+  flex: 1;
+}
+
+.alarm-message {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 0.25rem;
+}
+
+.alarm-time {
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+.alarm-actions button {
+  padding: 0.5rem 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.alarm-actions button:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* 알람 깜박임 애니메이션 */
+@keyframes alarm-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes alarm-border-flash {
+  0%, 100% {
+    border-color: currentColor;
+    box-shadow: 0 0 0 rgba(239, 68, 68, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+  }
+}
+
+@keyframes alarm-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+}
+
+/* 미확인 알람 스타일 (깜박임 제거) */
+.alarm-item:not(.acknowledged) {
+  /* 깜박임 제거 - 내용을 읽기 쉽게 */
+}
+
+.alarm-item.alarm-critical:not(.acknowledged) {
+  /* 위험 알람은 테두리만 강조 */
+  border-width: 3px;
+}
+
+.alarm-item.alarm-warning:not(.acknowledged) {
+  /* 경고 알람 */
+}
+
+/* 알람 헤더 경고 표시 (깜박임 제거) */
+.alarm-header.has-alarms {
+  border-left: 4px solid #ef4444;
+}
+
+
+
+

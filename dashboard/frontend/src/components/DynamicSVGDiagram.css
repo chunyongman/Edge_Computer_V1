@@ -1,0 +1,387 @@
+.dynamic-svg-diagram {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #1a1f35 !important;  /* 다크 네이비 블루 배경 - AI/미래적 느낌 */
+  padding: 0;
+  border-radius: 0.5rem;
+}
+
+.svg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+.svg-header-left {
+  flex: 1;
+}
+
+.company-name {
+  color: #00d4ff;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.svg-header-center {
+  flex: 2;
+  text-align: center;
+}
+
+.svg-header-center h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: bold;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  letter-spacing: 2px;
+}
+
+.svg-header-right {
+  flex: 1;
+  text-align: right;
+}
+
+.current-time {
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.svg-container {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1a1f35 !important;  /* 다크 네이비 블루 배경 - AI/미래적 느낌 */
+  padding: 10px;
+  overflow: hidden;
+  min-height: 0;
+  border-radius: 0.5rem;
+}
+
+.svg-container svg {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.2) !important;  /* 1.2배 확대하여 한 화면에 꽉 차게 표시 */
+  transform-origin: center center;
+}
+
+/* SVG 내부 텍스트 스타일 강화 */
+/* 제목 텍스트는 원본 폰트 유지 */
+.svg-container svg text:not(#text6):not(#text7):not(#text8) {
+  font-family: Arial, sans-serif;
+  font-weight: 500;
+}
+
+/* 동적으로 업데이트되는 값들에 애니메이션 효과 */
+.svg-container svg text[id^="text"] {
+  transition: fill 0.3s ease;
+}
+
+/* 펌프 팝업 스타일 - 어두운 글래스모피즘 디자인 (Engine Room 스타일) */
+.pump-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pump-popup {
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(71, 85, 105, 0.5);
+  border-radius: 16px;
+  width: 440px;
+  max-width: 95%;
+  max-height: 90vh;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  overflow: hidden;
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.pump-popup-header {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.3) 0%, rgba(59, 130, 246, 0.2) 100%);
+  backdrop-filter: blur(10px);
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(71, 85, 105, 0.4);
+  flex-shrink: 0;
+}
+
+.pump-popup-header h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #e0f2fe;
+  text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+}
+
+.popup-close {
+  background: rgba(71, 85, 105, 0.4);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  color: #cbd5e1;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.popup-close:hover {
+  background: rgba(220, 38, 38, 0.6);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
+}
+
+.pump-popup-body {
+  padding: 18px 20px;
+  overflow-y: auto;
+  background: rgba(15, 23, 42, 0.4);
+  flex: 1;
+  min-height: 0;
+}
+
+.pump-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 13px 16px;
+  margin-bottom: 8px;
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  transition: all 0.25s ease;
+}
+
+.pump-info-row:hover {
+  background: rgba(51, 65, 85, 0.7);
+  border-color: rgba(100, 116, 139, 0.5);
+  transform: translateX(6px);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(59, 130, 246, 0.1);
+}
+
+.pump-info-row:last-child {
+  margin-bottom: 0;
+}
+
+.pump-popup-body .pump-info-row .info-label {
+  font-weight: 700 !important;
+  color: #cbd5e1 !important;
+  font-size: 19px !important;
+  letter-spacing: 0.3px;
+}
+
+.pump-popup-body .pump-info-row .info-value {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  font-size: 19px !important;
+  text-align: right;
+  text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+}
+
+.status-running {
+  color: #34d399;
+  font-weight: 800;
+  font-size: 20px;
+  text-shadow: 0 0 20px rgba(52, 211, 153, 0.6);
+}
+
+.status-stopped {
+  color: #64748b;
+  font-weight: 700;
+  font-size: 19px;
+  text-shadow: none;
+}
+
+.pump-popup-controls {
+  padding: 18px 20px;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  gap: 12px;
+  border-top: 1px solid rgba(71, 85, 105, 0.4);
+  flex-shrink: 0;
+}
+
+.btn-pump-start,
+.btn-pump-stop {
+  flex: 1;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+
+.btn-pump-start::before,
+.btn-pump-stop::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-pump-start:hover::before,
+.btn-pump-stop:hover::before {
+  width: 350px;
+  height: 350px;
+}
+
+.btn-pump-start {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.btn-pump-start:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 30px rgba(245, 158, 11, 0.5),
+    0 0 40px rgba(251, 191, 36, 0.3);
+  border-color: rgba(251, 191, 36, 0.5);
+}
+
+.btn-pump-start:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-pump-start:disabled {
+  background: rgba(71, 85, 105, 0.5);
+  border-color: rgba(71, 85, 105, 0.3);
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+.btn-pump-stop {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.btn-pump-stop:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 30px rgba(220, 38, 38, 0.5),
+    0 0 40px rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.btn-pump-stop:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-pump-stop:disabled {
+  background: rgba(71, 85, 105, 0.5);
+  border-color: rgba(71, 85, 105, 0.3);
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .svg-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .svg-header-left,
+  .svg-header-center,
+  .svg-header-right {
+    text-align: center;
+  }
+
+  .svg-header-center h2 {
+    font-size: 20px;
+  }
+
+  .pump-popup {
+    width: 95%;
+    max-width: none;
+  }
+
+  .pump-popup-controls {
+    flex-direction: column;
+  }
+}

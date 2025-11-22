@@ -1,0 +1,7504 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 1024 768"
+   version="1.1"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   fill-rule="evenodd"
+   xml:space="preserve"
+   id="svg1465"
+   sodipodi:docname="도면1027_version1-Model(final).svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+   id="namedview1465"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="1.0507812"
+   inkscape:cx="478.69145"
+   inkscape:cy="260.28253"
+   inkscape:window-width="1920"
+   inkscape:window-height="1009"
+   inkscape:window-x="-8"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g1253" />
+<defs
+   id="defs1">
+<clipPath
+   id="clipId0">
+<path
+   d="M0,768 1024,768 1024,0 0,0 z"
+   id="path1" />
+</clipPath>
+</defs>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.1"
+   id="g1" />
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g2">
+<path
+   d="M10.0392,718.609 1013.96,718.609 1013.96,49.3909 10.0392,49.3909 z"
+   id="path2" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(204,236,255)"
+   stroke="rgb(204,236,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g3">
+<path
+   d="M579.337,548.613 867.481,548.613 867.481,461.159 579.337,461.159 z"
+   id="path3" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g4">
+<polyline
+   points="579.337,548.613 867.481,548.613 867.481,461.159 579.337,461.159 579.337,548.613 "
+   id="polyline3" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(204,236,255)"
+   stroke="rgb(204,236,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g5">
+<path
+   d="M234.623,606.128 336.621,606.128 336.621,355.479 234.623,355.479 z"
+   id="path4" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g6">
+<polyline
+   points="234.623,606.128 336.621,606.128 336.621,355.479 234.623,355.479 234.623,606.128 "
+   id="polyline5" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,102)"
+   stroke="rgb(0,0,102)"
+   stroke-width="0"
+   id="g8">
+<text
+   transform="matrix(15.627 0 -0 15.6361 384.333 92.4066)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text6">COOLING</text>
+<text
+   transform="matrix(15.6175 0 -0 15.6361 480.868 92.4016)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text7">WATER</text>
+<text
+   transform="matrix(15.605 0 -0 15.6361 557.939 92.4066)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text8">SYSTEM</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(192,0,0)"
+   stroke="rgb(192,0,0)"
+   stroke-width="0"
+   id="g10">
+<text
+   transform="matrix(7.85715 0 -0 7.84489 58.3613 195.696)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text9">To/From Aux</text>
+<text
+   transform="matrix(7.84277 0 -0 7.84489 58.4707 207.658)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text10">C.F.W. System</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,176,80)"
+   stroke="rgb(0,176,80)"
+   stroke-width="1"
+   id="g48">
+<path
+   d="M106.418,178.376 106.418,177.195 107.858,178.376 z"
+   id="path10" />
+<path
+   d="M107.858,178.376 106.418,177.195 107.858,177.195 z"
+   id="path11" />
+<path
+   d="M108.07,180.895 107.858,180.839 108.07,180.028 z"
+   id="path12" />
+<path
+   d="M107.858,178.376 107.858,177.195 108.07,178.376 z"
+   id="path13" />
+<path
+   d="M108.07,178.376 107.858,177.195 108.07,177.195 z"
+   id="path14" />
+<path
+   d="M108.07,175.542 107.858,174.732 108.07,174.675 z"
+   id="path15" />
+<path
+   d="M108.07,180.895 108.07,180.028 108.661,181.051 z"
+   id="path16" />
+<path
+   d="M108.661,181.051 108.07,180.028 108.661,179.684 z"
+   id="path17" />
+<path
+   d="M108.07,178.376 108.07,177.195 108.661,178.376 z"
+   id="path18" />
+<path
+   d="M108.661,178.376 108.07,177.195 108.661,177.195 z"
+   id="path19" />
+<path
+   d="M108.07,175.542 108.07,174.675 108.661,175.887 z"
+   id="path20" />
+<path
+   d="M108.661,175.887 108.07,174.675 108.661,174.519 z"
+   id="path21" />
+<path
+   d="M108.661,181.051 108.661,179.684 110.904,179.742 z"
+   id="path22" />
+<path
+   d="M110.904,179.742 108.661,179.684 110.904,178.376 z"
+   id="path23" />
+<path
+   d="M108.661,178.376 108.661,177.195 110.904,178.376 z"
+   id="path24" />
+<path
+   d="M110.904,178.376 108.661,177.195 110.904,177.195 z"
+   id="path25" />
+<path
+   d="M108.661,175.887 108.661,174.519 110.904,177.195 z"
+   id="path26" />
+<path
+   d="M110.904,177.195 108.661,174.519 110.904,175.828 z"
+   id="path27" />
+<path
+   d="M110.904,179.742 110.904,178.376 110.904,179.742 z"
+   id="path28" />
+<path
+   d="M110.904,179.742 110.904,178.376 110.904,178.376 z"
+   id="path29" />
+<path
+   d="M110.904,178.376 110.904,177.195 110.904,178.376 z"
+   id="path30" />
+<path
+   d="M110.904,178.376 110.904,177.195 110.904,177.195 z"
+   id="path31" />
+<path
+   d="M110.904,177.195 110.904,175.828 110.904,177.195 z"
+   id="path32" />
+<path
+   d="M110.904,177.195 110.904,175.828 110.904,175.828 z"
+   id="path33" />
+<path
+   d="M110.904,179.742 110.904,178.376 111.915,179.152 z"
+   id="path34" />
+<path
+   d="M111.915,179.152 110.904,178.376 111.915,178.376 z"
+   id="path35" />
+<path
+   d="M110.904,178.376 110.904,177.195 111.915,177.785 z"
+   id="path36" />
+<path
+   d="M110.904,177.195 110.904,175.828 111.915,177.195 z"
+   id="path37" />
+<path
+   d="M111.915,177.195 110.904,175.828 111.915,176.419 z"
+   id="path38" />
+<path
+   d="M111.915,179.152 111.915,178.376 112.792,178.64 z"
+   id="path39" />
+<path
+   d="M112.792,178.64 111.915,178.376 112.792,178.376 z"
+   id="path40" />
+<path
+   d="M112.792,178.297 111.915,177.785 112.792,177.274 z"
+   id="path41" />
+<path
+   d="M111.915,177.195 111.915,176.419 112.792,177.195 z"
+   id="path42" />
+<path
+   d="M112.792,177.195 111.915,176.419 112.792,176.931 z"
+   id="path43" />
+<path
+   d="M112.792,178.64 112.792,178.376 113.091,178.465 z"
+   id="path44" />
+<path
+   d="M113.091,178.465 112.792,178.376 113.091,178.376 z"
+   id="path45" />
+<path
+   d="M112.792,177.195 112.792,176.931 113.091,177.195 z"
+   id="path46" />
+<path
+   d="M113.091,177.195 112.792,176.931 113.091,177.105 z"
+   id="path47" />
+<path
+   d="M113.091,178.465 113.091,177.105 114.256,177.785 z"
+   id="path48" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g49">
+<polyline
+   points="757.975,347.12 712.265,347.12 "
+   id="polyline48" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g50">
+<polyline
+   points="757.692,355.053 711.982,355.053 "
+   id="polyline49" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(64,64,64)"
+   stroke="rgb(64,64,64)"
+   stroke-width="0"
+   id="g51">
+<text
+   transform="matrix(5.8724 0 -0 5.90043 756.984 335.903)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text50">10K 125A</text>
+<text
+   transform="matrix(5.89892 0 -0 5.90043 756.943 373.562)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text51">10K 80A</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(208,206,206)"
+   stroke="rgb(208,206,206)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g52">
+<path
+   d="M261.87,279.5 308.619,279.5 308.619,249.656 261.87,249.656 z"
+   id="path51" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.6"
+   id="g53">
+<polyline
+   points="261.87,279.5 308.619,279.5 308.619,249.656 261.87,249.656 261.87,279.5 "
+   id="polyline52" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(64,64,64)"
+   stroke="rgb(64,64,64)"
+   stroke-width="0"
+   id="g54">
+<text
+   transform="matrix(7.85241 0 -0 7.84489 278.349 261.996)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text53">EP</text>
+<text
+   transform="matrix(7.84695 0 -0 7.84489 274.29 275.221)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text54">CON</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(38,38,38)"
+   stroke="rgb(38,38,38)"
+   stroke-width="0"
+   id="g59">
+<text
+   transform="matrix(6.17555 0 -0 6.16863 396.834 475.449)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text55">3</text>
+<text
+   transform="matrix(6.17094 0 -0 6.16863 401.463 475.46)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text56">-</text>
+<text
+   transform="matrix(6.17935 0 -0 6.16863 405.616 475.507)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text57">Way</text>
+<text
+   transform="matrix(6.16019 0 -0 6.16863 382.301 485.849)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text58">Temp. Control</text>
+<text
+   transform="matrix(6.18175 0 -0 6.16863 398.722 496.239)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text59">Valve</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g61">
+<polyline
+   points="957.5,264.113 960.609,265.066 "
+   id="polyline59" />
+<polyline
+   points="958.917,259.494 962.025,260.446 "
+   id="polyline60" />
+<polyline
+   points="960.333,254.866 963.442,255.826 "
+   id="polyline61" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,80)"
+   stroke-width="0.7"
+   id="g67">
+<polyline
+   points="58.3465,217.168 152.694,217.168 152.694,476.884 "
+   id="polyline62" />
+<polyline
+   points="391.067,452.612 375.484,452.612 375.484,178.163 "
+   id="polyline63" />
+<polyline
+   points="58.3465,177.88 452.596,177.88 "
+   id="polyline64" />
+<polyline
+   points="58.8187,437.407 135.222,437.407 135.222,220.945 "
+   id="polyline65" />
+<polyline
+   points="202.654,563.015 365.567,563.015 365.567,388.864 202.654,388.864 202.654,563.015 "
+   id="polyline66" />
+<polyline
+   points="393.333,459.884 393.333,476.317 58.8187,476.317 "
+   id="polyline67" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g69">
+<polyline
+   points="348.662,389.147 348.662,382.253 "
+   id="polyline68" />
+<polyline
+   points="344.884,382.064 352.44,382.064 "
+   id="polyline69" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g70">
+<path
+   d="M343.09,384.992 348.568,388.817 343.09,392.642 343.09,392.642 z"
+   id="path69" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g71">
+<polyline
+   points="343.09,384.992 348.568,388.817 343.09,392.642 343.09,384.992 "
+   id="polyline70" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g72">
+<path
+   d="M354.14,392.642 348.568,388.817 354.14,384.992 354.14,384.992 z"
+   id="path71" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g73">
+<polyline
+   points="354.14,392.642 348.568,388.817 354.14,384.992 354.14,392.642 "
+   id="polyline72" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g75">
+<polyline
+   points="204.732,650.752 249.403,650.752 249.403,682.957 "
+   id="polyline73" />
+<polyline
+   points="970.1,595.653 967.725,612.102 962.767,627.607 955.441,641.923 945.96,654.802 934.54,665.997 921.395,675.26 906.738,682.345 890.784,687.006 "
+   id="polyline74" />
+<polyline
+   points="183.876,596.054 186.306,612.441 191.299,627.883 198.643,642.136 208.125,654.954 219.531,666.095 232.649,675.313 247.266,682.365 263.168,687.006 "
+   id="polyline75" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,240)"
+   stroke-width="0.7"
+   id="g76">
+<polyline
+   points="227.304,650.563 227.304,623.836 935.243,623.836 "
+   id="polyline76" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g78">
+<polyline
+   points="267.819,624.025 267.819,617.131 "
+   id="polyline77" />
+<polyline
+   points="264.042,616.942 271.597,616.942 "
+   id="polyline78" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g79">
+<path
+   d="M262.247,619.87 267.819,623.695 262.247,627.52 262.247,627.52 z"
+   id="path78" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g80">
+<polyline
+   points="262.247,619.87 267.819,623.695 262.247,627.52 262.247,619.87 "
+   id="polyline79" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g81">
+<path
+   d="M273.297,627.52 267.725,623.695 273.297,619.87 273.297,619.87 z"
+   id="path80" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g82">
+<polyline
+   points="273.297,627.52 267.725,623.695 273.297,619.87 273.297,627.52 "
+   id="polyline81" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,240)"
+   stroke-width="0.7"
+   id="g85">
+<polyline
+   points="519.886,249.939 627.267,249.939 627.267,394.719 "
+   id="polyline82" />
+<polyline
+   points="520.453,393.964 627.267,393.964 "
+   id="polyline83" />
+<polyline
+   points="519.792,322.943 622.922,322.943 "
+   id="polyline84" />
+<polyline
+   points="804.441,623.647 804.441,433.063 "
+   id="polyline85" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,255)"
+   stroke="rgb(0,0,255)"
+   stroke-width="0"
+   id="g87">
+<text
+   transform="matrix(6.731 0 -0 6.70503 628.592 475.155)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text85">NO.1</text>
+<text
+   transform="matrix(6.72669 0 -0 6.70503 716.597 475.155)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text86">NO.2</text>
+<text
+   transform="matrix(6.72809 0 -0 6.70503 808.033 475.141)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text87">NO.3</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,240)"
+   stroke-width="0.7"
+   id="g89">
+<polyline
+   points="740.786,178.163 740.786,321.715 632.083,321.715 "
+   id="polyline87" />
+<polyline
+   points="521.491,177.785 855.912,177.785 855.912,232.845 "
+   id="polyline88" />
+<polyline
+   points="617.162,623.836 617.162,433.346 804.063,433.346 "
+   id="polyline89" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g102">
+<path
+   d="M598.865,513.204 597.329,505.595 598.865,497.985 z"
+   id="path89" />
+<path
+   d="M598.865,513.204 598.865,497.985 603.054,519.418 z"
+   id="path90" />
+<path
+   d="M603.054,519.418 598.865,497.985 603.054,491.771 z"
+   id="path91" />
+<path
+   d="M603.054,519.418 603.054,491.771 609.268,523.608 z"
+   id="path92" />
+<path
+   d="M609.268,523.608 603.054,491.771 609.268,487.581 z"
+   id="path93" />
+<path
+   d="M609.268,523.608 609.268,487.581 616.878,525.144 z"
+   id="path94" />
+<path
+   d="M616.878,525.144 609.268,487.581 616.878,486.045 z"
+   id="path95" />
+<path
+   d="M616.878,525.144 616.878,486.045 624.488,523.608 z"
+   id="path96" />
+<path
+   d="M624.488,523.608 616.878,486.045 624.488,487.581 z"
+   id="path97" />
+<path
+   d="M624.488,523.608 624.488,487.581 630.702,519.418 z"
+   id="path98" />
+<path
+   d="M630.702,519.418 624.488,487.581 630.702,491.771 z"
+   id="path99" />
+<path
+   d="M630.702,519.418 630.702,491.771 634.892,513.204 z"
+   id="path100" />
+<path
+   d="M634.892,513.204 630.702,491.771 634.892,497.985 z"
+   id="path101" />
+<path
+   d="M634.892,513.204 634.892,497.985 636.428,505.595 z"
+   id="path102" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="SW_Pump_1">
+<polyline
+   points="616.878,486.045 624.488,487.581 630.702,491.771 634.892,497.985 636.428,505.595 634.892,513.204 630.702,519.418 624.488,523.608 616.878,525.144 609.268,523.608 603.054,519.418 598.865,513.204 597.329,505.595 598.865,497.985 603.054,491.771 609.268,487.581 616.878,486.045 "
+   id="polyline102" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g104">
+<path
+   d="M600.256,515.133 616.878,486.423 633.5,515.133 633.5,515.133 z"
+   id="path103" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g105">
+<polyline
+   points="600.256,515.133 616.878,486.423 633.5,515.133 600.256,515.133 "
+   id="polyline104" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g118">
+<path
+   d="M785.388,513.204 783.852,505.595 785.388,497.985 z"
+   id="path105" />
+<path
+   d="M785.388,513.204 785.388,497.985 789.578,519.418 z"
+   id="path106" />
+<path
+   d="M789.578,519.418 785.388,497.985 789.578,491.771 z"
+   id="path107" />
+<path
+   d="M789.578,519.418 789.578,491.771 795.792,523.608 z"
+   id="path108" />
+<path
+   d="M795.792,523.608 789.578,491.771 795.792,487.581 z"
+   id="path109" />
+<path
+   d="M795.792,523.608 795.792,487.581 803.402,525.144 z"
+   id="path110" />
+<path
+   d="M803.402,525.144 795.792,487.581 803.402,486.045 z"
+   id="path111" />
+<path
+   d="M803.402,525.144 803.402,486.045 811.012,523.608 z"
+   id="path112" />
+<path
+   d="M811.012,523.608 803.402,486.045 811.012,487.581 z"
+   id="path113" />
+<path
+   d="M811.012,523.608 811.012,487.581 817.226,519.418 z"
+   id="path114" />
+<path
+   d="M817.226,519.418 811.012,487.581 817.226,491.771 z"
+   id="path115" />
+<path
+   d="M817.226,519.418 817.226,491.771 821.415,513.204 z"
+   id="path116" />
+<path
+   d="M821.415,513.204 817.226,491.771 821.415,497.985 z"
+   id="path117" />
+<path
+   d="M821.415,513.204 821.415,497.985 822.951,505.595 z"
+   id="path118" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="SW_Pump_3">
+<polyline
+   points="803.402,486.045 811.012,487.581 817.226,491.771 821.415,497.985 822.951,505.595 821.415,513.204 817.226,519.418 811.012,523.608 803.402,525.144 795.792,523.608 789.578,519.418 785.388,513.204 783.852,505.595 785.388,497.985 789.578,491.771 795.792,487.581 803.402,486.045 "
+   id="polyline118" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g120">
+<path
+   d="M786.685,515.133 803.354,486.423 820.023,515.133 820.023,515.133 z"
+   id="path119" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g122">
+<polyline
+   points="786.685,515.133 803.354,486.423 820.023,515.133 786.685,515.133 "
+   id="polyline120" />
+<polyline
+   points="616.878,450.645 623.772,450.645 "
+   id="polyline121" />
+<polyline
+   points="623.961,446.867 623.961,454.423 "
+   id="polyline122" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g123">
+<path
+   d="M620.939,445.073 617.162,450.551 613.384,445.073 613.384,445.073 z"
+   id="path122" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g124">
+<polyline
+   points="620.939,445.073 617.162,450.551 613.384,445.073 620.939,445.073 "
+   id="polyline123" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g125">
+<path
+   d="M613.384,456.123 617.162,450.551 620.939,456.123 620.939,456.123 z"
+   id="path124" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g127">
+<polyline
+   points="613.384,456.123 617.162,450.551 620.939,456.123 613.384,456.123 "
+   id="polyline125" />
+<polyline
+   points="804.11,450.629 811.004,450.629 "
+   id="polyline126" />
+<polyline
+   points="811.193,446.851 811.193,454.407 "
+   id="polyline127" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g128">
+<path
+   d="M808.266,445.057 804.441,450.535 800.616,445.057 800.616,445.057 z"
+   id="path127" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g129">
+<polyline
+   points="808.266,445.057 804.441,450.535 800.616,445.057 808.266,445.057 "
+   id="polyline128" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g130">
+<path
+   d="M800.616,456.107 804.441,450.535 808.266,456.107 808.266,456.107 z"
+   id="path129" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g132">
+<polyline
+   points="800.616,456.107 804.441,450.535 808.266,456.107 800.616,456.107 "
+   id="polyline130" />
+<polyline
+   points="804.441,611.748 811.335,611.748 "
+   id="polyline131" />
+<polyline
+   points="811.524,607.97 811.524,615.525 "
+   id="polyline132" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g133">
+<path
+   d="M808.502,606.176 804.724,611.653 800.946,606.176 800.946,606.176 z"
+   id="path132" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g134">
+<polyline
+   points="808.502,606.176 804.724,611.653 800.946,606.176 808.502,606.176 "
+   id="polyline133" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g135">
+<path
+   d="M800.946,617.225 804.724,611.653 808.502,617.225 808.502,617.225 z"
+   id="path134" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g136">
+<polyline
+   points="800.946,617.225 804.724,611.653 808.502,617.225 800.946,617.225 "
+   id="polyline135" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g137">
+<path
+   d="M765.153,339.659 765.153,363.553 758.258,358.776 758.258,344.437 z"
+   id="path136" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g138">
+<polyline
+   points="765.153,339.659 765.153,363.553 758.258,358.776 758.258,344.437 765.153,339.659 "
+   id="polyline137" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g139">
+<polyline
+   points="913.994,393.019 801.607,393.019 "
+   id="polyline138" />
+<polyline
+   points="802.363,392.83 802.363,359.587 765.153,359.587 "
+   id="polyline139" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g141">
+<polyline
+   points="778.469,359.87 778.469,352.976 "
+   id="polyline140" />
+<polyline
+   points="774.691,352.787 782.247,352.787 "
+   id="polyline141" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g142">
+<path
+   d="M772.897,355.715 778.375,359.492 772.897,363.27 772.897,363.27 z"
+   id="path141" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g143">
+<polyline
+   points="772.897,355.715 778.375,359.492 772.897,363.27 772.897,355.715 "
+   id="polyline142" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g144">
+<path
+   d="M783.947,363.27 778.375,359.492 783.947,355.715 783.947,355.715 z"
+   id="path143" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g145">
+<polyline
+   points="783.947,363.27 778.375,359.492 783.947,355.715 783.947,363.27 "
+   id="polyline144" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.35"
+   id="g147">
+<polyline
+   points="802.316,329.318 802.316,345.373 "
+   id="polyline145" />
+<polyline
+   points="802.41,307.502 802.41,285.591 852.842,285.591 "
+   id="polyline146" />
+<polyline
+   points="790.983,318.646 791.862,314.27 794.261,310.698 797.819,308.29 802.174,307.407 806.529,308.29 810.086,310.698 812.486,314.27 813.365,318.646 812.486,323.022 810.086,326.594 806.529,329.002 802.174,329.885 797.819,329.002 794.261,326.594 791.862,323.022 790.983,318.646 "
+   id="polyline147" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,0,0)"
+   stroke="rgb(255,0,0)"
+   stroke-width="0"
+   id="g148">
+<text
+   transform="matrix(7.87417 0 -0 7.84489 794.574 323.045)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text147">TX1</text>
+<text
+   transform="matrix(7.86435 0 -0 7.84489 818.696 297.415)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text148">To ESS</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g149">
+<polyline
+   points="817.096,345.515 770.536,345.515 "
+   id="polyline148" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g150">
+<path
+   d="M765.341,348.726 770.064,348.726 770.064,342.304 765.341,342.304 z"
+   id="path149" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g151">
+<polyline
+   points="765.341,348.726 770.064,348.726 770.064,342.304 765.341,342.304 765.341,348.726 "
+   id="polyline150" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g164">
+<path
+   d="M818.026,349.492 817.143,345.137 818.026,340.782 z"
+   id="path151" />
+<path
+   d="M818.026,349.492 818.026,340.782 820.434,353.05 z"
+   id="path152" />
+<path
+   d="M820.434,353.05 818.026,340.782 820.434,337.225 z"
+   id="path153" />
+<path
+   d="M820.434,353.05 820.434,337.225 824.006,355.449 z"
+   id="path154" />
+<path
+   d="M824.006,355.449 820.434,337.225 824.006,334.825 z"
+   id="path155" />
+<path
+   d="M824.006,355.449 824.006,334.825 828.382,356.328 z"
+   id="path156" />
+<path
+   d="M828.382,356.328 824.006,334.825 828.382,333.946 z"
+   id="path157" />
+<path
+   d="M828.382,356.328 828.382,333.946 832.757,355.449 z"
+   id="path158" />
+<path
+   d="M832.757,355.449 828.382,333.946 832.757,334.825 z"
+   id="path159" />
+<path
+   d="M832.757,355.449 832.757,334.825 836.33,353.05 z"
+   id="path160" />
+<path
+   d="M836.33,353.05 832.757,334.825 836.33,337.225 z"
+   id="path161" />
+<path
+   d="M836.33,353.05 836.33,337.225 838.737,349.492 z"
+   id="path162" />
+<path
+   d="M838.737,349.492 836.33,337.225 838.737,340.782 z"
+   id="path163" />
+<path
+   d="M838.737,349.492 838.737,340.782 839.62,345.137 z"
+   id="path164" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.35"
+   id="g165">
+<polyline
+   points="817.143,345.137 818.026,340.782 820.434,337.225 824.006,334.825 828.382,333.946 832.757,334.825 836.33,337.225 838.737,340.782 839.62,345.137 838.737,349.492 836.33,353.05 832.757,355.449 828.382,356.328 824.006,355.449 820.434,353.05 818.026,349.492 817.143,345.137 "
+   id="polyline164" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,0,0)"
+   stroke="rgb(255,0,0)"
+   stroke-width="0"
+   id="g166">
+<text
+   transform="matrix(7.90037 0 -0 7.84489 822.623 349.513)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text165">TX</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g167">
+<polyline
+   points="913.994,345.515 840.14,345.515 "
+   id="polyline166" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g180">
+<path
+   d="M914.227,351.49 912.955,345.184 914.227,338.878 z"
+   id="path167" />
+<path
+   d="M914.227,351.49 914.227,338.878 917.698,356.638 z"
+   id="path168" />
+<path
+   d="M917.698,356.638 914.227,338.878 917.698,333.73 z"
+   id="path169" />
+<path
+   d="M917.698,356.638 917.698,333.73 922.846,360.109 z"
+   id="path170" />
+<path
+   d="M922.846,360.109 917.698,333.73 922.846,330.26 z"
+   id="path171" />
+<path
+   d="M922.846,360.109 922.846,330.26 929.152,361.381 z"
+   id="path172" />
+<path
+   d="M929.152,361.381 922.846,330.26 929.152,328.987 z"
+   id="path173" />
+<path
+   d="M929.152,361.381 929.152,328.987 935.458,360.109 z"
+   id="path174" />
+<path
+   d="M935.458,360.109 929.152,328.987 935.458,330.26 z"
+   id="path175" />
+<path
+   d="M935.458,360.109 935.458,330.26 940.606,356.638 z"
+   id="path176" />
+<path
+   d="M940.606,356.638 935.458,330.26 940.606,333.73 z"
+   id="path177" />
+<path
+   d="M940.606,356.638 940.606,333.73 944.076,351.49 z"
+   id="path178" />
+<path
+   d="M944.076,351.49 940.606,333.73 944.076,338.878 z"
+   id="path179" />
+<path
+   d="M944.076,351.49 944.076,338.878 945.349,345.184 z"
+   id="path180" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g181">
+<polyline
+   points="912.955,345.184 914.227,338.878 917.698,333.73 922.846,330.26 929.152,328.987 935.458,330.26 940.606,333.73 944.076,338.878 945.349,345.184 944.076,351.49 940.606,356.638 935.458,360.109 929.152,361.381 922.846,360.109 917.698,356.638 914.227,351.49 912.955,345.184 "
+   id="polyline180" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g182">
+<text
+   transform="matrix(7.92838 0 -0 7.84489 924.928 342.902)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text181">TI</text>
+<text
+   transform="matrix(7.84248 0 -0 7.84489 921.54 356.126)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text182">MC</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g183">
+<polyline
+   points="912.955,345.137 945.388,345.137 "
+   id="polyline182" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g196">
+<path
+   d="M914.227,399.278 912.955,392.972 914.227,386.666 z"
+   id="path183" />
+<path
+   d="M914.227,399.278 914.227,386.666 917.698,404.426 z"
+   id="path184" />
+<path
+   d="M917.698,404.426 914.227,386.666 917.698,381.518 z"
+   id="path185" />
+<path
+   d="M917.698,404.426 917.698,381.518 922.846,407.897 z"
+   id="path186" />
+<path
+   d="M922.846,407.897 917.698,381.518 922.846,378.048 z"
+   id="path187" />
+<path
+   d="M922.846,407.897 922.846,378.048 929.152,409.169 z"
+   id="path188" />
+<path
+   d="M929.152,409.169 922.846,378.048 929.152,376.775 z"
+   id="path189" />
+<path
+   d="M929.152,409.169 929.152,376.775 935.458,407.897 z"
+   id="path190" />
+<path
+   d="M935.458,407.897 929.152,376.775 935.458,378.048 z"
+   id="path191" />
+<path
+   d="M935.458,407.897 935.458,378.048 940.606,404.426 z"
+   id="path192" />
+<path
+   d="M940.606,404.426 935.458,378.048 940.606,381.518 z"
+   id="path193" />
+<path
+   d="M940.606,404.426 940.606,381.518 944.076,399.278 z"
+   id="path194" />
+<path
+   d="M944.076,399.278 940.606,381.518 944.076,386.666 z"
+   id="path195" />
+<path
+   d="M944.076,399.278 944.076,386.666 945.349,392.972 z"
+   id="path196" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g197">
+<polyline
+   points="912.955,392.972 914.227,386.666 917.698,381.518 922.846,378.048 929.152,376.775 935.458,378.048 940.606,381.518 944.076,386.666 945.349,392.972 944.076,399.278 940.606,404.426 935.458,407.897 929.152,409.169 922.846,407.897 917.698,404.426 914.227,399.278 912.955,392.972 "
+   id="polyline196" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g198">
+<text
+   transform="matrix(7.86132 0 -0 7.84489 924.184 390.69)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text197">PI</text>
+<text
+   transform="matrix(7.84248 0 -0 7.84489 921.54 403.93)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text198">MC</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g199">
+<polyline
+   points="912.955,392.925 945.388,392.925 "
+   id="polyline198" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g200">
+<polyline
+   points="913.602,435.555 882.072,435.424 882.072,393.208 "
+   id="polyline199" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.35"
+   id="g201">
+<polyline
+   points="926.602,448.599 926.602,463.804 967.023,463.804 "
+   id="polyline200" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,0,0)"
+   stroke="rgb(255,0,0)"
+   stroke-width="0"
+   id="g202">
+<text
+   transform="matrix(7.85705 0 -0 7.8583 941.4 474.872)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text201">To ESS for</text>
+<text
+   transform="matrix(7.84192 0 -0 7.84489 941.507 486.795)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text202">INTERLOCK</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,240)"
+   stroke-width="0.7"
+   id="g203">
+<polyline
+   points="955.454,258.549 855.581,231.791 "
+   id="polyline202" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g204">
+<polyline
+   points="934.291,252.749 936.636,245.91 "
+   id="polyline203" />
+<polyline
+   points="932.237,244.438 940.988,247.444 "
+   id="polyline204" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g205">
+<path
+   d="M929.238,246.689 934.346,252.662 926.649,254.236 926.649,254.236 z"
+   id="path204" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g206">
+<polyline
+   points="929.238,246.689 934.346,252.662 926.649,254.236 929.238,246.689 "
+   id="polyline205" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g207">
+<path
+   d="M939.462,258.636 934.346,252.662 942.051,251.088 942.051,251.088 z"
+   id="path206" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g211">
+<polyline
+   points="939.462,258.636 934.346,252.662 942.051,251.088 939.462,258.636 "
+   id="polyline207" />
+<polyline
+   points="932.898,242.612 941.429,245.54 "
+   id="polyline208" />
+<polyline
+   points="933.378,240.629 942.279,243.682 "
+   id="polyline209" />
+<polyline
+   points="942.09,243.619 940.76,247.499 "
+   id="polyline210" />
+<polyline
+   points="933.764,240.77 932.434,244.65 "
+   id="polyline211" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g213">
+<polyline
+   points="944.333,259.966 946.962,252.253 "
+   id="polyline212" />
+<polyline
+   points="946.875,260.832 949.504,253.119 "
+   id="polyline213" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g214">
+<path
+   d="M945.152,260.123 947.741,252.513 948.804,252.875 946.206,260.485 z"
+   id="path213" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,255)"
+   stroke="rgb(0,0,255)"
+   stroke-width="0"
+   id="g215">
+<text
+   transform="matrix(6.74652 0 -0 6.70503 304.543 400.262)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text214">NO.1</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g228">
+<path
+   d="M255.189,396.663 253.653,389.053 255.189,381.443 z"
+   id="path215" />
+<path
+   d="M255.189,396.663 255.189,381.443 259.379,402.877 z"
+   id="path216" />
+<path
+   d="M259.379,402.877 255.189,381.443 259.379,375.229 z"
+   id="path217" />
+<path
+   d="M259.379,402.877 259.379,375.229 265.593,407.066 z"
+   id="path218" />
+<path
+   d="M265.593,407.066 259.379,375.229 265.593,371.039 z"
+   id="path219" />
+<path
+   d="M265.593,407.066 265.593,371.039 273.203,408.602 z"
+   id="path220" />
+<path
+   d="M273.203,408.602 265.593,371.039 273.203,369.503 z"
+   id="path221" />
+<path
+   d="M273.203,408.602 273.203,369.503 280.813,407.066 z"
+   id="path222" />
+<path
+   d="M280.813,407.066 273.203,369.503 280.813,371.039 z"
+   id="path223" />
+<path
+   d="M280.813,407.066 280.813,371.039 287.027,402.877 z"
+   id="path224" />
+<path
+   d="M287.027,402.877 280.813,371.039 287.027,375.229 z"
+   id="path225" />
+<path
+   d="M287.027,402.877 287.027,375.229 291.216,396.663 z"
+   id="path226" />
+<path
+   d="M291.216,396.663 287.027,375.229 291.216,381.443 z"
+   id="path227" />
+<path
+   d="M291.216,396.663 291.216,381.443 292.752,389.053 z"
+   id="path228" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="LT_Pump_1">
+<polyline
+   points="253.653,389.053 255.189,381.443 259.379,375.229 265.593,371.039 273.203,369.503 280.813,371.039 287.027,375.229 291.216,381.443 292.752,389.053 291.216,396.663 287.027,402.877 280.813,407.066 273.203,408.602 265.593,407.066 259.379,402.877 255.189,396.663 253.653,389.053 "
+   id="polyline228" />
+</g>
+<g
+   id="g1465"><g
+     clip-path="url(#clipId0)"
+     fill="rgb(255,255,255)"
+     stroke="rgb(255,255,255)"
+     stroke-width="0.25"
+     fill-opacity="0.498039"
+     stroke-opacity="0.498039"
+     id="g230">
+<path
+   d="M282.741,405.769 254.031,389.1 282.741,372.431 282.741,372.431 z"
+   id="path229" />
+</g></g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g231">
+<polyline
+   points="282.741,405.769 254.031,389.1 282.741,372.431 282.741,405.769 "
+   id="polyline230" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g244">
+<path
+   d="M255.189,483.579 253.653,475.987 255.189,468.394 z"
+   id="path231" />
+<path
+   d="M255.189,483.579 255.189,468.394 259.379,489.778 z"
+   id="path232" />
+<path
+   d="M259.379,489.778 255.189,468.394 259.379,462.195 z"
+   id="path233" />
+<path
+   d="M259.379,489.778 259.379,462.195 265.593,493.957 z"
+   id="path234" />
+<path
+   d="M265.593,493.957 259.379,462.195 265.593,458.017 z"
+   id="path235" />
+<path
+   d="M265.593,493.957 265.593,458.017 273.203,495.489 z"
+   id="path236" />
+<path
+   d="M273.203,495.489 265.593,458.017 273.203,456.485 z"
+   id="path237" />
+<path
+   d="M273.203,495.489 273.203,456.485 280.813,493.957 z"
+   id="path238" />
+<path
+   d="M280.813,493.957 273.203,456.485 280.813,458.017 z"
+   id="path239" />
+<path
+   d="M280.813,493.957 280.813,458.017 287.027,489.778 z"
+   id="path240" />
+<path
+   d="M287.027,489.778 280.813,458.017 287.027,462.195 z"
+   id="path241" />
+<path
+   d="M287.027,489.778 287.027,462.195 291.216,483.579 z"
+   id="path242" />
+<path
+   d="M291.216,483.579 287.027,462.195 291.216,468.394 z"
+   id="path243" />
+<path
+   d="M291.216,483.579 291.216,468.394 292.752,475.987 z"
+   id="path244" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="LT_Pump_2">
+<polyline
+   points="253.653,475.987 255.189,468.394 259.379,462.195 265.593,458.017 273.203,456.485 280.813,458.017 287.027,462.195 291.216,468.394 292.752,475.987 291.216,483.579 287.027,489.778 280.813,493.957 273.203,495.489 265.593,493.957 259.379,489.778 255.189,483.579 253.653,475.987 "
+   id="polyline244" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g246">
+<path
+   d="M282.741,492.656 254.031,476.034 282.741,459.412 282.741,459.412 z"
+   id="path245" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g247">
+<polyline
+   points="282.741,492.656 254.031,476.034 282.741,459.412 282.741,492.656 "
+   id="polyline246" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g260">
+<path
+   d="M255.189,570.531 253.653,562.921 255.189,555.311 z"
+   id="path247" />
+<path
+   d="M255.189,570.531 255.189,555.311 259.379,576.745 z"
+   id="path248" />
+<path
+   d="M259.379,576.745 255.189,555.311 259.379,549.097 z"
+   id="path249" />
+<path
+   d="M259.379,576.745 259.379,549.097 265.593,580.934 z"
+   id="path250" />
+<path
+   d="M265.593,580.934 259.379,549.097 265.593,544.908 z"
+   id="path251" />
+<path
+   d="M265.593,580.934 265.593,544.908 273.203,582.471 z"
+   id="path252" />
+<path
+   d="M273.203,582.471 265.593,544.908 273.203,543.371 z"
+   id="path253" />
+<path
+   d="M273.203,582.471 273.203,543.371 280.813,580.934 z"
+   id="path254" />
+<path
+   d="M280.813,580.934 273.203,543.371 280.813,544.908 z"
+   id="path255" />
+<path
+   d="M280.813,580.934 280.813,544.908 287.027,576.745 z"
+   id="path256" />
+<path
+   d="M287.027,576.745 280.813,544.908 287.027,549.097 z"
+   id="path257" />
+<path
+   d="M287.027,576.745 287.027,549.097 291.216,570.531 z"
+   id="path258" />
+<path
+   d="M291.216,570.531 287.027,549.097 291.216,555.311 z"
+   id="path259" />
+<path
+   d="M291.216,570.531 291.216,555.311 292.752,562.921 z"
+   id="path260" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g261">
+<polyline
+   points="253.653,562.921 255.189,555.311 259.379,549.097 265.593,544.908 273.203,543.371 280.813,544.908 287.027,549.097 291.216,555.311 292.752,562.921 291.216,570.531 287.027,576.745 280.813,580.934 273.203,582.471 265.593,580.934 259.379,576.745 255.189,570.531 253.653,562.921 "
+   id="polyline260" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g262">
+<path
+   d="M282.741,579.637 254.031,562.968 282.741,546.299 282.741,546.299 z"
+   id="path261" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g263">
+<polyline
+   points="282.741,579.637 254.031,562.968 282.741,546.299 282.741,579.637 "
+   id="polyline262" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.7"
+   id="g264">
+<polyline
+   points="297.569,161.163 297.569,177.219 "
+   id="polyline263" />
+<polyline
+   points="297.663,145.014 297.663,131.036 348.095,131.036 "
+   id="polyline264" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g277">
+<path
+   d="M287.024,159.117 286.141,154.741 287.024,150.366 z"
+   id="path264" />
+<path
+   d="M287.024,159.117 287.024,150.366 289.432,162.689 z"
+   id="path265" />
+<path
+   d="M289.432,162.689 287.024,150.366 289.432,146.793 z"
+   id="path266" />
+<path
+   d="M289.432,162.689 289.432,146.793 293.004,165.097 z"
+   id="path267" />
+<path
+   d="M293.004,165.097 289.432,146.793 293.004,144.386 z"
+   id="path268" />
+<path
+   d="M293.004,165.097 293.004,144.386 297.38,165.98 z"
+   id="path269" />
+<path
+   d="M297.38,165.98 293.004,144.386 297.38,143.503 z"
+   id="path270" />
+<path
+   d="M297.38,165.98 297.38,143.503 301.756,165.097 z"
+   id="path271" />
+<path
+   d="M301.756,165.097 297.38,143.503 301.756,144.386 z"
+   id="path272" />
+<path
+   d="M301.756,165.097 301.756,144.386 305.328,162.689 z"
+   id="path273" />
+<path
+   d="M305.328,162.689 301.756,144.386 305.328,146.793 z"
+   id="path274" />
+<path
+   d="M305.328,162.689 305.328,146.793 307.736,159.117 z"
+   id="path275" />
+<path
+   d="M307.736,159.117 305.328,146.793 307.736,150.366 z"
+   id="path276" />
+<path
+   d="M307.736,159.117 307.736,150.366 308.619,154.741 z"
+   id="path277" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.53"
+   id="g278">
+<polyline
+   points="286.141,154.741 287.024,150.366 289.432,146.793 293.004,144.386 297.38,143.503 301.756,144.386 305.328,146.793 307.736,150.366 308.619,154.741 307.736,159.117 305.328,162.689 301.756,165.097 297.38,165.98 293.004,165.097 289.432,162.689 287.024,159.117 286.141,154.741 "
+   id="polyline277" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,0,0)"
+   stroke="rgb(255,0,0)"
+   stroke-width="0"
+   id="g280">
+<text
+   transform="matrix(7.86866 0 -0 7.84489 288.347 159.06)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text278">TX4</text>
+<text
+   transform="matrix(7.85204 0 -0 7.84489 349.979 129.748)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text279">To ESS for</text>
+<text
+   transform="matrix(7.83142 0 -0 7.84489 350.089 142.968)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text280">F.W Pump Control</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,80)"
+   stroke-width="0.7"
+   id="g281">
+<polyline
+   points="408.822,250.128 452.596,250.128 "
+   id="polyline280" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g282">
+<polyline
+   points="348.662,476.412 348.662,469.612 "
+   id="polyline281" />
+<polyline
+   points="344.884,469.329 352.44,469.329 "
+   id="polyline282" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g283">
+<path
+   d="M343.09,472.351 348.568,476.128 343.09,479.906 343.09,479.906 z"
+   id="path282" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g284">
+<polyline
+   points="343.09,472.351 348.568,476.128 343.09,479.906 343.09,472.351 "
+   id="polyline283" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g285">
+<path
+   d="M354.14,479.906 348.568,476.128 354.14,472.351 354.14,472.351 z"
+   id="path284" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g287">
+<polyline
+   points="354.14,479.906 348.568,476.128 354.14,472.351 354.14,479.906 "
+   id="polyline285" />
+<polyline
+   points="348.662,563.204 348.662,556.31 "
+   id="polyline286" />
+<polyline
+   points="344.884,556.121 352.44,556.121 "
+   id="polyline287" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g288">
+<path
+   d="M343.09,559.049 348.568,562.827 343.09,566.604 343.09,566.604 z"
+   id="path287" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g289">
+<polyline
+   points="343.09,559.049 348.568,562.827 343.09,566.604 343.09,559.049 "
+   id="polyline288" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g290">
+<path
+   d="M354.14,566.604 348.568,562.827 354.14,559.049 354.14,559.049 z"
+   id="path289" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g292">
+<polyline
+   points="354.14,566.604 348.568,562.827 354.14,559.049 354.14,566.604 "
+   id="polyline290" />
+<polyline
+   points="223.904,389.147 223.904,382.253 "
+   id="polyline291" />
+<polyline
+   points="220.126,382.064 227.681,382.064 "
+   id="polyline292" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g293">
+<path
+   d="M218.237,384.992 223.809,388.817 218.237,392.642 218.237,392.642 z"
+   id="path292" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g294">
+<polyline
+   points="218.237,384.992 223.809,388.817 218.237,392.642 218.237,384.992 "
+   id="polyline293" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g295">
+<path
+   d="M229.287,392.642 223.809,388.817 229.287,384.992 229.287,384.992 z"
+   id="path294" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g297">
+<polyline
+   points="229.287,392.642 223.809,388.817 229.287,384.992 229.287,392.642 "
+   id="polyline295" />
+<polyline
+   points="223.904,476.412 223.904,469.612 "
+   id="polyline296" />
+<polyline
+   points="220.126,469.329 227.681,469.329 "
+   id="polyline297" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g298">
+<path
+   d="M218.237,472.351 223.809,476.128 218.237,479.906 218.237,479.906 z"
+   id="path297" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g299">
+<polyline
+   points="218.237,472.351 223.809,476.128 218.237,479.906 218.237,472.351 "
+   id="polyline298" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g300">
+<path
+   d="M229.287,479.906 223.809,476.128 229.287,472.351 229.287,472.351 z"
+   id="path299" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g302">
+<polyline
+   points="229.287,479.906 223.809,476.128 229.287,472.351 229.287,479.906 "
+   id="polyline300" />
+<polyline
+   points="223.904,563.204 223.904,556.31 "
+   id="polyline301" />
+<polyline
+   points="220.126,556.121 227.681,556.121 "
+   id="polyline302" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g303">
+<path
+   d="M218.237,559.049 223.809,562.827 218.237,566.604 218.237,566.604 z"
+   id="path302" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g304">
+<polyline
+   points="218.237,559.049 223.809,562.827 218.237,566.604 218.237,559.049 "
+   id="polyline303" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g305">
+<path
+   d="M229.287,566.604 223.809,562.827 229.287,559.049 229.287,559.049 z"
+   id="path304" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g306">
+<polyline
+   points="229.287,566.604 223.809,562.827 229.287,559.049 229.287,566.604 "
+   id="polyline305" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g307">
+<polyline
+   points="261.492,264.483 183.105,264.483 183.105,432.591 "
+   id="polyline306" />
+<polyline
+   points="183.199,475.751 183.199,455.54 "
+   id="polyline307" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g308">
+<polyline
+   points="171.583,444.065 172.463,439.71 174.862,436.153 178.419,433.754 182.774,432.874 187.129,433.754 190.687,436.153 193.086,439.71 193.966,444.065 193.086,448.42 190.687,451.978 187.129,454.377 182.774,455.257 178.419,454.377 174.862,451.978 172.463,448.42 171.583,444.065 "
+   id="polyline308" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g309">
+<text
+   transform="matrix(7.90168 0 -0 7.84489 176.622 448.452)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text308">TC</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g310">
+<polyline
+   points="309.563,264.483 393.333,264.483 393.333,440.618 "
+   id="polyline309" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,80)"
+   stroke-width="0.7"
+   id="g311">
+<polyline
+   points="400.133,452.801 409.388,452.801 409.388,249.656 "
+   id="polyline310" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g312">
+<polyline
+   points="393.428,453.085 393.428,444.868 "
+   id="polyline311" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g313">
+<path
+   d="M386.722,448.174 393.333,452.66 386.722,457.146 386.722,457.146 z"
+   id="path312" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g314">
+<polyline
+   points="386.722,448.174 393.333,452.66 386.722,457.146 386.722,448.174 "
+   id="polyline313" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g315">
+<path
+   d="M399.944,457.24 393.333,452.707 399.944,448.174 399.944,448.174 z"
+   id="path314" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g316">
+<polyline
+   points="399.944,457.24 393.333,452.707 399.944,448.174 399.944,457.24 "
+   id="polyline315" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g317">
+<path
+   d="M388.894,459.884 393.428,453.273 397.961,459.884 397.961,459.884 z"
+   id="path316" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g318">
+<polyline
+   points="388.894,459.884 393.428,453.273 397.961,459.884 388.894,459.884 "
+   id="polyline317" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g328">
+<path
+   d="M389.637,445.761 388.894,445.765 389.637,443.219 z"
+   id="path318" />
+<path
+   d="M389.637,445.761 389.637,443.219 391.597,445.751 z"
+   id="path319" />
+<path
+   d="M391.597,445.751 389.637,443.219 391.597,441.557 z"
+   id="path320" />
+<path
+   d="M391.597,445.751 391.597,441.557 394.244,445.737 z"
+   id="path321" />
+<path
+   d="M394.244,445.737 391.597,441.557 394.244,441.268 z"
+   id="path322" />
+<path
+   d="M394.244,445.737 394.244,441.268 396.522,445.725 z"
+   id="path323" />
+<path
+   d="M396.522,445.725 394.244,441.268 396.522,442.48 z"
+   id="path324" />
+<path
+   d="M396.522,445.725 396.522,442.48 397.767,445.719 z"
+   id="path325" />
+<path
+   d="M397.767,445.719 396.522,442.48 397.767,444.759 z"
+   id="path326" />
+<path
+   d="M397.767,445.719 397.767,444.759 397.866,445.718 z"
+   id="path327" />
+<path
+   d="M397.866,445.718 397.767,444.759 397.866,445.674 z"
+   id="path328" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g329">
+<polyline
+   points="388.894,445.765 389.637,443.219 391.597,441.557 394.244,441.268 396.522,442.48 397.767,444.759 397.866,445.674 397.866,445.683 397.866,445.718 "
+   id="polyline328" />
+<polyline
+   points="397.866,445.718 388.894,445.765 "
+   id="polyline329" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,80)"
+   stroke-width="0.7"
+   id="g333">
+<polyline
+   points="412.694,323.038 452.596,323.038 "
+   id="polyline330" />
+<polyline
+   points="410.05,394.625 452.596,394.625 "
+   id="polyline331" />
+<polyline
+   points="404.572,323.274 405.859,320.434 408.963,319.26 412.068,320.434 413.355,323.274 "
+   id="polyline332" />
+<polyline
+   points="375.389,323.038 405.233,323.038 "
+   id="polyline333" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g335">
+<polyline
+   points="432.81,395.38 432.81,388.486 "
+   id="polyline334" />
+<polyline
+   points="429.032,388.297 436.588,388.297 "
+   id="polyline335" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g336">
+<path
+   d="M427.238,391.225 432.716,395.003 427.238,398.78 427.238,398.78 z"
+   id="path335" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g337">
+<polyline
+   points="427.238,391.225 432.716,395.003 427.238,398.78 427.238,391.225 "
+   id="polyline336" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g338">
+<path
+   d="M438.288,398.78 432.716,395.003 438.288,391.225 438.288,391.225 z"
+   id="path337" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g340">
+<polyline
+   points="438.288,398.78 432.716,395.003 438.288,391.225 438.288,398.78 "
+   id="polyline338" />
+<polyline
+   points="432.81,323.038 432.81,316.143 "
+   id="polyline339" />
+<polyline
+   points="429.032,315.954 436.588,315.954 "
+   id="polyline340" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g341">
+<path
+   d="M427.238,318.977 432.716,322.754 427.238,326.532 427.238,326.532 z"
+   id="path340" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g342">
+<polyline
+   points="427.238,318.977 432.716,322.754 427.238,326.532 427.238,318.977 "
+   id="polyline341" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g343">
+<path
+   d="M438.288,326.532 432.716,322.754 438.288,318.977 438.288,318.977 z"
+   id="path342" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g345">
+<polyline
+   points="438.288,326.532 432.716,322.754 438.288,318.977 438.288,326.532 "
+   id="polyline343" />
+<polyline
+   points="432.81,250.034 432.81,243.139 "
+   id="polyline344" />
+<polyline
+   points="429.032,242.95 436.588,242.95 "
+   id="polyline345" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g346">
+<path
+   d="M427.238,245.973 432.716,249.75 427.238,253.528 427.238,253.528 z"
+   id="path345" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g347">
+<polyline
+   points="427.238,245.973 432.716,249.75 427.238,253.528 427.238,245.973 "
+   id="polyline346" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g348">
+<path
+   d="M438.288,253.528 432.716,249.75 438.288,245.973 438.288,245.973 z"
+   id="path347" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g349">
+<polyline
+   points="438.288,253.528 432.716,249.75 438.288,245.973 438.288,253.528 "
+   id="polyline348" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,80)"
+   stroke-width="0.7"
+   id="g351">
+<polyline
+   points="134.467,178.635 134.467,213.862 "
+   id="polyline349" />
+<polyline
+   points="134.797,212.918 137.637,214.205 138.811,217.309 137.637,220.414 134.797,221.701 "
+   id="polyline350" />
+<polyline
+   points="58.3465,342.682 131.445,342.682 "
+   id="polyline351" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,176,80)"
+   stroke="rgb(0,176,80)"
+   stroke-width="1"
+   id="g461">
+<path
+   d="M106.418,305.023 106.418,303.842 107.858,305.023 z"
+   id="path351" />
+<path
+   d="M107.858,305.023 106.418,303.842 107.858,303.842 z"
+   id="path352" />
+<path
+   d="M108.07,307.542 107.858,307.486 108.07,306.675 z"
+   id="path353" />
+<path
+   d="M107.858,305.023 107.858,303.842 108.07,305.023 z"
+   id="path354" />
+<path
+   d="M108.07,305.023 107.858,303.842 108.07,303.842 z"
+   id="path355" />
+<path
+   d="M108.07,302.189 107.858,301.379 108.07,301.323 z"
+   id="path356" />
+<path
+   d="M108.07,307.542 108.07,306.675 108.661,307.699 z"
+   id="path357" />
+<path
+   d="M108.661,307.699 108.07,306.675 108.661,306.331 z"
+   id="path358" />
+<path
+   d="M108.07,305.023 108.07,303.842 108.661,305.023 z"
+   id="path359" />
+<path
+   d="M108.661,305.023 108.07,303.842 108.661,303.842 z"
+   id="path360" />
+<path
+   d="M108.07,302.189 108.07,301.323 108.661,302.534 z"
+   id="path361" />
+<path
+   d="M108.661,302.534 108.07,301.323 108.661,301.166 z"
+   id="path362" />
+<path
+   d="M108.661,307.699 108.661,306.331 110.904,306.389 z"
+   id="path363" />
+<path
+   d="M110.904,306.389 108.661,306.331 110.904,305.023 z"
+   id="path364" />
+<path
+   d="M108.661,305.023 108.661,303.842 110.904,305.023 z"
+   id="path365" />
+<path
+   d="M110.904,305.023 108.661,303.842 110.904,303.842 z"
+   id="path366" />
+<path
+   d="M108.661,302.534 108.661,301.166 110.904,303.842 z"
+   id="path367" />
+<path
+   d="M110.904,303.842 108.661,301.166 110.904,302.475 z"
+   id="path368" />
+<path
+   d="M110.904,306.389 110.904,305.023 111.915,305.799 z"
+   id="path369" />
+<path
+   d="M111.915,305.799 110.904,305.023 111.915,305.023 z"
+   id="path370" />
+<path
+   d="M110.904,305.023 110.904,303.842 111.915,304.432 z"
+   id="path371" />
+<path
+   d="M110.904,303.842 110.904,302.475 111.915,303.842 z"
+   id="path372" />
+<path
+   d="M111.915,303.842 110.904,302.475 111.915,303.066 z"
+   id="path373" />
+<path
+   d="M111.915,305.799 111.915,305.023 112.792,305.287 z"
+   id="path374" />
+<path
+   d="M112.792,305.287 111.915,305.023 112.792,305.023 z"
+   id="path375" />
+<path
+   d="M112.792,304.944 111.915,304.432 112.792,303.921 z"
+   id="path376" />
+<path
+   d="M111.915,303.842 111.915,303.066 112.792,303.842 z"
+   id="path377" />
+<path
+   d="M112.792,303.842 111.915,303.066 112.792,303.578 z"
+   id="path378" />
+<path
+   d="M112.792,305.287 112.792,305.023 113.091,305.112 z"
+   id="path379" />
+<path
+   d="M113.091,305.112 112.792,305.023 113.091,305.023 z"
+   id="path380" />
+<path
+   d="M112.792,303.842 112.792,303.578 113.091,303.842 z"
+   id="path381" />
+<path
+   d="M113.091,303.842 112.792,303.578 113.091,303.753 z"
+   id="path382" />
+<path
+   d="M113.091,305.112 113.091,303.753 114.256,304.432 z"
+   id="path383" />
+<path
+   d="M108.527,217.848 107.362,217.168 108.527,216.488 z"
+   id="path384" />
+<path
+   d="M108.527,217.848 108.527,217.758 108.826,218.022 z"
+   id="path385" />
+<path
+   d="M108.826,218.022 108.527,217.758 108.826,217.758 z"
+   id="path386" />
+<path
+   d="M108.527,216.577 108.527,216.488 108.826,216.577 z"
+   id="path387" />
+<path
+   d="M108.826,216.577 108.527,216.488 108.826,216.313 z"
+   id="path388" />
+<path
+   d="M108.826,218.022 108.826,217.758 109.703,218.534 z"
+   id="path389" />
+<path
+   d="M109.703,218.534 108.826,217.758 109.703,217.758 z"
+   id="path390" />
+<path
+   d="M108.826,217.679 108.826,216.656 109.703,217.168 z"
+   id="path391" />
+<path
+   d="M108.826,216.577 108.826,216.313 109.703,216.577 z"
+   id="path392" />
+<path
+   d="M109.703,216.577 108.826,216.313 109.703,215.801 z"
+   id="path393" />
+<path
+   d="M109.703,218.534 109.703,217.758 110.715,219.125 z"
+   id="path394" />
+<path
+   d="M110.715,219.125 109.703,217.758 110.715,217.758 z"
+   id="path395" />
+<path
+   d="M110.715,217.758 109.703,217.168 110.715,216.577 z"
+   id="path396" />
+<path
+   d="M109.703,216.577 109.703,215.801 110.715,216.577 z"
+   id="path397" />
+<path
+   d="M110.715,216.577 109.703,215.801 110.715,215.211 z"
+   id="path398" />
+<path
+   d="M110.715,219.125 110.715,217.758 110.715,219.125 z"
+   id="path399" />
+<path
+   d="M110.715,219.125 110.715,217.758 110.715,217.758 z"
+   id="path400" />
+<path
+   d="M110.715,217.758 110.715,216.577 110.715,217.758 z"
+   id="path401" />
+<path
+   d="M110.715,217.758 110.715,216.577 110.715,216.577 z"
+   id="path402" />
+<path
+   d="M110.715,216.577 110.715,215.211 110.715,216.577 z"
+   id="path403" />
+<path
+   d="M110.715,216.577 110.715,215.211 110.715,215.211 z"
+   id="path404" />
+<path
+   d="M110.715,219.125 110.715,217.758 112.958,220.434 z"
+   id="path405" />
+<path
+   d="M112.958,220.434 110.715,217.758 112.958,219.066 z"
+   id="path406" />
+<path
+   d="M110.715,217.758 110.715,216.577 112.958,217.758 z"
+   id="path407" />
+<path
+   d="M112.958,217.758 110.715,216.577 112.958,216.577 z"
+   id="path408" />
+<path
+   d="M110.715,216.577 110.715,215.211 112.958,215.269 z"
+   id="path409" />
+<path
+   d="M112.958,215.269 110.715,215.211 112.958,213.902 z"
+   id="path410" />
+<path
+   d="M112.958,220.434 112.958,219.066 113.548,220.278 z"
+   id="path411" />
+<path
+   d="M113.548,220.278 112.958,219.066 113.548,219.411 z"
+   id="path412" />
+<path
+   d="M112.958,217.758 112.958,216.577 113.548,217.758 z"
+   id="path413" />
+<path
+   d="M113.548,217.758 112.958,216.577 113.548,216.577 z"
+   id="path414" />
+<path
+   d="M112.958,215.269 112.958,213.902 113.548,214.925 z"
+   id="path415" />
+<path
+   d="M113.548,214.925 112.958,213.902 113.548,214.058 z"
+   id="path416" />
+<path
+   d="M113.548,220.278 113.548,219.411 113.76,220.221 z"
+   id="path417" />
+<path
+   d="M113.548,217.758 113.548,216.577 113.76,217.758 z"
+   id="path418" />
+<path
+   d="M113.76,217.758 113.548,216.577 113.76,216.577 z"
+   id="path419" />
+<path
+   d="M113.548,214.925 113.548,214.058 113.76,214.114 z"
+   id="path420" />
+<path
+   d="M113.76,217.758 113.76,216.577 114.917,217.758 z"
+   id="path421" />
+<path
+   d="M114.917,217.758 113.76,216.577 114.917,216.577 z"
+   id="path422" />
+<path
+   d="M107.362,437.809 107.362,436.628 108.519,437.809 z"
+   id="path423" />
+<path
+   d="M108.519,437.809 107.362,436.628 108.519,436.628 z"
+   id="path424" />
+<path
+   d="M108.731,440.328 108.519,440.272 108.731,439.461 z"
+   id="path425" />
+<path
+   d="M108.519,437.809 108.519,436.628 108.731,437.809 z"
+   id="path426" />
+<path
+   d="M108.731,437.809 108.519,436.628 108.731,436.628 z"
+   id="path427" />
+<path
+   d="M108.731,434.975 108.519,434.165 108.731,434.108 z"
+   id="path428" />
+<path
+   d="M108.731,440.328 108.731,439.461 109.322,440.484 z"
+   id="path429" />
+<path
+   d="M109.322,440.484 108.731,439.461 109.322,439.117 z"
+   id="path430" />
+<path
+   d="M108.731,437.809 108.731,436.628 109.322,437.809 z"
+   id="path431" />
+<path
+   d="M109.322,437.809 108.731,436.628 109.322,436.628 z"
+   id="path432" />
+<path
+   d="M108.731,434.975 108.731,434.108 109.322,435.32 z"
+   id="path433" />
+<path
+   d="M109.322,435.32 108.731,434.108 109.322,433.952 z"
+   id="path434" />
+<path
+   d="M109.322,440.484 109.322,439.117 111.565,439.175 z"
+   id="path435" />
+<path
+   d="M111.565,439.175 109.322,439.117 111.565,437.809 z"
+   id="path436" />
+<path
+   d="M109.322,437.809 109.322,436.628 111.565,437.809 z"
+   id="path437" />
+<path
+   d="M111.565,437.809 109.322,436.628 111.565,436.628 z"
+   id="path438" />
+<path
+   d="M109.322,435.32 109.322,433.952 111.565,436.628 z"
+   id="path439" />
+<path
+   d="M111.565,436.628 109.322,433.952 111.565,435.261 z"
+   id="path440" />
+<path
+   d="M111.565,439.175 111.565,437.809 111.565,439.175 z"
+   id="path441" />
+<path
+   d="M111.565,439.175 111.565,437.809 111.565,437.809 z"
+   id="path442" />
+<path
+   d="M111.565,437.809 111.565,436.628 111.565,437.809 z"
+   id="path443" />
+<path
+   d="M111.565,437.809 111.565,436.628 111.565,436.628 z"
+   id="path444" />
+<path
+   d="M111.565,436.628 111.565,435.261 111.565,436.628 z"
+   id="path445" />
+<path
+   d="M111.565,436.628 111.565,435.261 111.565,435.261 z"
+   id="path446" />
+<path
+   d="M111.565,439.175 111.565,437.809 112.577,438.585 z"
+   id="path447" />
+<path
+   d="M112.577,438.585 111.565,437.809 112.577,437.809 z"
+   id="path448" />
+<path
+   d="M111.565,437.809 111.565,436.628 112.577,437.218 z"
+   id="path449" />
+<path
+   d="M111.565,436.628 111.565,435.261 112.577,436.628 z"
+   id="path450" />
+<path
+   d="M112.577,436.628 111.565,435.261 112.577,435.852 z"
+   id="path451" />
+<path
+   d="M112.577,438.585 112.577,437.809 113.454,438.073 z"
+   id="path452" />
+<path
+   d="M113.454,438.073 112.577,437.809 113.454,437.809 z"
+   id="path453" />
+<path
+   d="M113.454,437.73 112.577,437.218 113.454,436.707 z"
+   id="path454" />
+<path
+   d="M112.577,436.628 112.577,435.852 113.454,436.628 z"
+   id="path455" />
+<path
+   d="M113.454,436.628 112.577,435.852 113.454,436.364 z"
+   id="path456" />
+<path
+   d="M113.454,438.073 113.454,437.809 113.753,437.898 z"
+   id="path457" />
+<path
+   d="M113.753,437.898 113.454,437.809 113.753,437.809 z"
+   id="path458" />
+<path
+   d="M113.454,436.628 113.454,436.364 113.753,436.628 z"
+   id="path459" />
+<path
+   d="M113.753,436.628 113.454,436.364 113.753,436.538 z"
+   id="path460" />
+<path
+   d="M113.753,437.898 113.753,436.538 114.917,437.218 z"
+   id="path461" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(192,0,0)"
+   stroke="rgb(192,0,0)"
+   stroke-width="0"
+   id="g464">
+<text
+   transform="matrix(7.85822 0 -0 7.84489 58.3613 321.745)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text461">To/From G/E</text>
+<text
+   transform="matrix(7.84277 0 -0 7.84489 58.4707 333.707)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text462">C.F.W. System</text>
+<text
+   transform="matrix(7.85415 0 -0 7.84489 58.3613 454.453)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text463">To/From M/E</text>
+<text
+   transform="matrix(7.84342 0 -0 7.8583 58.472 466.414)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text464">C.F.W. System</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g465">
+<polyline
+   points="167.805,519.1 167.805,477.073 "
+   id="polyline464" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g478">
+<path
+   d="M157.449,531.718 156.566,527.363 157.449,523.008 z"
+   id="path465" />
+<path
+   d="M157.449,531.718 157.449,523.008 159.857,535.276 z"
+   id="path466" />
+<path
+   d="M159.857,535.276 157.449,523.008 159.857,519.451 z"
+   id="path467" />
+<path
+   d="M159.857,535.276 159.857,519.451 163.429,537.675 z"
+   id="path468" />
+<path
+   d="M163.429,537.675 159.857,519.451 163.429,517.052 z"
+   id="path469" />
+<path
+   d="M163.429,537.675 163.429,517.052 167.805,538.555 z"
+   id="path470" />
+<path
+   d="M167.805,538.555 163.429,517.052 167.805,516.172 z"
+   id="path471" />
+<path
+   d="M167.805,538.555 167.805,516.172 172.181,537.675 z"
+   id="path472" />
+<path
+   d="M172.181,537.675 167.805,516.172 172.181,517.052 z"
+   id="path473" />
+<path
+   d="M172.181,537.675 172.181,517.052 175.753,535.276 z"
+   id="path474" />
+<path
+   d="M175.753,535.276 172.181,517.052 175.753,519.451 z"
+   id="path475" />
+<path
+   d="M175.753,535.276 175.753,519.451 178.161,531.718 z"
+   id="path476" />
+<path
+   d="M178.161,531.718 175.753,519.451 178.161,523.008 z"
+   id="path477" />
+<path
+   d="M178.161,531.718 178.161,523.008 179.044,527.363 z"
+   id="path478" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g479">
+<polyline
+   points="156.566,527.363 157.449,523.008 159.857,519.451 163.429,517.052 167.805,516.172 172.181,517.052 175.753,519.451 178.161,523.008 179.044,527.363 178.161,531.718 175.753,535.276 172.181,537.675 167.805,538.555 163.429,537.675 159.857,535.276 157.449,531.718 156.566,527.363 "
+   id="polyline478" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g480">
+<text
+   transform="matrix(7.86315 0 -0 7.8583 161.202 531.724)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text479">PX</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g481">
+<polyline
+   points="167.522,502.856 174.416,502.856 "
+   id="polyline480" />
+<polyline
+   points="174.605,499.078 174.605,506.633 "
+   id="polyline481" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g482">
+<path
+   d="M171.677,497.284 167.9,502.761 164.122,497.284 164.122,497.284 z"
+   id="path481" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g483">
+<polyline
+   points="171.677,497.284 167.9,502.761 164.122,497.284 171.677,497.284 "
+   id="polyline482" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g484">
+<path
+   d="M164.122,508.333 167.9,502.761 171.677,508.333 171.677,508.333 z"
+   id="path483" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g485">
+<polyline
+   points="164.122,508.333 167.9,502.761 171.677,508.333 164.122,508.333 "
+   id="polyline484" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g498">
+<path
+   d="M153.117,578.529 151.844,572.224 153.117,565.918 z"
+   id="path485" />
+<path
+   d="M153.117,578.529 153.117,565.918 156.587,583.678 z"
+   id="path486" />
+<path
+   d="M156.587,583.678 153.117,565.918 156.587,560.769 z"
+   id="path487" />
+<path
+   d="M156.587,583.678 156.587,560.769 161.735,587.148 z"
+   id="path488" />
+<path
+   d="M161.735,587.148 156.587,560.769 161.735,557.299 z"
+   id="path489" />
+<path
+   d="M161.735,587.148 161.735,557.299 168.041,588.42 z"
+   id="path490" />
+<path
+   d="M168.041,588.42 161.735,557.299 168.041,556.027 z"
+   id="path491" />
+<path
+   d="M168.041,588.42 168.041,556.027 174.347,587.148 z"
+   id="path492" />
+<path
+   d="M174.347,587.148 168.041,556.027 174.347,557.299 z"
+   id="path493" />
+<path
+   d="M174.347,587.148 174.347,557.299 179.495,583.678 z"
+   id="path494" />
+<path
+   d="M179.495,583.678 174.347,557.299 179.495,560.769 z"
+   id="path495" />
+<path
+   d="M179.495,583.678 179.495,560.769 182.966,578.529 z"
+   id="path496" />
+<path
+   d="M182.966,578.529 179.495,560.769 182.966,565.918 z"
+   id="path497" />
+<path
+   d="M182.966,578.529 182.966,565.918 184.238,572.224 z"
+   id="path498" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g499">
+<polyline
+   points="151.844,572.224 153.117,565.918 156.587,560.769 161.735,557.299 168.041,556.027 174.347,557.299 179.495,560.769 182.966,565.918 184.238,572.224 182.966,578.529 179.495,583.678 174.347,587.148 168.041,588.42 161.735,587.148 156.587,583.678 153.117,578.529 151.844,572.224 "
+   id="polyline498" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g500">
+<text
+   transform="matrix(7.86132 0 -0 7.84489 163.034 569.973)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text499">PI</text>
+<text
+   transform="matrix(7.84248 0 -0 7.84489 160.39 583.197)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text500">MC</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g501">
+<polyline
+   points="151.844,572.271 184.277,572.271 "
+   id="polyline500" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g502">
+<polyline
+   points="167.805,556.688 167.805,538.555 "
+   id="polyline501" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g503">
+<polyline
+   points="562.574,178.541 562.574,171.647 "
+   id="polyline502" />
+<polyline
+   points="558.796,171.458 566.352,171.458 "
+   id="polyline503" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g504">
+<path
+   d="M557.002,174.385 562.479,178.163 557.002,181.941 557.002,181.941 z"
+   id="path503" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g505">
+<polyline
+   points="557.002,174.385 562.479,178.163 557.002,181.941 557.002,174.385 "
+   id="polyline504" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g506">
+<path
+   d="M568.052,181.941 562.479,178.163 568.052,174.385 568.052,174.385 z"
+   id="path505" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g507">
+<polyline
+   points="568.052,181.941 562.479,178.163 568.052,174.385 568.052,181.941 "
+   id="polyline506" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,240)"
+   stroke-width="0.7"
+   id="g508">
+<polyline
+   points="622.922,322.707 624.209,319.868 627.314,318.693 630.419,319.868 631.706,322.707 "
+   id="polyline507" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,176,80)"
+   stroke="rgb(0,176,80)"
+   stroke-width="1"
+   id="g585">
+<path
+   d="M253.936,178.376 253.936,177.195 255.471,178.376 z"
+   id="path508" />
+<path
+   d="M255.471,178.376 253.936,177.195 255.471,177.195 z"
+   id="path509" />
+<path
+   d="M255.684,180.895 255.471,180.839 255.684,180.028 z"
+   id="path510" />
+<path
+   d="M255.471,178.376 255.471,177.195 255.684,178.376 z"
+   id="path511" />
+<path
+   d="M255.684,178.376 255.471,177.195 255.684,177.195 z"
+   id="path512" />
+<path
+   d="M255.684,175.542 255.471,174.732 255.684,174.675 z"
+   id="path513" />
+<path
+   d="M255.684,180.895 255.684,180.028 256.274,181.051 z"
+   id="path514" />
+<path
+   d="M256.274,181.051 255.684,180.028 256.274,179.684 z"
+   id="path515" />
+<path
+   d="M255.684,178.376 255.684,177.195 256.274,178.376 z"
+   id="path516" />
+<path
+   d="M256.274,178.376 255.684,177.195 256.274,177.195 z"
+   id="path517" />
+<path
+   d="M255.684,175.542 255.684,174.675 256.274,175.887 z"
+   id="path518" />
+<path
+   d="M256.274,175.887 255.684,174.675 256.274,174.519 z"
+   id="path519" />
+<path
+   d="M256.274,181.051 256.274,179.684 258.517,179.742 z"
+   id="path520" />
+<path
+   d="M258.517,179.742 256.274,179.684 258.517,178.376 z"
+   id="path521" />
+<path
+   d="M256.274,178.376 256.274,177.195 258.517,178.376 z"
+   id="path522" />
+<path
+   d="M258.517,178.376 256.274,177.195 258.517,177.195 z"
+   id="path523" />
+<path
+   d="M256.274,175.887 256.274,174.519 258.517,177.195 z"
+   id="path524" />
+<path
+   d="M258.517,177.195 256.274,174.519 258.517,175.828 z"
+   id="path525" />
+<path
+   d="M258.517,179.742 258.517,178.376 258.517,179.742 z"
+   id="path526" />
+<path
+   d="M258.517,179.742 258.517,178.376 258.517,178.376 z"
+   id="path527" />
+<path
+   d="M258.517,178.376 258.517,177.195 258.517,178.376 z"
+   id="path528" />
+<path
+   d="M258.517,178.376 258.517,177.195 258.517,177.195 z"
+   id="path529" />
+<path
+   d="M258.517,177.195 258.517,175.828 258.517,177.195 z"
+   id="path530" />
+<path
+   d="M258.517,177.195 258.517,175.828 258.517,175.828 z"
+   id="path531" />
+<path
+   d="M258.517,179.742 258.517,178.376 259.529,179.152 z"
+   id="path532" />
+<path
+   d="M259.529,179.152 258.517,178.376 259.529,178.376 z"
+   id="path533" />
+<path
+   d="M258.517,178.376 258.517,177.195 259.529,177.785 z"
+   id="path534" />
+<path
+   d="M258.517,177.195 258.517,175.828 259.529,177.195 z"
+   id="path535" />
+<path
+   d="M259.529,177.195 258.517,175.828 259.529,176.419 z"
+   id="path536" />
+<path
+   d="M259.529,179.152 259.529,178.376 260.406,178.64 z"
+   id="path537" />
+<path
+   d="M260.406,178.64 259.529,178.376 260.406,178.376 z"
+   id="path538" />
+<path
+   d="M260.406,178.297 259.529,177.785 260.406,177.274 z"
+   id="path539" />
+<path
+   d="M259.529,177.195 259.529,176.419 260.406,177.195 z"
+   id="path540" />
+<path
+   d="M260.406,177.195 259.529,176.419 260.406,176.931 z"
+   id="path541" />
+<path
+   d="M260.406,178.64 260.406,178.376 260.705,178.465 z"
+   id="path542" />
+<path
+   d="M260.705,178.465 260.406,178.376 260.705,178.376 z"
+   id="path543" />
+<path
+   d="M260.406,177.195 260.406,176.931 260.705,177.195 z"
+   id="path544" />
+<path
+   d="M260.705,177.195 260.406,176.931 260.705,177.105 z"
+   id="path545" />
+<path
+   d="M260.705,178.465 260.705,177.105 261.87,177.785 z"
+   id="path546" />
+<path
+   d="M393.05,178.376 393.05,177.195 394.585,178.376 z"
+   id="path547" />
+<path
+   d="M394.585,178.376 393.05,177.195 394.585,177.195 z"
+   id="path548" />
+<path
+   d="M394.797,180.895 394.585,180.839 394.797,180.028 z"
+   id="path549" />
+<path
+   d="M394.585,178.376 394.585,177.195 394.797,178.376 z"
+   id="path550" />
+<path
+   d="M394.797,178.376 394.585,177.195 394.797,177.195 z"
+   id="path551" />
+<path
+   d="M394.797,175.542 394.585,174.732 394.797,174.675 z"
+   id="path552" />
+<path
+   d="M394.797,180.895 394.797,180.028 395.387,181.051 z"
+   id="path553" />
+<path
+   d="M395.387,181.051 394.797,180.028 395.387,179.684 z"
+   id="path554" />
+<path
+   d="M394.797,178.376 394.797,177.195 395.387,178.376 z"
+   id="path555" />
+<path
+   d="M395.387,178.376 394.797,177.195 395.387,177.195 z"
+   id="path556" />
+<path
+   d="M394.797,175.542 394.797,174.675 395.387,175.887 z"
+   id="path557" />
+<path
+   d="M395.387,175.887 394.797,174.675 395.387,174.519 z"
+   id="path558" />
+<path
+   d="M395.387,181.051 395.387,179.684 397.63,179.742 z"
+   id="path559" />
+<path
+   d="M397.63,179.742 395.387,179.684 397.63,178.376 z"
+   id="path560" />
+<path
+   d="M395.387,178.376 395.387,177.195 397.63,178.376 z"
+   id="path561" />
+<path
+   d="M397.63,178.376 395.387,177.195 397.63,177.195 z"
+   id="path562" />
+<path
+   d="M395.387,175.887 395.387,174.519 397.63,177.195 z"
+   id="path563" />
+<path
+   d="M397.63,177.195 395.387,174.519 397.63,175.828 z"
+   id="path564" />
+<path
+   d="M397.63,179.742 397.63,178.376 397.63,179.742 z"
+   id="path565" />
+<path
+   d="M397.63,179.742 397.63,178.376 397.63,178.376 z"
+   id="path566" />
+<path
+   d="M397.63,178.376 397.63,177.195 397.63,178.376 z"
+   id="path567" />
+<path
+   d="M397.63,178.376 397.63,177.195 397.63,177.195 z"
+   id="path568" />
+<path
+   d="M397.63,177.195 397.63,175.828 397.63,177.195 z"
+   id="path569" />
+<path
+   d="M397.63,177.195 397.63,175.828 397.63,175.828 z"
+   id="path570" />
+<path
+   d="M397.63,179.742 397.63,178.376 398.642,179.152 z"
+   id="path571" />
+<path
+   d="M398.642,179.152 397.63,178.376 398.642,178.376 z"
+   id="path572" />
+<path
+   d="M397.63,178.376 397.63,177.195 398.642,177.785 z"
+   id="path573" />
+<path
+   d="M397.63,177.195 397.63,175.828 398.642,177.195 z"
+   id="path574" />
+<path
+   d="M398.642,177.195 397.63,175.828 398.642,176.419 z"
+   id="path575" />
+<path
+   d="M398.642,179.152 398.642,178.376 399.519,178.64 z"
+   id="path576" />
+<path
+   d="M399.519,178.64 398.642,178.376 399.519,178.376 z"
+   id="path577" />
+<path
+   d="M399.519,178.297 398.642,177.785 399.519,177.274 z"
+   id="path578" />
+<path
+   d="M398.642,177.195 398.642,176.419 399.519,177.195 z"
+   id="path579" />
+<path
+   d="M399.519,177.195 398.642,176.419 399.519,176.931 z"
+   id="path580" />
+<path
+   d="M399.519,178.64 399.519,178.376 399.81,178.47 z"
+   id="path581" />
+<path
+   d="M399.81,178.47 399.519,178.376 399.81,178.376 z"
+   id="path582" />
+<path
+   d="M399.519,177.195 399.519,176.931 399.81,177.195 z"
+   id="path583" />
+<path
+   d="M399.81,177.195 399.519,176.931 399.81,177.101 z"
+   id="path584" />
+<path
+   d="M399.81,178.47 399.81,177.101 400.983,177.785 z"
+   id="path585" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,176,240)"
+   stroke="rgb(0,176,240)"
+   stroke-width="1"
+   id="g847">
+<path
+   d="M579.573,178.376 579.573,177.195 581.014,178.376 z"
+   id="path586" />
+<path
+   d="M581.014,178.376 579.573,177.195 581.014,177.195 z"
+   id="path587" />
+<path
+   d="M581.226,180.895 581.014,180.839 581.226,180.028 z"
+   id="path588" />
+<path
+   d="M581.014,178.376 581.014,177.195 581.226,178.376 z"
+   id="path589" />
+<path
+   d="M581.226,178.376 581.014,177.195 581.226,177.195 z"
+   id="path590" />
+<path
+   d="M581.226,175.542 581.014,174.732 581.226,174.675 z"
+   id="path591" />
+<path
+   d="M581.226,180.895 581.226,180.028 581.816,181.051 z"
+   id="path592" />
+<path
+   d="M581.816,181.051 581.226,180.028 581.816,179.684 z"
+   id="path593" />
+<path
+   d="M581.226,178.376 581.226,177.195 581.816,178.376 z"
+   id="path594" />
+<path
+   d="M581.816,178.376 581.226,177.195 581.816,177.195 z"
+   id="path595" />
+<path
+   d="M581.226,175.542 581.226,174.675 581.816,175.887 z"
+   id="path596" />
+<path
+   d="M581.816,175.887 581.226,174.675 581.816,174.519 z"
+   id="path597" />
+<path
+   d="M581.816,181.051 581.816,179.684 584.059,179.742 z"
+   id="path598" />
+<path
+   d="M584.059,179.742 581.816,179.684 584.059,178.376 z"
+   id="path599" />
+<path
+   d="M581.816,178.376 581.816,177.195 584.059,178.376 z"
+   id="path600" />
+<path
+   d="M584.059,178.376 581.816,177.195 584.059,177.195 z"
+   id="path601" />
+<path
+   d="M581.816,175.887 581.816,174.519 584.059,177.195 z"
+   id="path602" />
+<path
+   d="M584.059,177.195 581.816,174.519 584.059,175.828 z"
+   id="path603" />
+<path
+   d="M584.059,179.742 584.059,178.376 584.06,179.742 z"
+   id="path604" />
+<path
+   d="M584.06,179.742 584.059,178.376 584.06,178.376 z"
+   id="path605" />
+<path
+   d="M584.059,178.376 584.059,177.195 584.06,178.376 z"
+   id="path606" />
+<path
+   d="M584.06,178.376 584.059,177.195 584.06,177.195 z"
+   id="path607" />
+<path
+   d="M584.059,177.195 584.059,175.828 584.06,177.195 z"
+   id="path608" />
+<path
+   d="M584.06,177.195 584.059,175.828 584.06,175.828 z"
+   id="path609" />
+<path
+   d="M584.06,179.742 584.06,178.376 585.071,179.152 z"
+   id="path610" />
+<path
+   d="M585.071,179.152 584.06,178.376 585.071,178.376 z"
+   id="path611" />
+<path
+   d="M584.06,178.376 584.06,177.195 585.071,177.785 z"
+   id="path612" />
+<path
+   d="M584.06,177.195 584.06,175.828 585.071,177.195 z"
+   id="path613" />
+<path
+   d="M585.071,177.195 584.06,175.828 585.071,176.419 z"
+   id="path614" />
+<path
+   d="M585.071,179.152 585.071,178.376 585.948,178.64 z"
+   id="path615" />
+<path
+   d="M585.948,178.64 585.071,178.376 585.948,178.376 z"
+   id="path616" />
+<path
+   d="M585.948,178.297 585.071,177.785 585.948,177.274 z"
+   id="path617" />
+<path
+   d="M585.071,177.195 585.071,176.419 585.948,177.195 z"
+   id="path618" />
+<path
+   d="M585.948,177.195 585.071,176.419 585.948,176.931 z"
+   id="path619" />
+<path
+   d="M585.948,178.64 585.948,178.376 586.24,178.47 z"
+   id="path620" />
+<path
+   d="M586.24,178.47 585.948,178.376 586.24,178.376 z"
+   id="path621" />
+<path
+   d="M585.948,177.195 585.948,176.931 586.24,177.195 z"
+   id="path622" />
+<path
+   d="M586.24,177.195 585.948,176.931 586.24,177.101 z"
+   id="path623" />
+<path
+   d="M586.24,178.47 586.24,177.101 587.412,177.785 z"
+   id="path624" />
+<path
+   d="M752.875,178.376 752.875,177.195 754.315,178.376 z"
+   id="path625" />
+<path
+   d="M754.315,178.376 752.875,177.195 754.315,177.195 z"
+   id="path626" />
+<path
+   d="M754.528,180.895 754.315,180.839 754.528,180.028 z"
+   id="path627" />
+<path
+   d="M754.315,178.376 754.315,177.195 754.528,178.376 z"
+   id="path628" />
+<path
+   d="M754.528,178.376 754.315,177.195 754.528,177.195 z"
+   id="path629" />
+<path
+   d="M754.528,175.542 754.315,174.732 754.528,174.675 z"
+   id="path630" />
+<path
+   d="M754.528,180.895 754.528,180.028 755.118,181.051 z"
+   id="path631" />
+<path
+   d="M755.118,181.051 754.528,180.028 755.118,179.684 z"
+   id="path632" />
+<path
+   d="M754.528,178.376 754.528,177.195 755.118,178.376 z"
+   id="path633" />
+<path
+   d="M755.118,178.376 754.528,177.195 755.118,177.195 z"
+   id="path634" />
+<path
+   d="M754.528,175.542 754.528,174.675 755.118,175.887 z"
+   id="path635" />
+<path
+   d="M755.118,175.887 754.528,174.675 755.118,174.519 z"
+   id="path636" />
+<path
+   d="M755.118,181.051 755.118,179.684 757.361,179.742 z"
+   id="path637" />
+<path
+   d="M757.361,179.742 755.118,179.684 757.361,178.376 z"
+   id="path638" />
+<path
+   d="M755.118,178.376 755.118,177.195 757.361,178.376 z"
+   id="path639" />
+<path
+   d="M757.361,178.376 755.118,177.195 757.361,177.195 z"
+   id="path640" />
+<path
+   d="M755.118,175.887 755.118,174.519 757.361,177.195 z"
+   id="path641" />
+<path
+   d="M757.361,177.195 755.118,174.519 757.361,175.828 z"
+   id="path642" />
+<path
+   d="M757.361,179.742 757.361,178.376 757.361,179.742 z"
+   id="path643" />
+<path
+   d="M757.361,179.742 757.361,178.376 757.361,178.376 z"
+   id="path644" />
+<path
+   d="M757.361,178.376 757.361,177.195 757.361,178.376 z"
+   id="path645" />
+<path
+   d="M757.361,178.376 757.361,177.195 757.361,177.195 z"
+   id="path646" />
+<path
+   d="M757.361,177.195 757.361,175.828 757.361,177.195 z"
+   id="path647" />
+<path
+   d="M757.361,177.195 757.361,175.828 757.361,175.828 z"
+   id="path648" />
+<path
+   d="M757.361,179.742 757.361,178.376 758.373,179.152 z"
+   id="path649" />
+<path
+   d="M758.373,179.152 757.361,178.376 758.373,178.376 z"
+   id="path650" />
+<path
+   d="M757.361,178.376 757.361,177.195 758.373,177.785 z"
+   id="path651" />
+<path
+   d="M757.361,177.195 757.361,175.828 758.373,177.195 z"
+   id="path652" />
+<path
+   d="M758.373,177.195 757.361,175.828 758.373,176.419 z"
+   id="path653" />
+<path
+   d="M758.373,179.152 758.373,178.376 759.25,178.64 z"
+   id="path654" />
+<path
+   d="M759.25,178.64 758.373,178.376 759.25,178.376 z"
+   id="path655" />
+<path
+   d="M759.25,178.297 758.373,177.785 759.25,177.274 z"
+   id="path656" />
+<path
+   d="M758.373,177.195 758.373,176.419 759.25,177.195 z"
+   id="path657" />
+<path
+   d="M759.25,177.195 758.373,176.419 759.25,176.931 z"
+   id="path658" />
+<path
+   d="M759.25,178.64 759.25,178.376 759.541,178.47 z"
+   id="path659" />
+<path
+   d="M759.541,178.47 759.25,178.376 759.541,178.376 z"
+   id="path660" />
+<path
+   d="M759.25,177.195 759.25,176.931 759.541,177.195 z"
+   id="path661" />
+<path
+   d="M759.541,177.195 759.25,176.931 759.541,177.101 z"
+   id="path662" />
+<path
+   d="M759.541,178.47 759.541,177.101 760.714,177.785 z"
+   id="path663" />
+<path
+   d="M576.016,250.336 574.851,249.656 576.016,248.976 z"
+   id="path664" />
+<path
+   d="M576.016,250.336 576.016,250.246 576.315,250.51 z"
+   id="path665" />
+<path
+   d="M576.315,250.51 576.016,250.246 576.315,250.246 z"
+   id="path666" />
+<path
+   d="M576.016,249.066 576.016,248.976 576.315,249.066 z"
+   id="path667" />
+<path
+   d="M576.315,249.066 576.016,248.976 576.315,248.801 z"
+   id="path668" />
+<path
+   d="M576.315,250.51 576.315,250.246 577.192,251.022 z"
+   id="path669" />
+<path
+   d="M577.192,251.022 576.315,250.246 577.192,250.246 z"
+   id="path670" />
+<path
+   d="M576.315,250.167 576.315,249.144 577.192,249.656 z"
+   id="path671" />
+<path
+   d="M576.315,249.066 576.315,248.801 577.192,249.066 z"
+   id="path672" />
+<path
+   d="M577.192,249.066 576.315,248.801 577.192,248.29 z"
+   id="path673" />
+<path
+   d="M577.192,251.022 577.192,250.246 578.204,251.613 z"
+   id="path674" />
+<path
+   d="M578.204,251.613 577.192,250.246 578.204,250.246 z"
+   id="path675" />
+<path
+   d="M578.204,250.246 577.192,249.656 578.204,249.066 z"
+   id="path676" />
+<path
+   d="M577.192,249.066 577.192,248.29 578.204,249.066 z"
+   id="path677" />
+<path
+   d="M578.204,249.066 577.192,248.29 578.204,247.699 z"
+   id="path678" />
+<path
+   d="M578.204,251.613 578.204,250.246 578.204,251.613 z"
+   id="path679" />
+<path
+   d="M578.204,251.613 578.204,250.246 578.204,250.246 z"
+   id="path680" />
+<path
+   d="M578.204,250.246 578.204,249.066 578.204,250.246 z"
+   id="path681" />
+<path
+   d="M578.204,250.246 578.204,249.066 578.204,249.066 z"
+   id="path682" />
+<path
+   d="M578.204,249.066 578.204,247.699 578.204,249.066 z"
+   id="path683" />
+<path
+   d="M578.204,249.066 578.204,247.699 578.204,247.699 z"
+   id="path684" />
+<path
+   d="M578.204,251.613 578.204,250.246 580.447,252.922 z"
+   id="path685" />
+<path
+   d="M580.447,252.922 578.204,250.246 580.447,251.555 z"
+   id="path686" />
+<path
+   d="M578.204,250.246 578.204,249.066 580.447,250.246 z"
+   id="path687" />
+<path
+   d="M580.447,250.246 578.204,249.066 580.447,249.066 z"
+   id="path688" />
+<path
+   d="M578.204,249.066 578.204,247.699 580.447,247.757 z"
+   id="path689" />
+<path
+   d="M580.447,247.757 578.204,247.699 580.447,246.39 z"
+   id="path690" />
+<path
+   d="M580.447,252.922 580.447,251.555 581.037,252.766 z"
+   id="path691" />
+<path
+   d="M581.037,252.766 580.447,251.555 581.037,251.899 z"
+   id="path692" />
+<path
+   d="M580.447,250.246 580.447,249.066 581.037,250.246 z"
+   id="path693" />
+<path
+   d="M581.037,250.246 580.447,249.066 581.037,249.066 z"
+   id="path694" />
+<path
+   d="M580.447,247.757 580.447,246.39 581.037,247.413 z"
+   id="path695" />
+<path
+   d="M581.037,247.413 580.447,246.39 581.037,246.546 z"
+   id="path696" />
+<path
+   d="M581.037,252.766 581.037,251.899 581.25,252.709 z"
+   id="path697" />
+<path
+   d="M581.037,250.246 581.037,249.066 581.25,250.246 z"
+   id="path698" />
+<path
+   d="M581.25,250.246 581.037,249.066 581.25,249.066 z"
+   id="path699" />
+<path
+   d="M581.037,247.413 581.037,246.546 581.25,246.602 z"
+   id="path700" />
+<path
+   d="M581.25,250.246 581.25,249.066 582.785,250.246 z"
+   id="path701" />
+<path
+   d="M582.785,250.246 581.25,249.066 582.785,249.066 z"
+   id="path702" />
+<path
+   d="M574.851,323.628 574.851,322.447 576.386,323.628 z"
+   id="path703" />
+<path
+   d="M576.386,323.628 574.851,322.447 576.386,322.447 z"
+   id="path704" />
+<path
+   d="M576.599,326.147 576.386,326.091 576.599,325.281 z"
+   id="path705" />
+<path
+   d="M576.386,323.628 576.386,322.447 576.599,323.628 z"
+   id="path706" />
+<path
+   d="M576.599,323.628 576.386,322.447 576.599,322.447 z"
+   id="path707" />
+<path
+   d="M576.599,320.795 576.386,319.984 576.599,319.928 z"
+   id="path708" />
+<path
+   d="M576.599,326.147 576.599,325.281 577.189,326.304 z"
+   id="path709" />
+<path
+   d="M577.189,326.304 576.599,325.281 577.189,324.936 z"
+   id="path710" />
+<path
+   d="M576.599,323.628 576.599,322.447 577.189,323.628 z"
+   id="path711" />
+<path
+   d="M577.189,323.628 576.599,322.447 577.189,322.447 z"
+   id="path712" />
+<path
+   d="M576.599,320.795 576.599,319.928 577.189,321.139 z"
+   id="path713" />
+<path
+   d="M577.189,321.139 576.599,319.928 577.189,319.771 z"
+   id="path714" />
+<path
+   d="M577.189,326.304 577.189,324.936 579.432,324.994 z"
+   id="path715" />
+<path
+   d="M579.432,324.994 577.189,324.936 579.432,323.628 z"
+   id="path716" />
+<path
+   d="M577.189,323.628 577.189,322.447 579.432,323.628 z"
+   id="path717" />
+<path
+   d="M579.432,323.628 577.189,322.447 579.432,322.447 z"
+   id="path718" />
+<path
+   d="M577.189,321.139 577.189,319.771 579.432,322.447 z"
+   id="path719" />
+<path
+   d="M579.432,322.447 577.189,319.771 579.432,321.081 z"
+   id="path720" />
+<path
+   d="M579.432,324.994 579.432,323.628 579.432,324.994 z"
+   id="path721" />
+<path
+   d="M579.432,324.994 579.432,323.628 579.432,323.628 z"
+   id="path722" />
+<path
+   d="M579.432,323.628 579.432,322.447 579.432,323.628 z"
+   id="path723" />
+<path
+   d="M579.432,323.628 579.432,322.447 579.432,322.447 z"
+   id="path724" />
+<path
+   d="M579.432,322.447 579.432,321.081 579.432,322.447 z"
+   id="path725" />
+<path
+   d="M579.432,322.447 579.432,321.081 579.432,321.081 z"
+   id="path726" />
+<path
+   d="M579.432,324.994 579.432,323.628 580.444,324.404 z"
+   id="path727" />
+<path
+   d="M580.444,324.404 579.432,323.628 580.444,323.628 z"
+   id="path728" />
+<path
+   d="M579.432,323.628 579.432,322.447 580.444,323.038 z"
+   id="path729" />
+<path
+   d="M579.432,322.447 579.432,321.081 580.444,322.447 z"
+   id="path730" />
+<path
+   d="M580.444,322.447 579.432,321.081 580.444,321.671 z"
+   id="path731" />
+<path
+   d="M580.444,324.404 580.444,323.628 581.321,323.892 z"
+   id="path732" />
+<path
+   d="M581.321,323.892 580.444,323.628 581.321,323.628 z"
+   id="path733" />
+<path
+   d="M581.321,323.549 580.444,323.038 581.321,322.526 z"
+   id="path734" />
+<path
+   d="M580.444,322.447 580.444,321.671 581.321,322.447 z"
+   id="path735" />
+<path
+   d="M581.321,322.447 580.444,321.671 581.321,322.183 z"
+   id="path736" />
+<path
+   d="M581.321,323.892 581.321,323.628 581.62,323.717 z"
+   id="path737" />
+<path
+   d="M581.62,323.717 581.321,323.628 581.62,323.628 z"
+   id="path738" />
+<path
+   d="M581.321,322.447 581.321,322.183 581.62,322.447 z"
+   id="path739" />
+<path
+   d="M581.62,322.447 581.321,322.183 581.62,322.358 z"
+   id="path740" />
+<path
+   d="M581.62,323.717 581.62,322.358 582.785,323.038 z"
+   id="path741" />
+<path
+   d="M576.106,394.569 574.942,393.889 576.106,393.209 z"
+   id="path742" />
+<path
+   d="M576.106,394.569 576.106,394.479 576.405,394.744 z"
+   id="path743" />
+<path
+   d="M576.405,394.744 576.106,394.479 576.405,394.479 z"
+   id="path744" />
+<path
+   d="M576.106,393.299 576.106,393.209 576.405,393.299 z"
+   id="path745" />
+<path
+   d="M576.405,393.299 576.106,393.209 576.405,393.035 z"
+   id="path746" />
+<path
+   d="M576.405,394.744 576.405,394.479 577.282,395.255 z"
+   id="path747" />
+<path
+   d="M577.282,395.255 576.405,394.479 577.282,394.479 z"
+   id="path748" />
+<path
+   d="M576.405,394.401 576.405,393.378 577.282,393.889 z"
+   id="path749" />
+<path
+   d="M576.405,393.299 576.405,393.035 577.282,393.299 z"
+   id="path750" />
+<path
+   d="M577.282,393.299 576.405,393.035 577.282,392.523 z"
+   id="path751" />
+<path
+   d="M577.282,395.255 577.282,394.479 578.294,395.846 z"
+   id="path752" />
+<path
+   d="M578.294,395.846 577.282,394.479 578.294,394.479 z"
+   id="path753" />
+<path
+   d="M578.294,394.479 577.282,393.889 578.294,393.299 z"
+   id="path754" />
+<path
+   d="M577.282,393.299 577.282,392.523 578.294,393.299 z"
+   id="path755" />
+<path
+   d="M578.294,393.299 577.282,392.523 578.294,391.932 z"
+   id="path756" />
+<path
+   d="M578.294,395.846 578.294,394.479 580.537,397.155 z"
+   id="path757" />
+<path
+   d="M580.537,397.155 578.294,394.479 580.537,395.788 z"
+   id="path758" />
+<path
+   d="M578.294,394.479 578.294,393.299 580.537,394.479 z"
+   id="path759" />
+<path
+   d="M580.537,394.479 578.294,393.299 580.537,393.299 z"
+   id="path760" />
+<path
+   d="M578.294,393.299 578.294,391.932 580.537,391.99 z"
+   id="path761" />
+<path
+   d="M580.537,391.99 578.294,391.932 580.537,390.623 z"
+   id="path762" />
+<path
+   d="M580.537,397.155 580.537,395.788 581.128,396.999 z"
+   id="path763" />
+<path
+   d="M581.128,396.999 580.537,395.788 581.128,396.132 z"
+   id="path764" />
+<path
+   d="M580.537,394.479 580.537,393.299 581.128,394.479 z"
+   id="path765" />
+<path
+   d="M581.128,394.479 580.537,393.299 581.128,393.299 z"
+   id="path766" />
+<path
+   d="M580.537,391.99 580.537,390.623 581.128,391.646 z"
+   id="path767" />
+<path
+   d="M581.128,391.646 580.537,390.623 581.128,390.779 z"
+   id="path768" />
+<path
+   d="M581.128,396.999 581.128,396.132 581.34,396.943 z"
+   id="path769" />
+<path
+   d="M581.128,394.479 581.128,393.299 581.34,394.479 z"
+   id="path770" />
+<path
+   d="M581.34,394.479 581.128,393.299 581.34,393.299 z"
+   id="path771" />
+<path
+   d="M581.128,391.646 581.128,390.779 581.34,390.836 z"
+   id="path772" />
+<path
+   d="M581.34,394.479 581.34,393.299 582.875,394.479 z"
+   id="path773" />
+<path
+   d="M582.875,394.479 581.34,393.299 582.875,393.299 z"
+   id="path774" />
+<path
+   d="M695.391,339.489 694.226,338.809 695.391,338.13 z"
+   id="path775" />
+<path
+   d="M695.391,339.489 695.391,339.4 695.69,339.664 z"
+   id="path776" />
+<path
+   d="M695.69,339.664 695.391,339.4 695.69,339.4 z"
+   id="path777" />
+<path
+   d="M695.391,338.219 695.391,338.13 695.69,338.219 z"
+   id="path778" />
+<path
+   d="M695.69,338.219 695.391,338.13 695.69,337.955 z"
+   id="path779" />
+<path
+   d="M695.69,339.664 695.69,339.4 696.567,340.176 z"
+   id="path780" />
+<path
+   d="M696.567,340.176 695.69,339.4 696.567,339.4 z"
+   id="path781" />
+<path
+   d="M695.69,339.321 695.69,338.298 696.567,338.809 z"
+   id="path782" />
+<path
+   d="M695.69,338.219 695.69,337.955 696.567,338.219 z"
+   id="path783" />
+<path
+   d="M696.567,338.219 695.69,337.955 696.567,337.443 z"
+   id="path784" />
+<path
+   d="M696.567,340.176 696.567,339.4 697.579,340.766 z"
+   id="path785" />
+<path
+   d="M697.579,340.766 696.567,339.4 697.579,339.4 z"
+   id="path786" />
+<path
+   d="M697.579,339.4 696.567,338.809 697.579,338.219 z"
+   id="path787" />
+<path
+   d="M696.567,338.219 696.567,337.443 697.579,338.219 z"
+   id="path788" />
+<path
+   d="M697.579,338.219 696.567,337.443 697.579,336.852 z"
+   id="path789" />
+<path
+   d="M697.579,340.766 697.579,339.4 697.579,340.766 z"
+   id="path790" />
+<path
+   d="M697.579,340.766 697.579,339.4 697.579,339.4 z"
+   id="path791" />
+<path
+   d="M697.579,339.4 697.579,338.219 697.579,339.4 z"
+   id="path792" />
+<path
+   d="M697.579,339.4 697.579,338.219 697.579,338.219 z"
+   id="path793" />
+<path
+   d="M697.579,338.219 697.579,336.852 697.579,338.219 z"
+   id="path794" />
+<path
+   d="M697.579,338.219 697.579,336.852 697.579,336.852 z"
+   id="path795" />
+<path
+   d="M697.579,340.766 697.579,339.4 699.822,342.076 z"
+   id="path796" />
+<path
+   d="M699.822,342.076 697.579,339.4 699.822,340.708 z"
+   id="path797" />
+<path
+   d="M697.579,339.4 697.579,338.219 699.822,339.4 z"
+   id="path798" />
+<path
+   d="M699.822,339.4 697.579,338.219 699.822,338.219 z"
+   id="path799" />
+<path
+   d="M697.579,338.219 697.579,336.852 699.822,336.911 z"
+   id="path800" />
+<path
+   d="M699.822,336.911 697.579,336.852 699.822,335.543 z"
+   id="path801" />
+<path
+   d="M699.822,342.076 699.822,340.708 700.412,341.919 z"
+   id="path802" />
+<path
+   d="M700.412,341.919 699.822,340.708 700.412,341.052 z"
+   id="path803" />
+<path
+   d="M699.822,339.4 699.822,338.219 700.412,339.4 z"
+   id="path804" />
+<path
+   d="M700.412,339.4 699.822,338.219 700.412,338.219 z"
+   id="path805" />
+<path
+   d="M699.822,336.911 699.822,335.543 700.412,336.566 z"
+   id="path806" />
+<path
+   d="M700.412,336.566 699.822,335.543 700.412,335.7 z"
+   id="path807" />
+<path
+   d="M700.412,341.919 700.412,341.052 700.625,341.863 z"
+   id="path808" />
+<path
+   d="M700.412,339.4 700.412,338.219 700.625,339.4 z"
+   id="path809" />
+<path
+   d="M700.625,339.4 700.412,338.219 700.625,338.219 z"
+   id="path810" />
+<path
+   d="M700.412,336.566 700.412,335.7 700.625,335.756 z"
+   id="path811" />
+<path
+   d="M700.625,339.4 700.625,338.219 702.065,339.4 z"
+   id="path812" />
+<path
+   d="M702.065,339.4 700.625,338.219 702.065,338.219 z"
+   id="path813" />
+<path
+   d="M737.638,251.143 737.426,250.341 737.638,249.977 z"
+   id="path814" />
+<path
+   d="M737.638,251.143 737.638,249.977 738.449,250.931 z"
+   id="path815" />
+<path
+   d="M738.449,250.931 737.638,249.977 738.449,248.588 z"
+   id="path816" />
+<path
+   d="M738.449,250.931 738.449,248.588 740.102,248.098 z"
+   id="path817" />
+<path
+   d="M740.102,248.098 738.449,248.588 740.102,245.756 z"
+   id="path818" />
+<path
+   d="M740.102,252.584 740.102,248.098 740.18,252.584 z"
+   id="path819" />
+<path
+   d="M740.18,252.584 740.102,248.098 740.18,247.963 z"
+   id="path820" />
+<path
+   d="M740.102,245.91 740.102,245.756 740.18,245.91 z"
+   id="path821" />
+<path
+   d="M740.18,245.91 740.102,245.756 740.18,245.621 z"
+   id="path822" />
+<path
+   d="M740.18,252.584 740.18,247.963 740.692,252.584 z"
+   id="path823" />
+<path
+   d="M740.692,252.584 740.18,247.963 740.692,247.086 z"
+   id="path824" />
+<path
+   d="M740.692,247.086 740.18,246.209 740.692,246.209 z"
+   id="path825" />
+<path
+   d="M740.18,245.91 740.18,245.621 740.692,245.91 z"
+   id="path826" />
+<path
+   d="M740.692,245.91 740.18,245.621 740.692,244.745 z"
+   id="path827" />
+<path
+   d="M740.692,252.584 740.692,247.086 740.692,252.584 z"
+   id="path828" />
+<path
+   d="M740.692,252.584 740.692,247.086 740.692,247.086 z"
+   id="path829" />
+<path
+   d="M740.692,247.086 740.692,246.209 740.692,247.086 z"
+   id="path830" />
+<path
+   d="M740.692,247.086 740.692,246.209 740.692,246.209 z"
+   id="path831" />
+<path
+   d="M740.692,245.91 740.692,244.745 740.692,245.91 z"
+   id="path832" />
+<path
+   d="M740.692,245.91 740.692,244.745 740.692,244.745 z"
+   id="path833" />
+<path
+   d="M740.692,252.584 740.692,247.086 741.204,252.584 z"
+   id="path834" />
+<path
+   d="M741.204,252.584 740.692,247.086 741.204,247.963 z"
+   id="path835" />
+<path
+   d="M740.692,247.086 740.692,246.209 741.204,246.209 z"
+   id="path836" />
+<path
+   d="M740.692,245.91 740.692,244.745 741.204,245.91 z"
+   id="path837" />
+<path
+   d="M741.204,245.91 740.692,244.745 741.204,245.621 z"
+   id="path838" />
+<path
+   d="M741.204,252.584 741.204,247.963 741.282,252.584 z"
+   id="path839" />
+<path
+   d="M741.282,252.584 741.204,247.963 741.282,248.098 z"
+   id="path840" />
+<path
+   d="M741.204,245.91 741.204,245.621 741.282,245.91 z"
+   id="path841" />
+<path
+   d="M741.282,245.91 741.204,245.621 741.282,245.756 z"
+   id="path842" />
+<path
+   d="M741.282,248.098 741.282,245.756 742.935,250.931 z"
+   id="path843" />
+<path
+   d="M742.935,250.931 741.282,245.756 742.935,248.588 z"
+   id="path844" />
+<path
+   d="M742.935,250.931 742.935,248.588 743.746,251.143 z"
+   id="path845" />
+<path
+   d="M743.746,251.143 742.935,248.588 743.746,249.976 z"
+   id="path846" />
+<path
+   d="M743.746,251.143 743.746,249.976 743.958,250.341 z"
+   id="path847" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,176,80)"
+   stroke="rgb(0,176,80)"
+   stroke-width="1"
+   id="g946">
+<path
+   d="M382.095,323.533 382.095,322.353 383.535,323.533 z"
+   id="path848" />
+<path
+   d="M383.535,323.533 382.095,322.353 383.535,322.353 z"
+   id="path849" />
+<path
+   d="M383.747,326.053 383.535,325.997 383.747,325.186 z"
+   id="path850" />
+<path
+   d="M383.535,323.533 383.535,322.353 383.747,323.533 z"
+   id="path851" />
+<path
+   d="M383.747,323.533 383.535,322.353 383.747,322.353 z"
+   id="path852" />
+<path
+   d="M383.747,320.7 383.535,319.889 383.747,319.833 z"
+   id="path853" />
+<path
+   d="M383.747,326.053 383.747,325.186 384.338,326.209 z"
+   id="path854" />
+<path
+   d="M384.338,326.209 383.747,325.186 384.338,324.842 z"
+   id="path855" />
+<path
+   d="M383.747,323.533 383.747,322.353 384.338,323.533 z"
+   id="path856" />
+<path
+   d="M384.338,323.533 383.747,322.353 384.338,322.353 z"
+   id="path857" />
+<path
+   d="M383.747,320.7 383.747,319.833 384.338,321.044 z"
+   id="path858" />
+<path
+   d="M384.338,321.044 383.747,319.833 384.338,319.677 z"
+   id="path859" />
+<path
+   d="M384.338,326.209 384.338,324.842 386.581,324.9 z"
+   id="path860" />
+<path
+   d="M386.581,324.9 384.338,324.842 386.581,323.533 z"
+   id="path861" />
+<path
+   d="M384.338,323.533 384.338,322.353 386.581,323.533 z"
+   id="path862" />
+<path
+   d="M386.581,323.533 384.338,322.353 386.581,322.353 z"
+   id="path863" />
+<path
+   d="M384.338,321.044 384.338,319.677 386.581,322.353 z"
+   id="path864" />
+<path
+   d="M386.581,322.353 384.338,319.677 386.581,320.986 z"
+   id="path865" />
+<path
+   d="M386.581,324.9 386.581,323.533 387.593,324.309 z"
+   id="path866" />
+<path
+   d="M387.593,324.309 386.581,323.533 387.593,323.533 z"
+   id="path867" />
+<path
+   d="M386.581,323.533 386.581,322.353 387.593,322.943 z"
+   id="path868" />
+<path
+   d="M386.581,322.353 386.581,320.986 387.593,322.353 z"
+   id="path869" />
+<path
+   d="M387.593,322.353 386.581,320.986 387.593,321.577 z"
+   id="path870" />
+<path
+   d="M387.593,324.309 387.593,323.533 388.469,323.798 z"
+   id="path871" />
+<path
+   d="M388.469,323.798 387.593,323.533 388.469,323.533 z"
+   id="path872" />
+<path
+   d="M388.469,323.455 387.593,322.943 388.469,322.432 z"
+   id="path873" />
+<path
+   d="M387.593,322.353 387.593,321.577 388.469,322.353 z"
+   id="path874" />
+<path
+   d="M388.469,322.353 387.593,321.577 388.469,322.089 z"
+   id="path875" />
+<path
+   d="M388.469,323.798 388.469,323.533 388.769,323.623 z"
+   id="path876" />
+<path
+   d="M388.769,323.623 388.469,323.533 388.769,323.533 z"
+   id="path877" />
+<path
+   d="M388.469,322.353 388.469,322.089 388.769,322.353 z"
+   id="path878" />
+<path
+   d="M388.769,322.353 388.469,322.089 388.769,322.263 z"
+   id="path879" />
+<path
+   d="M388.769,323.623 388.769,322.263 389.933,322.943 z"
+   id="path880" />
+<path
+   d="M414.898,250.808 413.733,250.128 414.898,249.448 z"
+   id="path881" />
+<path
+   d="M414.898,250.808 414.898,250.718 415.197,250.983 z"
+   id="path882" />
+<path
+   d="M415.197,250.983 414.898,250.718 415.197,250.718 z"
+   id="path883" />
+<path
+   d="M414.898,249.538 414.898,249.448 415.197,249.538 z"
+   id="path884" />
+<path
+   d="M415.197,249.538 414.898,249.448 415.197,249.274 z"
+   id="path885" />
+<path
+   d="M415.197,250.983 415.197,250.718 416.074,251.494 z"
+   id="path886" />
+<path
+   d="M416.074,251.494 415.197,250.718 416.074,250.718 z"
+   id="path887" />
+<path
+   d="M415.197,250.64 415.197,249.617 416.074,250.128 z"
+   id="path888" />
+<path
+   d="M415.197,249.538 415.197,249.274 416.074,249.538 z"
+   id="path889" />
+<path
+   d="M416.074,249.538 415.197,249.274 416.074,248.762 z"
+   id="path890" />
+<path
+   d="M416.074,251.494 416.074,250.718 417.086,252.085 z"
+   id="path891" />
+<path
+   d="M417.086,252.085 416.074,250.718 417.086,250.718 z"
+   id="path892" />
+<path
+   d="M417.086,250.718 416.074,250.128 417.086,249.538 z"
+   id="path893" />
+<path
+   d="M416.074,249.538 416.074,248.762 417.086,249.538 z"
+   id="path894" />
+<path
+   d="M417.086,249.538 416.074,248.762 417.086,248.171 z"
+   id="path895" />
+<path
+   d="M417.086,252.085 417.086,250.718 419.328,253.394 z"
+   id="path896" />
+<path
+   d="M419.328,253.394 417.086,250.718 419.328,252.027 z"
+   id="path897" />
+<path
+   d="M417.086,250.718 417.086,249.538 419.328,250.718 z"
+   id="path898" />
+<path
+   d="M419.328,250.718 417.086,249.538 419.328,249.538 z"
+   id="path899" />
+<path
+   d="M417.086,249.538 417.086,248.171 419.328,248.229 z"
+   id="path900" />
+<path
+   d="M419.328,248.229 417.086,248.171 419.328,246.862 z"
+   id="path901" />
+<path
+   d="M419.328,253.394 419.328,252.027 419.919,253.238 z"
+   id="path902" />
+<path
+   d="M419.919,253.238 419.328,252.027 419.919,252.371 z"
+   id="path903" />
+<path
+   d="M419.328,250.718 419.328,249.538 419.919,250.718 z"
+   id="path904" />
+<path
+   d="M419.919,250.718 419.328,249.538 419.919,249.538 z"
+   id="path905" />
+<path
+   d="M419.328,248.229 419.328,246.862 419.919,247.885 z"
+   id="path906" />
+<path
+   d="M419.919,247.885 419.328,246.862 419.919,247.018 z"
+   id="path907" />
+<path
+   d="M419.919,253.238 419.919,252.371 420.131,253.182 z"
+   id="path908" />
+<path
+   d="M419.919,250.718 419.919,249.538 420.131,250.718 z"
+   id="path909" />
+<path
+   d="M420.131,250.718 419.919,249.538 420.131,249.538 z"
+   id="path910" />
+<path
+   d="M419.919,247.885 419.919,247.018 420.131,247.075 z"
+   id="path911" />
+<path
+   d="M420.131,250.718 420.131,249.538 421.572,250.718 z"
+   id="path912" />
+<path
+   d="M421.572,250.718 420.131,249.538 421.572,249.538 z"
+   id="path913" />
+<path
+   d="M416.031,395.305 414.866,394.625 416.031,393.945 z"
+   id="path914" />
+<path
+   d="M416.031,395.305 416.031,395.215 416.33,395.479 z"
+   id="path915" />
+<path
+   d="M416.33,395.479 416.031,395.215 416.33,395.215 z"
+   id="path916" />
+<path
+   d="M416.031,394.035 416.031,393.945 416.33,394.035 z"
+   id="path917" />
+<path
+   d="M416.33,394.035 416.031,393.945 416.33,393.77 z"
+   id="path918" />
+<path
+   d="M416.33,395.479 416.33,395.215 417.207,395.991 z"
+   id="path919" />
+<path
+   d="M417.207,395.991 416.33,395.215 417.207,395.215 z"
+   id="path920" />
+<path
+   d="M416.33,395.136 416.33,394.113 417.207,394.625 z"
+   id="path921" />
+<path
+   d="M416.33,394.035 416.33,393.77 417.207,394.035 z"
+   id="path922" />
+<path
+   d="M417.207,394.035 416.33,393.77 417.207,393.259 z"
+   id="path923" />
+<path
+   d="M417.207,395.991 417.207,395.215 418.219,396.582 z"
+   id="path924" />
+<path
+   d="M418.219,396.582 417.207,395.215 418.219,395.215 z"
+   id="path925" />
+<path
+   d="M418.219,395.215 417.207,394.625 418.219,394.035 z"
+   id="path926" />
+<path
+   d="M417.207,394.035 417.207,393.259 418.219,394.035 z"
+   id="path927" />
+<path
+   d="M418.219,394.035 417.207,393.259 418.219,392.668 z"
+   id="path928" />
+<path
+   d="M418.219,396.582 418.219,395.215 420.462,397.891 z"
+   id="path929" />
+<path
+   d="M420.462,397.891 418.219,395.215 420.462,396.524 z"
+   id="path930" />
+<path
+   d="M418.219,395.215 418.219,394.035 420.462,395.215 z"
+   id="path931" />
+<path
+   d="M420.462,395.215 418.219,394.035 420.462,394.035 z"
+   id="path932" />
+<path
+   d="M418.219,394.035 418.219,392.668 420.462,392.726 z"
+   id="path933" />
+<path
+   d="M420.462,392.726 418.219,392.668 420.462,391.359 z"
+   id="path934" />
+<path
+   d="M420.462,397.891 420.462,396.524 421.052,397.735 z"
+   id="path935" />
+<path
+   d="M421.052,397.735 420.462,396.524 421.052,396.868 z"
+   id="path936" />
+<path
+   d="M420.462,395.215 420.462,394.035 421.052,395.215 z"
+   id="path937" />
+<path
+   d="M421.052,395.215 420.462,394.035 421.052,394.035 z"
+   id="path938" />
+<path
+   d="M420.462,392.726 420.462,391.359 421.052,392.382 z"
+   id="path939" />
+<path
+   d="M421.052,392.382 420.462,391.359 421.052,391.515 z"
+   id="path940" />
+<path
+   d="M421.052,397.735 421.052,396.868 421.265,397.678 z"
+   id="path941" />
+<path
+   d="M421.052,395.215 421.052,394.035 421.265,395.215 z"
+   id="path942" />
+<path
+   d="M421.265,395.215 421.052,394.035 421.265,394.035 z"
+   id="path943" />
+<path
+   d="M421.052,392.382 421.052,391.515 421.265,391.571 z"
+   id="path944" />
+<path
+   d="M421.265,395.215 421.265,394.035 422.705,395.215 z"
+   id="path945" />
+<path
+   d="M422.705,395.215 421.265,394.035 422.705,394.035 z"
+   id="path946" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g947">
+<polyline
+   points="956.304,615.998 967.542,615.998 "
+   id="polyline946" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,176,80)"
+   stroke="rgb(0,176,80)"
+   stroke-width="1"
+   id="g985">
+<path
+   d="M108.527,476.997 107.362,476.317 108.527,475.638 z"
+   id="path947" />
+<path
+   d="M108.527,476.997 108.527,476.908 108.826,477.172 z"
+   id="path948" />
+<path
+   d="M108.826,477.172 108.527,476.908 108.826,476.908 z"
+   id="path949" />
+<path
+   d="M108.527,475.727 108.527,475.638 108.826,475.727 z"
+   id="path950" />
+<path
+   d="M108.826,475.727 108.527,475.638 108.826,475.463 z"
+   id="path951" />
+<path
+   d="M108.826,477.172 108.826,476.908 109.703,477.684 z"
+   id="path952" />
+<path
+   d="M109.703,477.684 108.826,476.908 109.703,476.908 z"
+   id="path953" />
+<path
+   d="M108.826,476.829 108.826,475.806 109.703,476.317 z"
+   id="path954" />
+<path
+   d="M108.826,475.727 108.826,475.463 109.703,475.727 z"
+   id="path955" />
+<path
+   d="M109.703,475.727 108.826,475.463 109.703,474.951 z"
+   id="path956" />
+<path
+   d="M109.703,477.684 109.703,476.908 110.715,478.274 z"
+   id="path957" />
+<path
+   d="M110.715,478.274 109.703,476.908 110.715,476.908 z"
+   id="path958" />
+<path
+   d="M110.715,476.908 109.703,476.317 110.715,475.727 z"
+   id="path959" />
+<path
+   d="M109.703,475.727 109.703,474.951 110.715,475.727 z"
+   id="path960" />
+<path
+   d="M110.715,475.727 109.703,474.951 110.715,474.361 z"
+   id="path961" />
+<path
+   d="M110.715,478.274 110.715,476.908 110.715,478.274 z"
+   id="path962" />
+<path
+   d="M110.715,478.274 110.715,476.908 110.715,476.908 z"
+   id="path963" />
+<path
+   d="M110.715,476.908 110.715,475.727 110.715,476.908 z"
+   id="path964" />
+<path
+   d="M110.715,476.908 110.715,475.727 110.715,475.727 z"
+   id="path965" />
+<path
+   d="M110.715,475.727 110.715,474.361 110.715,475.727 z"
+   id="path966" />
+<path
+   d="M110.715,475.727 110.715,474.361 110.715,474.36 z"
+   id="path967" />
+<path
+   d="M110.715,478.274 110.715,476.908 112.958,479.584 z"
+   id="path968" />
+<path
+   d="M112.958,479.584 110.715,476.908 112.958,478.216 z"
+   id="path969" />
+<path
+   d="M110.715,476.908 110.715,475.727 112.958,476.908 z"
+   id="path970" />
+<path
+   d="M112.958,476.908 110.715,475.727 112.958,475.727 z"
+   id="path971" />
+<path
+   d="M110.715,475.727 110.715,474.36 112.958,474.419 z"
+   id="path972" />
+<path
+   d="M112.958,474.419 110.715,474.36 112.958,473.051 z"
+   id="path973" />
+<path
+   d="M112.958,479.584 112.958,478.216 113.548,479.427 z"
+   id="path974" />
+<path
+   d="M113.548,479.427 112.958,478.216 113.548,478.56 z"
+   id="path975" />
+<path
+   d="M112.958,476.908 112.958,475.727 113.548,476.908 z"
+   id="path976" />
+<path
+   d="M113.548,476.908 112.958,475.727 113.548,475.727 z"
+   id="path977" />
+<path
+   d="M112.958,474.419 112.958,473.051 113.548,474.074 z"
+   id="path978" />
+<path
+   d="M113.548,474.074 112.958,473.051 113.548,473.207 z"
+   id="path979" />
+<path
+   d="M113.548,479.427 113.548,478.56 113.76,479.371 z"
+   id="path980" />
+<path
+   d="M113.548,476.908 113.548,475.727 113.76,476.908 z"
+   id="path981" />
+<path
+   d="M113.76,476.908 113.548,475.727 113.76,475.727 z"
+   id="path982" />
+<path
+   d="M113.548,474.074 113.548,473.207 113.76,473.264 z"
+   id="path983" />
+<path
+   d="M113.76,476.908 113.76,475.727 114.917,476.908 z"
+   id="path984" />
+<path
+   d="M114.917,476.908 113.76,475.727 114.917,475.727 z"
+   id="path985" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,80)"
+   stroke-width="0.7"
+   id="g986">
+<polyline
+   points="139.756,342.682 151.844,342.682 "
+   id="polyline985" />
+<polyline
+   points="58.4409,304.244 134.845,304.244 "
+   id="polyline986" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,176,80)"
+   stroke="rgb(0,176,80)"
+   stroke-width="1"
+   id="g1018">
+<path
+   d="M107.582,343.361 106.418,342.682 107.582,342.002 z"
+   id="path986" />
+<path
+   d="M107.582,343.361 107.582,343.272 107.881,343.536 z"
+   id="path987" />
+<path
+   d="M107.881,343.536 107.582,343.272 107.881,343.272 z"
+   id="path988" />
+<path
+   d="M107.582,342.091 107.582,342.002 107.881,342.091 z"
+   id="path989" />
+<path
+   d="M107.881,342.091 107.582,342.002 107.881,341.827 z"
+   id="path990" />
+<path
+   d="M107.881,343.536 107.881,343.272 108.758,344.048 z"
+   id="path991" />
+<path
+   d="M108.758,344.048 107.881,343.272 108.758,343.272 z"
+   id="path992" />
+<path
+   d="M107.881,343.193 107.881,342.17 108.758,342.682 z"
+   id="path993" />
+<path
+   d="M107.881,342.091 107.881,341.827 108.758,342.091 z"
+   id="path994" />
+<path
+   d="M108.758,342.091 107.881,341.827 108.758,341.315 z"
+   id="path995" />
+<path
+   d="M108.758,344.048 108.758,343.272 109.77,344.638 z"
+   id="path996" />
+<path
+   d="M109.77,344.638 108.758,343.272 109.77,343.272 z"
+   id="path997" />
+<path
+   d="M109.77,343.272 108.758,342.682 109.77,342.091 z"
+   id="path998" />
+<path
+   d="M108.758,342.091 108.758,341.315 109.77,342.091 z"
+   id="path999" />
+<path
+   d="M109.77,342.091 108.758,341.315 109.77,340.725 z"
+   id="path1000" />
+<path
+   d="M109.77,344.638 109.77,343.272 112.013,345.948 z"
+   id="path1001" />
+<path
+   d="M112.013,345.948 109.77,343.272 112.013,344.58 z"
+   id="path1002" />
+<path
+   d="M109.77,343.272 109.77,342.091 112.013,343.272 z"
+   id="path1003" />
+<path
+   d="M112.013,343.272 109.77,342.091 112.013,342.091 z"
+   id="path1004" />
+<path
+   d="M109.77,342.091 109.77,340.725 112.013,340.783 z"
+   id="path1005" />
+<path
+   d="M112.013,340.783 109.77,340.725 112.013,339.415 z"
+   id="path1006" />
+<path
+   d="M112.013,345.948 112.013,344.58 112.604,345.791 z"
+   id="path1007" />
+<path
+   d="M112.604,345.791 112.013,344.58 112.604,344.925 z"
+   id="path1008" />
+<path
+   d="M112.013,343.272 112.013,342.091 112.604,343.272 z"
+   id="path1009" />
+<path
+   d="M112.604,343.272 112.013,342.091 112.604,342.091 z"
+   id="path1010" />
+<path
+   d="M112.013,340.783 112.013,339.415 112.604,340.439 z"
+   id="path1011" />
+<path
+   d="M112.604,340.439 112.013,339.415 112.604,339.572 z"
+   id="path1012" />
+<path
+   d="M112.604,345.791 112.604,344.925 112.816,345.735 z"
+   id="path1013" />
+<path
+   d="M112.604,343.272 112.604,342.091 112.816,343.272 z"
+   id="path1014" />
+<path
+   d="M112.816,343.272 112.604,342.091 112.816,342.091 z"
+   id="path1015" />
+<path
+   d="M112.604,340.439 112.604,339.572 112.816,339.628 z"
+   id="path1016" />
+<path
+   d="M112.816,343.272 112.816,342.091 114.256,343.272 z"
+   id="path1017" />
+<path
+   d="M114.256,343.272 112.816,342.091 114.256,342.091 z"
+   id="path1018" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,80)"
+   stroke-width="0.7"
+   id="g1019">
+<polyline
+   points="130.689,343.295 131.976,340.456 135.081,339.282 138.186,340.456 139.472,343.295 "
+   id="polyline1018" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g1020">
+<polyline
+   points="959.208,242.242 958.209,250.952 955.745,259.3 951.888,267.103 946.71,274.179 "
+   id="polyline1019" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1021">
+<polyline
+   points="920.227,624.025 920.227,617.131 "
+   id="polyline1020" />
+<polyline
+   points="916.449,616.942 924.005,616.942 "
+   id="polyline1021" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1022">
+<path
+   d="M914.56,619.87 920.132,623.695 914.56,627.52 914.56,627.52 z"
+   id="path1021" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1023">
+<polyline
+   points="914.56,619.87 920.132,623.695 914.56,627.52 914.56,619.87 "
+   id="polyline1022" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1024">
+<path
+   d="M925.61,627.52 920.132,623.695 925.61,619.87 925.61,619.87 z"
+   id="path1023" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1025">
+<polyline
+   points="925.61,627.52 920.132,623.695 925.61,619.87 925.61,627.52 "
+   id="polyline1024" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g1026">
+<polyline
+   points="958.854,615.998 935.621,615.998 935.621,646.408 952.156,646.408 "
+   id="polyline1025" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1027">
+<polyline
+   points="616.784,611.748 623.584,611.748 "
+   id="polyline1026" />
+<polyline
+   points="623.772,607.97 623.772,615.525 "
+   id="polyline1027" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1028">
+<path
+   d="M620.845,606.176 617.067,611.653 613.289,606.176 613.289,606.176 z"
+   id="path1027" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1029">
+<polyline
+   points="620.845,606.176 617.067,611.653 613.289,606.176 620.845,606.176 "
+   id="polyline1028" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1030">
+<path
+   d="M613.289,617.225 617.067,611.653 620.845,617.225 620.845,617.225 z"
+   id="path1029" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1031">
+<polyline
+   points="613.289,617.225 617.067,611.653 620.845,617.225 613.289,617.225 "
+   id="polyline1030" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,176,240)"
+   stroke-width="0.7"
+   id="g1032">
+<polyline
+   points="712.076,623.647 712.076,338.809 627.456,338.809 "
+   id="polyline1031" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g1045">
+<path
+   d="M693.968,513.204 692.432,505.595 693.968,497.985 z"
+   id="path1032" />
+<path
+   d="M693.968,513.204 693.968,497.985 698.158,519.418 z"
+   id="path1033" />
+<path
+   d="M698.158,519.418 693.968,497.985 698.158,491.771 z"
+   id="path1034" />
+<path
+   d="M698.158,519.418 698.158,491.771 704.372,523.608 z"
+   id="path1035" />
+<path
+   d="M704.372,523.608 698.158,491.771 704.372,487.581 z"
+   id="path1036" />
+<path
+   d="M704.372,523.608 704.372,487.581 711.982,525.144 z"
+   id="path1037" />
+<path
+   d="M711.982,525.144 704.372,487.581 711.982,486.045 z"
+   id="path1038" />
+<path
+   d="M711.982,525.144 711.982,486.045 719.592,523.608 z"
+   id="path1039" />
+<path
+   d="M719.592,523.608 711.982,486.045 719.592,487.581 z"
+   id="path1040" />
+<path
+   d="M719.592,523.608 719.592,487.581 725.806,519.418 z"
+   id="path1041" />
+<path
+   d="M725.806,519.418 719.592,487.581 725.806,491.771 z"
+   id="path1042" />
+<path
+   d="M725.806,519.418 725.806,491.771 729.995,513.204 z"
+   id="path1043" />
+<path
+   d="M729.995,513.204 725.806,491.771 729.995,497.985 z"
+   id="path1044" />
+<path
+   d="M729.995,513.204 729.995,497.985 731.531,505.595 z"
+   id="path1045" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="SW_Pump_2">
+<polyline
+   points="711.982,486.045 719.592,487.581 725.806,491.771 729.995,497.985 731.531,505.595 729.995,513.204 725.806,519.418 719.592,523.608 711.982,525.144 704.372,523.608 698.158,519.418 693.968,513.204 692.432,505.595 693.968,497.985 698.158,491.771 704.372,487.581 711.982,486.045 "
+   id="polyline1045" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1047">
+<path
+   d="M695.265,515.133 711.934,486.423 728.603,515.133 728.603,515.133 z"
+   id="path1046" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1049">
+<polyline
+   points="695.265,515.133 711.934,486.423 728.603,515.133 695.265,515.133 "
+   id="polyline1047" />
+<polyline
+   points="711.982,611.748 718.876,611.748 "
+   id="polyline1048" />
+<polyline
+   points="719.065,607.97 719.065,615.525 "
+   id="polyline1049" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1050">
+<path
+   d="M716.137,606.176 712.359,611.653 708.582,606.176 708.582,606.176 z"
+   id="path1049" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1051">
+<polyline
+   points="716.137,606.176 712.359,611.653 708.582,606.176 716.137,606.176 "
+   id="polyline1050" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1052">
+<path
+   d="M708.582,617.225 712.359,611.653 716.137,617.225 716.137,617.225 z"
+   id="path1051" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1054">
+<polyline
+   points="708.582,617.225 712.359,611.653 716.137,617.225 708.582,617.225 "
+   id="polyline1052" />
+<polyline
+   points="711.793,450.629 718.687,450.629 "
+   id="polyline1053" />
+<polyline
+   points="718.876,446.851 718.876,454.407 "
+   id="polyline1054" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1055">
+<path
+   d="M715.854,445.057 712.076,450.535 708.298,445.057 708.298,445.057 z"
+   id="path1054" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1056">
+<polyline
+   points="715.854,445.057 712.076,450.535 708.298,445.057 715.854,445.057 "
+   id="polyline1055" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1057">
+<path
+   d="M708.298,456.107 712.076,450.535 715.854,456.107 715.854,456.107 z"
+   id="path1056" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1058">
+<polyline
+   points="708.298,456.107 712.076,450.535 715.854,456.107 708.298,456.107 "
+   id="polyline1057" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g1059">
+<polyline
+   points="914.657,442.979 882.261,442.979 882.261,591.631 "
+   id="polyline1058" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="1"
+   id="g1072">
+<path
+   d="M914.26,442.14 913.38,437.785 914.26,433.43 z"
+   id="path1059" />
+<path
+   d="M914.26,442.14 914.26,433.43 916.659,445.697 z"
+   id="path1060" />
+<path
+   d="M916.659,445.697 914.26,433.43 916.659,429.872 z"
+   id="path1061" />
+<path
+   d="M916.659,445.697 916.659,429.872 920.216,448.096 z"
+   id="path1062" />
+<path
+   d="M920.216,448.096 916.659,429.872 920.216,427.473 z"
+   id="path1063" />
+<path
+   d="M920.216,448.096 920.216,427.473 924.571,448.976 z"
+   id="path1064" />
+<path
+   d="M924.571,448.976 920.216,427.473 924.571,426.594 z"
+   id="path1065" />
+<path
+   d="M924.571,448.976 924.571,426.594 928.926,448.096 z"
+   id="path1066" />
+<path
+   d="M928.926,448.096 924.571,426.594 928.926,427.473 z"
+   id="path1067" />
+<path
+   d="M928.926,448.096 928.926,427.473 932.484,445.697 z"
+   id="path1068" />
+<path
+   d="M932.484,445.697 928.926,427.473 932.484,429.872 z"
+   id="path1069" />
+<path
+   d="M932.484,445.697 932.484,429.872 934.883,442.14 z"
+   id="path1070" />
+<path
+   d="M934.883,442.14 932.484,429.872 934.883,433.43 z"
+   id="path1071" />
+<path
+   d="M934.883,442.14 934.883,433.43 935.763,437.785 z"
+   id="path1072" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.35"
+   id="g1073">
+<polyline
+   points="913.38,437.785 914.26,433.43 916.659,429.872 920.216,427.473 924.571,426.594 928.926,427.473 932.484,429.872 934.883,433.43 935.763,437.785 934.883,442.14 932.484,445.697 928.926,448.096 924.571,448.976 920.216,448.096 916.659,445.697 914.26,442.14 913.38,437.785 "
+   id="polyline1072" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,0,0)"
+   stroke="rgb(255,0,0)"
+   stroke-width="0"
+   id="g1074">
+<text
+   transform="matrix(6.43892 0 -0 6.43683 914.812 441.366)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1073">DPX1</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(143,170,220)"
+   stroke="rgb(143,170,220)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1075">
+<path
+   d="M452.596,413.844 520.405,413.844 520.405,302.307 452.596,302.307 z"
+   id="path1074" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(47,82,143)"
+   stroke-width="0.35"
+   id="g1076">
+<polyline
+   points="452.596,413.844 520.405,413.844 520.405,302.307 452.596,302.307 452.596,413.844 "
+   id="polyline1075" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,255)"
+   stroke="rgb(0,0,255)"
+   stroke-width="0"
+   id="g1079">
+<text
+   transform="matrix(10.0642 0 -0 10.0576 471.749 339.914)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1076">NO.2</text>
+<text
+   transform="matrix(10.0614 0 -0 10.0576 463.253 355.214)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1077">Central</text>
+<text
+   transform="matrix(10.0679 0 -0 10.0576 473.357 370.511)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1078">F.W.</text>
+<text
+   transform="matrix(10.0776 0 -0 10.0576 473.451 385.813)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1079">CLR</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(143,170,220)"
+   stroke="rgb(143,170,220)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1080">
+<path
+   d="M452.596,269.63 520.405,269.63 520.405,158.094 452.596,158.094 z"
+   id="path1079" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(47,82,143)"
+   stroke-width="0.35"
+   id="g1081">
+<polyline
+   points="452.596,269.63 520.405,269.63 520.405,158.094 452.596,158.094 452.596,269.63 "
+   id="polyline1080" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,255)"
+   stroke="rgb(0,0,255)"
+   stroke-width="0"
+   id="g1084">
+<text
+   transform="matrix(10.079 0 -0 10.0576 472.975 195.67)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1081">NO.1</text>
+<text
+   transform="matrix(10.0614 0 -0 10.0576 463.253 210.969)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1082">Central</text>
+<text
+   transform="matrix(10.0813 0 -0 10.071 473.357 226.266)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1083">F.W.</text>
+<text
+   transform="matrix(10.0776 0 -0 10.0576 473.451 241.584)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1084">CLR</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1085">
+<polyline
+   points="432.81,178.163 432.81,171.363 "
+   id="polyline1084" />
+<polyline
+   points="429.032,171.08 436.588,171.08 "
+   id="polyline1085" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1086">
+<path
+   d="M427.238,174.102 432.716,177.88 427.238,181.657 427.238,181.657 z"
+   id="path1085" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1087">
+<polyline
+   points="427.238,174.102 432.716,177.88 427.238,181.657 427.238,174.102 "
+   id="polyline1086" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1088">
+<path
+   d="M438.288,181.657 432.716,177.88 438.288,174.102 438.288,174.102 z"
+   id="path1087" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1089">
+<polyline
+   points="438.288,181.657 432.716,177.88 438.288,174.102 438.288,181.657 "
+   id="polyline1088" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,176,80)"
+   stroke="rgb(0,176,80)"
+   stroke-width="1"
+   id="g1122">
+<path
+   d="M372.619,235.736 372.406,235.371 372.619,234.569 z"
+   id="path1089" />
+<path
+   d="M372.619,235.736 372.619,234.569 373.43,237.124 z"
+   id="path1090" />
+<path
+   d="M373.43,237.124 372.619,234.569 373.43,234.781 z"
+   id="path1091" />
+<path
+   d="M373.43,237.124 373.43,234.781 375.082,239.956 z"
+   id="path1092" />
+<path
+   d="M375.082,239.956 373.43,234.781 375.082,237.614 z"
+   id="path1093" />
+<path
+   d="M375.082,239.956 375.082,239.802 375.161,240.091 z"
+   id="path1094" />
+<path
+   d="M375.161,240.091 375.082,239.802 375.161,239.802 z"
+   id="path1095" />
+<path
+   d="M375.082,237.614 375.082,233.128 375.161,237.749 z"
+   id="path1096" />
+<path
+   d="M375.161,237.749 375.082,233.128 375.161,233.128 z"
+   id="path1097" />
+<path
+   d="M375.161,240.091 375.161,239.802 375.673,240.967 z"
+   id="path1098" />
+<path
+   d="M375.673,240.967 375.161,239.802 375.673,239.798 z"
+   id="path1099" />
+<path
+   d="M375.673,239.503 375.161,239.503 375.673,238.626 z"
+   id="path1100" />
+<path
+   d="M375.161,237.749 375.161,233.128 375.673,238.626 z"
+   id="path1101" />
+<path
+   d="M375.673,238.626 375.161,233.128 375.673,233.128 z"
+   id="path1102" />
+<path
+   d="M375.673,240.967 375.673,239.798 375.673,240.967 z"
+   id="path1103" />
+<path
+   d="M375.673,240.967 375.673,239.798 375.673,239.798 z"
+   id="path1104" />
+<path
+   d="M375.673,239.503 375.673,238.626 375.673,239.503 z"
+   id="path1105" />
+<path
+   d="M375.673,239.503 375.673,238.626 375.673,238.626 z"
+   id="path1106" />
+<path
+   d="M375.673,238.626 375.673,233.128 375.673,238.626 z"
+   id="path1107" />
+<path
+   d="M375.673,238.626 375.673,233.128 375.673,233.128 z"
+   id="path1108" />
+<path
+   d="M375.673,240.967 375.673,239.798 376.184,240.091 z"
+   id="path1109" />
+<path
+   d="M376.184,240.091 375.673,239.798 376.184,239.795 z"
+   id="path1110" />
+<path
+   d="M375.673,239.503 375.673,238.626 376.184,239.503 z"
+   id="path1111" />
+<path
+   d="M375.673,238.626 375.673,233.128 376.184,237.749 z"
+   id="path1112" />
+<path
+   d="M376.184,237.749 375.673,233.128 376.184,233.128 z"
+   id="path1113" />
+<path
+   d="M376.184,240.091 376.184,239.795 376.263,239.956 z"
+   id="path1114" />
+<path
+   d="M376.263,239.956 376.184,239.795 376.263,239.795 z"
+   id="path1115" />
+<path
+   d="M376.184,237.749 376.184,233.128 376.263,237.614 z"
+   id="path1116" />
+<path
+   d="M376.263,237.614 376.184,233.128 376.263,233.128 z"
+   id="path1117" />
+<path
+   d="M376.263,239.956 376.263,237.614 377.916,237.124 z"
+   id="path1118" />
+<path
+   d="M377.916,237.124 376.263,237.614 377.916,234.781 z"
+   id="path1119" />
+<path
+   d="M377.916,237.124 377.916,234.781 378.726,235.736 z"
+   id="path1120" />
+<path
+   d="M378.726,235.736 377.916,234.781 378.726,234.569 z"
+   id="path1121" />
+<path
+   d="M378.726,235.736 378.726,234.569 378.939,235.371 z"
+   id="path1122" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g1123">
+<polyline
+   points="543.685,162.58 543.685,177.313 "
+   id="polyline1122" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.7"
+   id="g1124">
+<polyline
+   points="543.78,140.764 543.78,129.147 594.212,129.147 "
+   id="polyline1123" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.53"
+   id="g1125">
+<polyline
+   points="532.352,151.908 533.235,147.532 535.643,143.96 539.215,141.552 543.591,140.67 547.967,141.552 551.539,143.96 553.947,147.532 554.83,151.908 553.947,156.284 551.539,159.856 547.967,162.264 543.591,163.147 539.215,162.264 535.643,159.856 533.235,156.284 532.352,151.908 "
+   id="polyline1124" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,0,0)"
+   stroke="rgb(255,0,0)"
+   stroke-width="0"
+   id="g1126">
+<text
+   transform="matrix(7.86783 0 -0 7.84489 534.92 156.221)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1125">TX2</text>
+<text
+   transform="matrix(7.86435 0 -0 7.84489 596.213 132.802)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1126">To ESS</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1127">
+<polyline
+   points="540.569,168.247 547.085,168.247 "
+   id="polyline1126" />
+<polyline
+   points="540.569,170.608 547.085,170.608 "
+   id="polyline1127" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.53"
+   id="g1128">
+<polyline
+   points="540.569,169.38 547.085,169.38 "
+   id="polyline1128" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1130">
+<polyline
+   points="563.613,250.317 563.613,243.423 "
+   id="polyline1129" />
+<polyline
+   points="559.835,243.234 567.39,243.234 "
+   id="polyline1130" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1131">
+<path
+   d="M557.946,246.162 563.518,249.939 557.946,253.717 557.946,253.717 z"
+   id="path1130" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1132">
+<polyline
+   points="557.946,246.162 563.518,249.939 557.946,253.717 557.946,246.162 "
+   id="polyline1131" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1133">
+<path
+   d="M568.996,253.717 563.518,249.939 568.996,246.162 568.996,246.162 z"
+   id="path1132" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1135">
+<polyline
+   points="568.996,253.717 563.518,249.939 568.996,246.162 568.996,253.717 "
+   id="polyline1133" />
+<polyline
+   points="563.613,323.51 563.613,316.615 "
+   id="polyline1134" />
+<polyline
+   points="559.835,316.427 567.39,316.427 "
+   id="polyline1135" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1136">
+<path
+   d="M557.946,319.354 563.518,323.132 557.946,326.91 557.946,326.91 z"
+   id="path1135" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1137">
+<polyline
+   points="557.946,319.354 563.518,323.132 557.946,326.91 557.946,319.354 "
+   id="polyline1136" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1138">
+<path
+   d="M568.996,326.91 563.518,323.132 568.996,319.354 568.996,319.354 z"
+   id="path1137" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1140">
+<polyline
+   points="568.996,326.91 563.518,323.132 568.996,319.354 568.996,326.91 "
+   id="polyline1138" />
+<polyline
+   points="563.613,393.964 563.613,387.164 "
+   id="polyline1139" />
+<polyline
+   points="559.835,386.975 567.39,386.975 "
+   id="polyline1140" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1141">
+<path
+   d="M557.946,389.903 563.518,393.68 557.946,397.458 557.946,397.458 z"
+   id="path1140" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1142">
+<polyline
+   points="557.946,389.903 563.518,393.68 557.946,397.458 557.946,389.903 "
+   id="polyline1141" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1143">
+<path
+   d="M568.996,397.458 563.518,393.68 568.996,389.903 568.996,389.903 z"
+   id="path1142" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1144">
+<polyline
+   points="568.996,397.458 563.518,393.68 568.996,389.903 568.996,397.458 "
+   id="polyline1143" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g1145">
+<polyline
+   points="543.685,307.36 543.685,322.093 "
+   id="polyline1144" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.7"
+   id="g1146">
+<polyline
+   points="543.78,285.638 543.78,277.989 587.412,277.989 "
+   id="polyline1145" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.53"
+   id="g1147">
+<polyline
+   points="532.352,296.735 533.235,292.38 535.643,288.823 539.215,286.424 543.591,285.544 547.967,286.424 551.539,288.823 553.947,292.38 554.83,296.735 553.947,301.09 551.539,304.648 547.967,307.047 543.591,307.927 539.215,307.047 535.643,304.648 533.235,301.09 532.352,296.735 "
+   id="polyline1146" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,0,0)"
+   stroke="rgb(255,0,0)"
+   stroke-width="0"
+   id="g1148">
+<text
+   transform="matrix(7.87374 0 -0 7.84489 534.826 301.027)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1147">TX3</text>
+<text
+   transform="matrix(7.86435 0 -0 7.84489 552.518 275.543)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1148">To ESS</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1149">
+<polyline
+   points="540.569,313.121 547.085,313.121 "
+   id="polyline1148" />
+<polyline
+   points="540.569,315.482 547.085,315.482 "
+   id="polyline1149" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.53"
+   id="g1150">
+<polyline
+   points="540.569,314.349 547.085,314.349 "
+   id="polyline1150" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.53"
+   id="g1151">
+<polyline
+   points="433.566,452.187 434.448,447.832 436.856,444.275 440.429,441.876 444.804,440.996 449.18,441.876 452.752,444.275 455.16,447.832 456.043,452.187 455.16,456.542 452.752,460.1 449.18,462.499 444.804,463.379 440.429,462.499 436.856,460.1 434.448,456.542 433.566,452.187 "
+   id="polyline1151" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,0,0)"
+   stroke="rgb(255,0,0)"
+   stroke-width="0"
+   id="g1152">
+<text
+   transform="matrix(7.87402 0 -0 7.84489 435.96 440)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1151">TX5</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,0,0)"
+   stroke-width="0.7"
+   id="g1153">
+<polyline
+   points="410.144,452.707 433.188,452.707 "
+   id="polyline1152" />
+<polyline
+   points="456.421,452.707 505.247,452.707 "
+   id="polyline1153" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,0,0)"
+   stroke="rgb(255,0,0)"
+   stroke-width="0"
+   id="g1154">
+<text
+   transform="matrix(7.86435 0 -0 7.84489 468.354 464.279)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1153">To ESS</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g1157">
+<polyline
+   points="881.694,561.41 808.124,561.41 "
+   id="polyline1154" />
+<polyline
+   points="707.732,562.26 709.018,559.456 712.123,558.293 715.228,559.456 716.515,562.26 "
+   id="polyline1155" />
+<polyline
+   points="799.341,562.449 716.231,562.449 "
+   id="polyline1156" />
+<polyline
+   points="707.921,562.165 617.162,562.165 "
+   id="polyline1157" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1160">
+<text
+   transform="matrix(8.99673 0 -0 8.99231 480.216 512.912)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1157">Main Cooling</text>
+<text
+   transform="matrix(8.73464 0 -0 9.0043 483.441 529.915)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1158">S.W. Pump</text>
+<text
+   transform="matrix(8.83269 0 -0 8.99231 255.367 329.976)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1159">LT COOLING</text>
+<text
+   transform="matrix(8.58049 0 -0 8.99231 255.394 346.976)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1160">F.W. PUMP</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g1161">
+<polyline
+   points="799.057,562.26 800.344,559.456 803.449,558.293 806.554,559.456 807.841,562.26 "
+   id="polyline1160" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1162">
+<polyline
+   points="628.495,562.26 628.495,555.366 "
+   id="polyline1161" />
+<polyline
+   points="624.717,555.177 632.272,555.177 "
+   id="polyline1162" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1163">
+<path
+   d="M622.922,558.104 628.495,561.882 622.922,565.66 622.922,565.66 z"
+   id="path1162" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1164">
+<polyline
+   points="622.922,558.104 628.495,561.882 622.922,565.66 622.922,558.104 "
+   id="polyline1163" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1165">
+<path
+   d="M633.972,565.66 628.4,561.882 633.972,558.104 633.972,558.104 z"
+   id="path1164" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1166">
+<polyline
+   points="633.972,565.66 628.4,561.882 633.972,558.104 633.972,565.66 "
+   id="polyline1165" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g1167">
+<polyline
+   points="799.907,577.985 801.194,575.145 804.299,573.971 807.404,575.145 808.691,577.985 "
+   id="polyline1166" />
+<polyline
+   points="799.53,578.315 711.982,578.315 "
+   id="polyline1167" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1169">
+<polyline
+   points="723.031,578.032 723.031,571.137 "
+   id="polyline1168" />
+<polyline
+   points="719.254,570.949 726.809,570.949 "
+   id="polyline1169" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1170">
+<path
+   d="M717.459,573.971 722.937,577.748 717.459,581.526 717.459,581.526 z"
+   id="path1169" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1171">
+<polyline
+   points="717.459,573.971 722.937,577.748 717.459,581.526 717.459,573.971 "
+   id="polyline1170" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1172">
+<path
+   d="M728.509,581.526 722.937,577.748 728.509,573.971 728.509,573.971 z"
+   id="path1171" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1173">
+<polyline
+   points="728.509,581.526 722.937,577.748 728.509,573.971 728.509,581.526 "
+   id="polyline1172" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.7"
+   id="g1174">
+<polyline
+   points="883.017,578.315 809.446,578.315 "
+   id="polyline1173" />
+<polyline
+   points="882.922,591.537 804.913,591.537 "
+   id="polyline1174" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1176">
+<polyline
+   points="818.512,592.198 818.512,585.304 "
+   id="polyline1175" />
+<polyline
+   points="814.735,585.115 822.29,585.115 "
+   id="polyline1176" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1177">
+<path
+   d="M812.94,588.137 818.418,591.915 812.94,595.692 812.94,595.692 z"
+   id="path1176" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1178">
+<polyline
+   points="812.94,588.137 818.418,591.915 812.94,595.692 812.94,588.137 "
+   id="polyline1177" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1179">
+<path
+   d="M823.99,595.692 818.418,591.915 823.99,588.137 823.99,588.137 z"
+   id="path1178" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(0,0,0)"
+   stroke-width="0.53"
+   id="g1180">
+<polyline
+   points="823.99,595.692 818.418,591.915 823.99,588.137 823.99,595.692 "
+   id="polyline1179" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1185">
+<text
+   transform="matrix(9.00314 0 -0 8.99231 131.062 650.571)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1180">High</text>
+<text
+   transform="matrix(9.01045 0 -0 8.99231 108.302 667.57)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1181">Sea</text>
+<text
+   transform="matrix(8.971 0 -0 8.99231 132.286 667.577)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1182">Chest(P)</text>
+<text
+   transform="matrix(8.9835 0 -0 9.0043 953.674 673.274)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1183">Low</text>
+<text
+   transform="matrix(9.01045 0 -0 8.99231 930.91 690.293)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1184">Sea</text>
+<text
+   transform="matrix(8.97242 0 -0 8.99231 954.894 690.3)"
+   font-family="Calibri,'sans-serif'"
+   font-weight="bold"
+   font-size="1.57532"
+   id="text1185">Chest(S)</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="g1194">
+<path
+   d="M255.778,420.707 255.778,413.025 256.34,422.065 z"
+   id="path1185" />
+<path
+   d="M256.34,422.065 255.778,413.025 256.34,411.667 z"
+   id="path1186" />
+<path
+   d="M256.34,422.065 256.34,411.667 257.698,422.627 z"
+   id="path1187" />
+<path
+   d="M257.698,422.627 256.34,411.667 257.698,411.105 z"
+   id="path1188" />
+<path
+   d="M257.698,422.627 257.698,411.105 286.157,422.627 z"
+   id="path1189" />
+<path
+   d="M286.157,422.627 257.698,411.105 286.157,411.105 z"
+   id="path1190" />
+<path
+   d="M286.157,422.627 286.157,411.105 287.516,422.065 z"
+   id="path1191" />
+<path
+   d="M287.516,422.065 286.157,411.105 287.516,411.667 z"
+   id="path1192" />
+<path
+   d="M287.516,422.065 287.516,411.667 288.077,420.707 z"
+   id="path1193" />
+<path
+   d="M288.077,420.707 287.516,411.667 288.077,413.025 z"
+   id="path1194" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="LT_Pump1_Mode">
+<polyline
+   points="255.778,413.025 256.34,411.667 257.698,411.105 "
+   id="polyline1194" />
+<polyline
+   points="257.698,411.105 286.157,411.105 "
+   id="polyline1195" />
+<polyline
+   points="286.157,411.105 287.516,411.667 288.077,413.025 "
+   id="polyline1196" />
+<polyline
+   points="288.077,413.025 288.077,420.707 "
+   id="polyline1197" />
+<polyline
+   points="288.077,420.707 287.516,422.065 286.157,422.627 "
+   id="polyline1198" />
+<polyline
+   points="286.157,422.627 257.698,422.627 "
+   id="polyline1199" />
+<polyline
+   points="257.698,422.627 256.34,422.065 255.778,420.707 "
+   id="polyline1200" />
+<polyline
+   points="255.778,420.707 255.778,413.025 "
+   id="polyline1201" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1202">
+<text
+   transform="matrix(5.27796 0 -0 5.27549 263.295 419.713)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1201">MAN</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="g1211">
+<path
+   d="M255.778,507.515 255.778,499.897 256.335,508.863 z"
+   id="path1202" />
+<path
+   d="M256.335,508.863 255.778,499.897 256.335,498.549 z"
+   id="path1203" />
+<path
+   d="M256.335,508.863 256.335,498.549 257.683,509.419 z"
+   id="path1204" />
+<path
+   d="M257.683,509.419 256.335,498.549 257.683,497.992 z"
+   id="path1205" />
+<path
+   d="M257.683,509.419 257.683,497.992 286.173,509.419 z"
+   id="path1206" />
+<path
+   d="M286.173,509.419 257.683,497.992 286.173,497.992 z"
+   id="path1207" />
+<path
+   d="M286.173,509.419 286.173,497.992 287.521,508.863 z"
+   id="path1208" />
+<path
+   d="M287.521,508.863 286.173,497.992 287.521,498.549 z"
+   id="path1209" />
+<path
+   d="M287.521,508.863 287.521,498.549 288.077,507.515 z"
+   id="path1210" />
+<path
+   d="M288.077,507.515 287.521,498.549 288.077,499.897 z"
+   id="path1211" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="LT_Pump2_Mode">
+<polyline
+   points="255.778,499.897 256.335,498.549 257.683,497.992 "
+   id="polyline1211" />
+<polyline
+   points="257.683,497.992 286.173,497.992 "
+   id="polyline1212" />
+<polyline
+   points="286.173,497.992 287.521,498.549 288.077,499.897 "
+   id="polyline1213" />
+<polyline
+   points="288.077,499.897 288.077,507.515 "
+   id="polyline1214" />
+<polyline
+   points="288.077,507.515 287.521,508.863 286.173,509.419 "
+   id="polyline1215" />
+<polyline
+   points="286.173,509.419 257.683,509.419 "
+   id="polyline1216" />
+<polyline
+   points="257.683,509.419 256.335,508.863 255.778,507.515 "
+   id="polyline1217" />
+<polyline
+   points="255.778,507.515 255.778,499.897 "
+   id="polyline1218" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1219">
+<text
+   transform="matrix(5.27796 0 -0 5.27549 263.295 506.545)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1218">MAN</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="g1228">
+<path
+   d="M255.778,594.386 255.778,586.705 256.34,595.745 z"
+   id="path1219" />
+<path
+   d="M256.34,595.745 255.778,586.705 256.34,585.346 z"
+   id="path1220" />
+<path
+   d="M256.34,595.745 256.34,585.346 257.698,596.306 z"
+   id="path1221" />
+<path
+   d="M257.698,596.306 256.34,585.346 257.698,584.784 z"
+   id="path1222" />
+<path
+   d="M257.698,596.306 257.698,584.784 286.157,596.306 z"
+   id="path1223" />
+<path
+   d="M286.157,596.306 257.698,584.784 286.157,584.784 z"
+   id="path1224" />
+<path
+   d="M286.157,596.306 286.157,584.784 287.516,595.745 z"
+   id="path1225" />
+<path
+   d="M287.516,595.745 286.157,584.784 287.516,585.346 z"
+   id="path1226" />
+<path
+   d="M287.516,595.745 287.516,585.346 288.077,594.386 z"
+   id="path1227" />
+<path
+   d="M288.077,594.386 287.516,585.346 288.077,586.705 z"
+   id="path1228" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1235LT_Pump3_Mode">
+<polyline
+   points="255.778,586.705 256.34,585.346 257.698,584.784 "
+   id="polyline1228" />
+<polyline
+   points="257.698,584.784 286.157,584.784 "
+   id="polyline1229" />
+<polyline
+   points="286.157,584.784 287.516,585.346 288.077,586.705 "
+   id="polyline1230" />
+<polyline
+   points="288.077,586.705 288.077,594.386 "
+   id="polyline1231" />
+<polyline
+   points="288.077,594.386 287.516,595.745 286.157,596.306 "
+   id="polyline1232" />
+<polyline
+   points="286.157,596.306 257.698,596.306 "
+   id="polyline1233" />
+<polyline
+   points="257.698,596.306 256.34,595.745 255.778,594.386 "
+   id="polyline1234" />
+<polyline
+   points="255.778,594.386 255.778,586.705 "
+   id="polyline1235" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1236">
+<text
+   transform="matrix(5.27796 0 -0 5.27549 263.295 593.392)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1235">MAN</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(204,236,255)"
+   stroke="rgb(204,236,255)"
+   stroke-width="1"
+   id="g1245">
+<path
+   d="M296.955,381.639 296.955,369.173 297.867,383.844 z"
+   id="path1236" />
+<path
+   d="M297.867,383.844 296.955,369.173 297.867,366.968 z"
+   id="path1237" />
+<path
+   d="M297.867,383.844 297.867,366.968 300.071,384.756 z"
+   id="path1238" />
+<path
+   d="M300.071,384.756 297.867,366.968 300.071,366.056 z"
+   id="path1239" />
+<path
+   d="M300.071,384.756 300.071,366.056 329.349,384.756 z"
+   id="path1240" />
+<path
+   d="M329.349,384.756 300.071,366.056 329.349,366.056 z"
+   id="path1241" />
+<path
+   d="M329.349,384.756 329.349,366.056 331.553,383.844 z"
+   id="path1242" />
+<path
+   d="M331.553,383.844 329.349,366.056 331.553,366.968 z"
+   id="path1243" />
+<path
+   d="M331.553,383.844 331.553,366.968 332.465,381.639 z"
+   id="path1244" />
+<path
+   d="M332.465,381.639 331.553,366.968 332.465,369.173 z"
+   id="path1245" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1252">
+<polyline
+   points="296.955,369.173 297.867,366.968 300.071,366.056 "
+   id="polyline1245" />
+<polyline
+   points="300.071,366.056 329.349,366.056 "
+   id="polyline1246" />
+<polyline
+   points="329.349,366.056 331.553,366.968 332.465,369.173 "
+   id="polyline1247" />
+<polyline
+   points="332.465,369.173 332.465,381.639 "
+   id="polyline1248" />
+<polyline
+   points="332.465,381.639 331.553,383.844 329.349,384.756 "
+   id="polyline1249" />
+<polyline
+   points="329.349,384.756 300.071,384.756 "
+   id="polyline1250" />
+<polyline
+   points="300.071,384.756 297.867,383.844 296.955,381.639 "
+   id="polyline1251" />
+<polyline
+   points="296.955,381.639 296.955,369.173 "
+   id="polyline1252" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1253">
+<text
+   transform="matrix(4.49152 0 -0 4.49615 306.265 373.57)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="LT_Pump1_Auto">AUTO</text>
+<text
+   transform="matrix(4.46296 0 -0 4.49615 304.094 382.07)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="LT_Pump1_Hz">50.3 Hz</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="g1262LT_Pump1_hour">
+<path
+   d="M296.105,414.851 296.105,406.037 296.749,416.41 z"
+   id="path1253" />
+<path
+   d="M296.749,416.41 296.105,406.037 296.749,404.477 z"
+   id="path1254" />
+<path
+   d="M296.749,416.41 296.749,404.477 298.309,417.055 z"
+   id="path1255" />
+<path
+   d="M298.309,417.055 296.749,404.477 298.309,403.833 z"
+   id="path1256" />
+<path
+   d="M298.309,417.055 298.309,403.833 329.317,417.055 z"
+   id="path1257" />
+<path
+   d="M329.317,417.055 298.309,403.833 329.317,403.833 z"
+   id="path1258" />
+<path
+   d="M329.317,417.055 329.317,403.833 330.876,416.41 z"
+   id="path1259" />
+<path
+   d="M330.876,416.41 329.317,403.833 330.876,404.477 z"
+   id="path1260" />
+<path
+   d="M330.876,416.41 330.876,404.477 331.521,414.851 z"
+   id="path1261" />
+<path
+   d="M331.521,414.851 330.876,404.477 331.521,406.037 z"
+   id="path1262" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1263">
+<text
+   transform="matrix(5.27647 0 -0 5.27549 304.336 413.259)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1262">100 h</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,255)"
+   stroke="rgb(0,0,255)"
+   stroke-width="0"
+   id="g1264">
+<text
+   transform="matrix(6.71726 0 -0 6.70503 304.547 488.51)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1263">NO</text>
+<text
+   transform="matrix(6.74281 0 -0 6.70503 317.312 488.508)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1264">.2</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(204,236,255)"
+   stroke="rgb(204,236,255)"
+   stroke-width="1"
+   id="g1273">
+<path
+   d="M296.955,469.848 296.955,457.382 297.867,472.053 z"
+   id="path1264" />
+<path
+   d="M297.867,472.053 296.955,457.382 297.867,455.177 z"
+   id="path1265" />
+<path
+   d="M297.867,472.053 297.867,455.177 300.071,472.965 z"
+   id="path1266" />
+<path
+   d="M300.071,472.965 297.867,455.177 300.071,454.265 z"
+   id="path1267" />
+<path
+   d="M300.071,472.965 300.071,454.265 329.349,472.965 z"
+   id="path1268" />
+<path
+   d="M329.349,472.965 300.071,454.265 329.349,454.265 z"
+   id="path1269" />
+<path
+   d="M329.349,472.965 329.349,454.265 331.553,472.053 z"
+   id="path1270" />
+<path
+   d="M331.553,472.053 329.349,454.265 331.553,455.177 z"
+   id="path1271" />
+<path
+   d="M331.553,472.053 331.553,455.177 332.465,469.848 z"
+   id="path1272" />
+<path
+   d="M332.465,469.848 331.553,455.177 332.465,457.382 z"
+   id="path1273" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1280">
+<polyline
+   points="296.955,457.382 297.867,455.177 300.071,454.265 "
+   id="polyline1273" />
+<polyline
+   points="300.071,454.265 329.349,454.265 "
+   id="polyline1274" />
+<polyline
+   points="329.349,454.265 331.553,455.177 332.465,457.382 "
+   id="polyline1275" />
+<polyline
+   points="332.465,457.382 332.465,469.848 "
+   id="polyline1276" />
+<polyline
+   points="332.465,469.848 331.553,472.053 329.349,472.965 "
+   id="polyline1277" />
+<polyline
+   points="329.349,472.965 300.071,472.965 "
+   id="polyline1278" />
+<polyline
+   points="300.071,472.965 297.867,472.053 296.955,469.848 "
+   id="polyline1279" />
+<polyline
+   points="296.955,469.848 296.955,457.382 "
+   id="polyline1280" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1281">
+<text
+   transform="matrix(4.49152 0 -0 4.49615 306.265 461.819)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="LT_Pump2_Auto">AUTO</text>
+<text
+   transform="matrix(4.46296 0 -0 4.49615 304.094 470.319)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="LT_Pump2_Hz">50.3 Hz</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="LT_Pump2_hour">
+<path
+   d="M296.105,503.06 296.105,494.246 296.749,504.62 z"
+   id="path1281" />
+<path
+   d="M296.749,504.62 296.105,494.246 296.749,492.686 z"
+   id="path1282" />
+<path
+   d="M296.749,504.62 296.749,492.686 298.309,505.264 z"
+   id="path1283" />
+<path
+   d="M298.309,505.264 296.749,492.686 298.309,492.042 z"
+   id="path1284" />
+<path
+   d="M298.309,505.264 298.309,492.042 329.317,505.264 z"
+   id="path1285" />
+<path
+   d="M329.317,505.264 298.309,492.042 329.317,492.042 z"
+   id="path1286" />
+<path
+   d="M329.317,505.264 329.317,492.042 330.876,504.62 z"
+   id="path1287" />
+<path
+   d="M330.876,504.62 329.317,492.042 330.876,492.686 z"
+   id="path1288" />
+<path
+   d="M330.876,504.62 330.876,492.686 331.521,503.06 z"
+   id="path1289" />
+<path
+   d="M331.521,503.06 330.876,492.686 331.521,494.246 z"
+   id="path1290" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1291">
+<text
+   transform="matrix(5.27647 0 -0 5.27549 304.336 501.5)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1290">100 h</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,255)"
+   stroke="rgb(0,0,255)"
+   stroke-width="0"
+   id="g1292">
+<text
+   transform="matrix(6.71726 0 -0 6.70503 304.547 575.342)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1291">NO</text>
+<text
+   transform="matrix(6.74281 0 -0 6.70503 317.312 575.34)"
+   font-family="Bahnschrift,'sans-serif'"
+   font-size="1.4081"
+   id="text1292">.2</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(204,236,255)"
+   stroke="rgb(204,236,255)"
+   stroke-width="1"
+   id="g1301">
+<path
+   d="M296.955,556.735 296.955,544.269 297.867,558.94 z"
+   id="path1292" />
+<path
+   d="M297.867,558.94 296.955,544.269 297.867,542.064 z"
+   id="path1293" />
+<path
+   d="M297.867,558.94 297.867,542.064 300.071,559.852 z"
+   id="path1294" />
+<path
+   d="M300.071,559.852 297.867,542.064 300.071,541.152 z"
+   id="path1295" />
+<path
+   d="M300.071,559.852 300.071,541.152 329.349,559.852 z"
+   id="path1296" />
+<path
+   d="M329.349,559.852 300.071,541.152 329.349,541.152 z"
+   id="path1297" />
+<path
+   d="M329.349,559.852 329.349,541.152 331.553,558.94 z"
+   id="path1298" />
+<path
+   d="M331.553,558.94 329.349,541.152 331.553,542.064 z"
+   id="path1299" />
+<path
+   d="M331.553,558.94 331.553,542.064 332.465,556.735 z"
+   id="path1300" />
+<path
+   d="M332.465,556.735 331.553,542.064 332.465,544.269 z"
+   id="path1301" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1308">
+<polyline
+   points="296.955,544.269 297.867,542.064 300.071,541.152 "
+   id="polyline1301" />
+<polyline
+   points="300.071,541.152 329.349,541.152 "
+   id="polyline1302" />
+<polyline
+   points="329.349,541.152 331.553,542.064 332.465,544.269 "
+   id="polyline1303" />
+<polyline
+   points="332.465,544.269 332.465,556.735 "
+   id="polyline1304" />
+<polyline
+   points="332.465,556.735 331.553,558.94 329.349,559.852 "
+   id="polyline1305" />
+<polyline
+   points="329.349,559.852 300.071,559.852 "
+   id="polyline1306" />
+<polyline
+   points="300.071,559.852 297.867,558.94 296.955,556.735 "
+   id="polyline1307" />
+<polyline
+   points="296.955,556.735 296.955,544.269 "
+   id="polyline1308" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1309">
+<text
+   transform="matrix(4.49152 0 -0 4.49615 306.265 548.651)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1308">AUTO</text>
+<text
+   transform="matrix(4.46296 0 -0 4.49615 304.094 557.15)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="LT_Pump3_Hz">50.3 Hz</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="LT_Pump3_hour">
+<path
+   d="M296.105,589.853 296.105,581.038 296.749,591.412 z"
+   id="path1309" />
+<path
+   d="M296.749,591.412 296.105,581.038 296.749,579.479 z"
+   id="path1310" />
+<path
+   d="M296.749,591.412 296.749,579.479 298.309,592.056 z"
+   id="path1311" />
+<path
+   d="M298.309,592.056 296.749,579.479 298.309,578.834 z"
+   id="path1312" />
+<path
+   d="M298.309,592.056 298.309,578.834 329.317,592.056 z"
+   id="path1313" />
+<path
+   d="M329.317,592.056 298.309,578.834 329.317,578.834 z"
+   id="path1314" />
+<path
+   d="M329.317,592.056 329.317,578.834 330.876,591.412 z"
+   id="path1315" />
+<path
+   d="M330.876,591.412 329.317,578.834 330.876,579.479 z"
+   id="path1316" />
+<path
+   d="M330.876,591.412 330.876,579.479 331.521,589.853 z"
+   id="path1317" />
+<path
+   d="M331.521,589.853 330.876,579.479 331.521,581.038 z"
+   id="path1318" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1319">
+<text
+   transform="matrix(5.27647 0 -0 5.27549 304.336 588.332)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1318">100 h</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="g1328">
+<path
+   d="M601.154,536.398 601.154,528.717 601.715,537.757 z"
+   id="path1319" />
+<path
+   d="M601.715,537.757 601.154,528.717 601.715,527.359 z"
+   id="path1320" />
+<path
+   d="M601.715,537.757 601.715,527.359 603.074,538.319 z"
+   id="path1321" />
+<path
+   d="M603.074,538.319 601.715,527.359 603.074,526.797 z"
+   id="path1322" />
+<path
+   d="M603.074,538.319 603.074,526.797 631.532,538.319 z"
+   id="path1323" />
+<path
+   d="M631.532,538.319 603.074,526.797 631.532,526.797 z"
+   id="path1324" />
+<path
+   d="M631.532,538.319 631.532,526.797 632.891,537.757 z"
+   id="path1325" />
+<path
+   d="M632.891,537.757 631.532,526.797 632.891,527.359 z"
+   id="path1326" />
+<path
+   d="M632.891,537.757 632.891,527.359 633.453,536.398 z"
+   id="path1327" />
+<path
+   d="M633.453,536.398 632.891,527.359 633.453,528.717 z"
+   id="path1328" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1335">
+<polyline
+   points="601.154,528.717 601.715,527.359 603.074,526.797 "
+   id="polyline1328" />
+<polyline
+   points="603.074,526.797 631.532,526.797 "
+   id="polyline1329" />
+<polyline
+   points="631.532,526.797 632.891,527.359 633.453,528.717 "
+   id="polyline1330" />
+<polyline
+   points="633.453,528.717 633.453,536.398 "
+   id="polyline1331" />
+<polyline
+   points="633.453,536.398 632.891,537.757 631.532,538.319 "
+   id="polyline1332" />
+<polyline
+   points="631.532,538.319 603.074,538.319 "
+   id="polyline1333" />
+<polyline
+   points="603.074,538.319 601.715,537.757 601.154,536.398 "
+   id="polyline1334" />
+<polyline
+   points="601.154,536.398 601.154,528.717 "
+   id="polyline1335" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1336">
+<text
+   transform="matrix(5.27796 0 -0 5.27549 608.694 535.405)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1335">MAN</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="g1345">
+<path
+   d="M694.746,536.398 694.746,528.717 695.308,537.757 z"
+   id="path1336" />
+<path
+   d="M695.308,537.757 694.746,528.717 695.308,527.359 z"
+   id="path1337" />
+<path
+   d="M695.308,537.757 695.308,527.359 696.666,538.319 z"
+   id="path1338" />
+<path
+   d="M696.666,538.319 695.308,527.359 696.666,526.797 z"
+   id="path1339" />
+<path
+   d="M696.666,538.319 696.666,526.797 725.125,538.319 z"
+   id="path1340" />
+<path
+   d="M725.125,538.319 696.666,526.797 725.125,526.797 z"
+   id="path1341" />
+<path
+   d="M725.125,538.319 725.125,526.797 726.483,537.757 z"
+   id="path1342" />
+<path
+   d="M726.483,537.757 725.125,526.797 726.483,527.359 z"
+   id="path1343" />
+<path
+   d="M726.483,537.757 726.483,527.359 727.045,536.398 z"
+   id="path1344" />
+<path
+   d="M727.045,536.398 726.483,527.359 727.045,528.717 z"
+   id="path1345" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1352">
+<polyline
+   points="694.746,528.717 695.308,527.359 696.666,526.797 "
+   id="polyline1345" />
+<polyline
+   points="696.666,526.797 725.125,526.797 "
+   id="polyline1346" />
+<polyline
+   points="725.125,526.797 726.483,527.359 727.045,528.717 "
+   id="polyline1347" />
+<polyline
+   points="727.045,528.717 727.045,536.398 "
+   id="polyline1348" />
+<polyline
+   points="727.045,536.398 726.483,537.757 725.125,538.319 "
+   id="polyline1349" />
+<polyline
+   points="725.125,538.319 696.666,538.319 "
+   id="polyline1350" />
+<polyline
+   points="696.666,538.319 695.308,537.757 694.746,536.398 "
+   id="polyline1351" />
+<polyline
+   points="694.746,536.398 694.746,528.717 "
+   id="polyline1352" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="SW_Pump2_Mode">
+<text
+   transform="matrix(5.27796 0 -0 5.27549 702.263 535.405)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1352">MAN</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="g1362">
+<path
+   d="M787.583,536.398 787.583,528.717 788.144,537.757 z"
+   id="path1353" />
+<path
+   d="M788.144,537.757 787.583,528.717 788.144,527.359 z"
+   id="path1354" />
+<path
+   d="M788.144,537.757 788.144,527.359 789.503,538.319 z"
+   id="path1355" />
+<path
+   d="M789.503,538.319 788.144,527.359 789.503,526.797 z"
+   id="path1356" />
+<path
+   d="M789.503,538.319 789.503,526.797 818.056,538.319 z"
+   id="path1357" />
+<path
+   d="M818.056,538.319 789.503,526.797 818.056,526.797 z"
+   id="path1358" />
+<path
+   d="M818.056,538.319 818.056,526.797 819.415,537.757 z"
+   id="path1359" />
+<path
+   d="M819.415,537.757 818.056,526.797 819.415,527.359 z"
+   id="path1360" />
+<path
+   d="M819.415,537.757 819.415,527.359 819.976,536.398 z"
+   id="path1361" />
+<path
+   d="M819.976,536.398 819.415,527.359 819.976,528.717 z"
+   id="path1362" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1369">
+<polyline
+   points="787.583,528.717 788.144,527.359 789.503,526.797 "
+   id="polyline1362" />
+<polyline
+   points="789.503,526.797 818.056,526.797 "
+   id="polyline1363" />
+<polyline
+   points="818.056,526.797 819.415,527.359 819.976,528.717 "
+   id="polyline1364" />
+<polyline
+   points="819.976,528.717 819.976,536.398 "
+   id="polyline1365" />
+<polyline
+   points="819.976,536.398 819.415,537.757 818.056,538.319 "
+   id="polyline1366" />
+<polyline
+   points="818.056,538.319 789.503,538.319 "
+   id="polyline1367" />
+<polyline
+   points="789.503,538.319 788.144,537.757 787.583,536.398 "
+   id="polyline1368" />
+<polyline
+   points="787.583,536.398 787.583,528.717 "
+   id="polyline1369" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1370">
+<text
+   transform="matrix(5.27796 0 -0 5.27549 795.194 535.405)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1369">MAN</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(204,236,255)"
+   stroke="rgb(204,236,255)"
+   stroke-width="1"
+   id="g1379">
+<path
+   d="M642.519,506.869 642.519,494.403 643.431,509.074 z"
+   id="path1370" />
+<path
+   d="M643.431,509.074 642.519,494.403 643.431,492.198 z"
+   id="path1371" />
+<path
+   d="M643.431,509.074 643.431,492.198 645.636,509.986 z"
+   id="path1372" />
+<path
+   d="M645.636,509.986 643.431,492.198 645.636,491.286 z"
+   id="path1373" />
+<path
+   d="M645.636,509.986 645.636,491.286 674.819,509.986 z"
+   id="path1374" />
+<path
+   d="M674.819,509.986 645.636,491.286 674.819,491.286 z"
+   id="path1375" />
+<path
+   d="M674.819,509.986 674.819,491.286 677.023,509.074 z"
+   id="path1376" />
+<path
+   d="M677.023,509.074 674.819,491.286 677.023,492.198 z"
+   id="path1377" />
+<path
+   d="M677.023,509.074 677.023,492.198 677.935,506.869 z"
+   id="path1378" />
+<path
+   d="M677.935,506.869 677.023,492.198 677.935,494.403 z"
+   id="path1379" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1386">
+<polyline
+   points="642.519,494.403 643.431,492.198 645.636,491.286 "
+   id="polyline1379" />
+<polyline
+   points="645.636,491.286 674.819,491.286 "
+   id="polyline1380" />
+<polyline
+   points="674.819,491.286 677.023,492.198 677.935,494.403 "
+   id="polyline1381" />
+<polyline
+   points="677.935,494.403 677.935,506.869 "
+   id="polyline1382" />
+<polyline
+   points="677.935,506.869 677.023,509.074 674.819,509.986 "
+   id="polyline1383" />
+<polyline
+   points="674.819,509.986 645.636,509.986 "
+   id="polyline1384" />
+<polyline
+   points="645.636,509.986 643.431,509.074 642.519,506.869 "
+   id="polyline1385" />
+<polyline
+   points="642.519,506.869 642.519,494.403 "
+   id="polyline1386" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1387">
+<text
+   transform="matrix(4.49152 0 -0 4.49615 651.868 498.824)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1386">AUTO</text>
+<text
+   transform="matrix(4.46296 0 -0 4.49615 649.698 507.324)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="SW_Pump1_Hz">50.3 Hz</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="SW_Pump1_hour">
+<path
+   d="M644.03,524.31 644.03,515.495 644.675,525.869 z"
+   id="path1387" />
+<path
+   d="M644.675,525.869 644.03,515.495 644.675,513.936 z"
+   id="path1388" />
+<path
+   d="M644.675,525.869 644.675,513.936 646.234,526.513 z"
+   id="path1389" />
+<path
+   d="M646.234,526.513 644.675,513.936 646.234,513.292 z"
+   id="path1390" />
+<path
+   d="M646.234,526.513 646.234,513.292 677.243,526.513 z"
+   id="path1391" />
+<path
+   d="M677.243,526.513 646.234,513.292 677.243,513.292 z"
+   id="path1392" />
+<path
+   d="M677.243,526.513 677.243,513.292 678.802,525.869 z"
+   id="path1393" />
+<path
+   d="M678.802,525.869 677.243,513.292 678.802,513.936 z"
+   id="path1394" />
+<path
+   d="M678.802,525.869 678.802,513.936 679.446,524.31 z"
+   id="path1395" />
+<path
+   d="M679.446,524.31 678.802,513.936 679.446,515.495 z"
+   id="path1396" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1397">
+<text
+   transform="matrix(5.27647 0 -0 5.27549 652.356 522.734)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1396">100 h</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(204,236,255)"
+   stroke="rgb(204,236,255)"
+   stroke-width="1"
+   id="g1406">
+<path
+   d="M737.812,506.869 737.812,494.403 738.724,509.074 z"
+   id="path1397" />
+<path
+   d="M738.724,509.074 737.812,494.403 738.724,492.198 z"
+   id="path1398" />
+<path
+   d="M738.724,509.074 738.724,492.198 740.928,509.986 z"
+   id="path1399" />
+<path
+   d="M740.928,509.986 738.724,492.198 740.928,491.286 z"
+   id="path1400" />
+<path
+   d="M740.928,509.986 740.928,491.286 770.111,509.986 z"
+   id="path1401" />
+<path
+   d="M770.111,509.986 740.928,491.286 770.111,491.286 z"
+   id="path1402" />
+<path
+   d="M770.111,509.986 770.111,491.286 772.315,509.074 z"
+   id="path1403" />
+<path
+   d="M772.315,509.074 770.111,491.286 772.315,492.198 z"
+   id="path1404" />
+<path
+   d="M772.315,509.074 772.315,492.198 773.227,506.869 z"
+   id="path1405" />
+<path
+   d="M773.227,506.869 772.315,492.198 773.227,494.403 z"
+   id="path1406" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1413">
+<polyline
+   points="737.812,494.403 738.724,492.198 740.928,491.286 "
+   id="polyline1406" />
+<polyline
+   points="740.928,491.286 770.111,491.286 "
+   id="polyline1407" />
+<polyline
+   points="770.111,491.286 772.315,492.198 773.227,494.403 "
+   id="polyline1408" />
+<polyline
+   points="773.227,494.403 773.227,506.869 "
+   id="polyline1409" />
+<polyline
+   points="773.227,506.869 772.315,509.074 770.111,509.986 "
+   id="polyline1410" />
+<polyline
+   points="770.111,509.986 740.928,509.986 "
+   id="polyline1411" />
+<polyline
+   points="740.928,509.986 738.724,509.074 737.812,506.869 "
+   id="polyline1412" />
+<polyline
+   points="737.812,506.869 737.812,494.403 "
+   id="polyline1413" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1414">
+<text
+   transform="matrix(4.49152 0 -0 4.49615 747.082 498.824)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="SW_Pump2_Auto">AUTO</text>
+<text
+   transform="matrix(4.46296 0 -0 4.49615 744.912 507.324)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1414">50.3 Hz</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="SW_Pump2_hour">
+<path
+   d="M739.228,524.31 739.228,515.495 739.873,525.869 z"
+   id="path1414" />
+<path
+   d="M739.873,525.869 739.228,515.495 739.873,513.936 z"
+   id="path1415" />
+<path
+   d="M739.873,525.869 739.873,513.936 741.432,526.513 z"
+   id="path1416" />
+<path
+   d="M741.432,526.513 739.873,513.936 741.432,513.292 z"
+   id="path1417" />
+<path
+   d="M741.432,526.513 741.432,513.292 772.535,526.513 z"
+   id="path1418" />
+<path
+   d="M772.535,526.513 741.432,513.292 772.535,513.292 z"
+   id="path1419" />
+<path
+   d="M772.535,526.513 772.535,513.292 774.094,525.869 z"
+   id="path1420" />
+<path
+   d="M774.094,525.869 772.535,513.292 774.094,513.936 z"
+   id="path1421" />
+<path
+   d="M774.094,525.869 774.094,513.936 774.738,524.31 z"
+   id="path1422" />
+<path
+   d="M774.738,524.31 774.094,513.936 774.738,515.495 z"
+   id="path1423" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1424">
+<text
+   transform="matrix(5.27647 0 -0 5.27549 747.577 522.734)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1423">100 h</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(204,236,255)"
+   stroke="rgb(204,236,255)"
+   stroke-width="1"
+   id="g1433">
+<path
+   d="M826.021,506.869 826.021,494.403 826.933,509.074 z"
+   id="path1424" />
+<path
+   d="M826.933,509.074 826.021,494.403 826.933,492.198 z"
+   id="path1425" />
+<path
+   d="M826.933,509.074 826.933,492.198 829.137,509.986 z"
+   id="path1426" />
+<path
+   d="M829.137,509.986 826.933,492.198 829.137,491.286 z"
+   id="path1427" />
+<path
+   d="M829.137,509.986 829.137,491.286 858.32,509.986 z"
+   id="path1428" />
+<path
+   d="M858.32,509.986 829.137,491.286 858.32,491.286 z"
+   id="path1429" />
+<path
+   d="M858.32,509.986 858.32,491.286 860.525,509.074 z"
+   id="path1430" />
+<path
+   d="M860.525,509.074 858.32,491.286 860.525,492.198 z"
+   id="path1431" />
+<path
+   d="M860.525,509.074 860.525,492.198 861.437,506.869 z"
+   id="path1432" />
+<path
+   d="M861.437,506.869 860.525,492.198 861.437,494.403 z"
+   id="path1433" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(23,44,81)"
+   stroke-width="0.09"
+   id="g1440">
+<polyline
+   points="826.021,494.403 826.933,492.198 829.137,491.286 "
+   id="polyline1433" />
+<polyline
+   points="829.137,491.286 858.32,491.286 "
+   id="polyline1434" />
+<polyline
+   points="858.32,491.286 860.525,492.198 861.437,494.403 "
+   id="polyline1435" />
+<polyline
+   points="861.437,494.403 861.437,506.869 "
+   id="polyline1436" />
+<polyline
+   points="861.437,506.869 860.525,509.074 858.32,509.986 "
+   id="polyline1437" />
+<polyline
+   points="858.32,509.986 829.137,509.986 "
+   id="polyline1438" />
+<polyline
+   points="829.137,509.986 826.933,509.074 826.021,506.869 "
+   id="polyline1439" />
+<polyline
+   points="826.021,506.869 826.021,494.403 "
+   id="polyline1440" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1441">
+<text
+   transform="matrix(4.49152 0 -0 4.49615 835.291 498.824)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="SW_Pump3_Auto">AUTO</text>
+<text
+   transform="matrix(4.46296 0 -0 4.49615 833.121 507.324)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="SW_Pump3_Hz">50.3 Hz</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(231,230,230)"
+   stroke="rgb(231,230,230)"
+   stroke-width="1"
+   id="SW_Pump3_hour">
+<path
+   d="M827.437,524.31 827.437,515.495 828.082,525.869 z"
+   id="path1441" />
+<path
+   d="M828.082,525.869 827.437,515.495 828.082,513.936 z"
+   id="path1442" />
+<path
+   d="M828.082,525.869 828.082,513.936 829.641,526.513 z"
+   id="path1443" />
+<path
+   d="M829.641,526.513 828.082,513.936 829.641,513.292 z"
+   id="path1444" />
+<path
+   d="M829.641,526.513 829.641,513.292 860.744,526.513 z"
+   id="path1445" />
+<path
+   d="M860.744,526.513 829.641,513.292 860.744,513.292 z"
+   id="path1446" />
+<path
+   d="M860.744,526.513 860.744,513.292 862.303,525.869 z"
+   id="path1447" />
+<path
+   d="M862.303,525.869 860.744,513.292 862.303,513.936 z"
+   id="path1448" />
+<path
+   d="M862.303,525.869 862.303,513.936 862.948,524.31 z"
+   id="path1449" />
+<path
+   d="M862.948,524.31 862.303,513.936 862.948,515.495 z"
+   id="path1450" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(0,0,0)"
+   stroke="rgb(0,0,0)"
+   stroke-width="0"
+   id="g1451">
+<text
+   transform="matrix(5.27647 0 -0 5.27549 835.802 522.734)"
+   font-family="Calibri,'sans-serif'"
+   font-size="1.57532"
+   id="text1450">100 h</text>
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1452">
+<path
+   d="M938.596,444.726 977.601,444.726 977.601,430.277 938.596,430.277 z"
+   id="path1451" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.35"
+   id="DPX1">
+<polyline
+   points="938.596,444.726 977.601,444.726 977.601,430.277 938.596,430.277 938.596,444.726 "
+   id="polyline1452" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1454">
+<path
+   d="M815.632,326.107 854.637,326.107 854.637,311.657 815.632,311.657 z"
+   id="path1453" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.35"
+   id="TX1">
+<polyline
+   points="815.632,326.107 854.637,326.107 854.637,311.657 815.632,311.657 815.632,326.107 "
+   id="polyline1454" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1456">
+<path
+   d="M557.899,303.63 596.904,303.63 596.904,289.274 557.899,289.274 z"
+   id="path1455" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.35"
+   id="TX3">
+<polyline
+   points="557.899,303.63 596.904,303.63 596.904,289.274 557.899,289.274 557.899,303.63 "
+   id="polyline1456" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1458">
+<path
+   d="M426.719,437.549 465.723,437.549 465.723,423.099 426.719,423.099 z"
+   id="path1457" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.35"
+   id="TX5">
+<polyline
+   points="426.719,437.549 465.723,437.549 465.723,423.099 426.719,423.099 426.719,437.549 "
+   id="polyline1458" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1460">
+<path
+   d="M313.388,161.4 352.298,161.4 352.298,146.95 313.388,146.95 z"
+   id="path1459" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.35"
+   id="g1461">
+<polyline
+   points="313.388,161.4 352.298,161.4 352.298,146.95 313.388,146.95 313.388,161.4 "
+   id="polyline1460" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="rgb(255,255,255)"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.25"
+   fill-opacity="0.498039"
+   stroke-opacity="0.498039"
+   id="g1462">
+<path
+   d="M558.749,161.4 597.754,161.4 597.754,146.95 558.749,146.95 z"
+   id="path1461" />
+</g>
+<g
+   clip-path="url(#clipId0)"
+   fill="none"
+   stroke="rgb(255,255,255)"
+   stroke-width="0.35"
+   id="TX2">
+<polyline
+   points="558.749,161.4 597.754,161.4 597.754,146.95 558.749,146.95 558.749,161.4 "
+   id="polyline1462" />
+</g>
+
+
+</svg>

@@ -1,0 +1,521 @@
+.advanced-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  overflow: hidden;
+  padding: 0 2rem;
+}
+
+.control-header {
+  background: #1e293b;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #3b82f6;
+  display: none;
+}
+
+.control-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 0.25rem;
+}
+
+.control-header p {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.control-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: #1e293b;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+}
+
+.control-tabs button {
+  flex: 1;
+  padding: 0.75rem;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.control-tabs button:hover {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.control-tabs button.active {
+  background: #6366f1;  /* 하위 탭: 인디고 */
+  color: white;
+}
+
+.control-content {
+  background: #1e293b;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 자동/수동 제어 */
+.automan-description {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #334155;
+  display: none; /* 설명 숨김 */
+}
+
+.automan-description h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 0.25rem;
+}
+
+.pump-mode-section {
+  margin-bottom: 0.5rem;
+  flex: 1;
+  overflow-y: hidden;
+}
+
+.pump-mode-section h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 0.75rem;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+}
+
+/* 3열 레이아웃 (SWP | FWP | FAN) */
+.mode-grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+}
+
+.mode-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* FAN 열은 2x2 그리드로 */
+.mode-column.fan-column {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto auto auto;
+  gap: 0.5rem;
+}
+
+.mode-column.fan-column .column-title {
+  grid-column: 1 / -1;
+}
+
+.mode-column.fan-column .pump-mode-card {
+  display: block;
+}
+
+/* FAN 카드들을 2열로 배치 */
+.fan-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  grid-column: 1 / -1;
+}
+
+/* FAN 카드의 버튼과 레이아웃을 SWP/FWP와 동일하게 */
+.fan-cards-grid .pump-mode-card {
+  min-width: 0; /* 그리드 오버플로우 방지 */
+}
+
+.fan-cards-grid .switch-buttons button {
+  padding: 0.5rem 0.3rem; /* 좌우 패딩 약간 줄임 */
+  font-size: 0.8rem; /* 폰트 크기 약간 줄임 */
+}
+
+.column-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: #334155;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.pump-mode-card {
+  background: #0f172a;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  border: 2px solid #334155;
+}
+
+.mode-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid #334155;
+}
+
+.mode-card-header h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.status-dot.running {
+  background: #10b981;
+}
+
+.status-dot.stopped {
+  background: #64748b;
+}
+
+.mode-switches {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.mode-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.switch-label {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.switch-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.3rem;
+}
+
+.switch-buttons button {
+  padding: 0.5rem;
+  background: #1e293b;
+  border: 2px solid #334155;
+  border-radius: 0.5rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.switch-buttons button:hover {
+  border-color: #3b82f6;
+}
+
+.switch-buttons button.active {
+  background: #3b82f6;  /* 하단 선택 버튼: 부드러운 파란색 */
+  border-color: #3b82f6;
+  color: white;
+}
+
+.mode-info {
+  padding-top: 0.4rem;
+  border-top: 1px solid #334155;
+}
+
+.mode-info .info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+}
+
+.mode-info .info-row span:first-child {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.mode-info .info-row span:last-child {
+  color: #60a5fa;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* PID 제어 */
+.pid-description {
+  margin-bottom: 2rem;
+}
+
+.pid-formula {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #0f172a;
+  border-radius: 0.5rem;
+  border-left: 4px solid #f59e0b;
+  color: #cbd5e1;
+  font-family: monospace;
+}
+
+.pid-controller-section {
+  margin-bottom: 2rem;
+}
+
+.pid-controller-section h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 1rem;
+}
+
+.pid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.pid-parameter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pid-parameter label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  text-transform: uppercase;
+}
+
+.pid-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pid-input-group input[type="number"] {
+  flex: 1;
+  padding: 0.75rem;
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 0.5rem;
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.pid-slider {
+  width: 100%;
+  height: 6px;
+  background: #334155;
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.pid-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #f59e0b;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.pid-footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.btn-apply {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);  /* PID 적용 버튼: 부드러운 파란색 */
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-apply:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.4);
+}
+
+/* VFD 정보 */
+.vfdinfo-description {
+  margin-bottom: 1.5rem;
+}
+
+.pump-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.pump-select-btn {
+  padding: 0.75rem 1.5rem;
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 0.5rem;
+  color: #94a3b8;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pump-select-btn:hover {
+  border-color: #f97316;
+}
+
+.pump-select-btn.active {
+  background: #f97316;
+  border-color: #f97316;
+  color: white;
+}
+
+.vfd-detail-card {
+  background: #0f172a;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 2px solid #334155;
+}
+
+.vfd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #334155;
+}
+
+.vfd-header h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.vfd-status {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.vfd-status.running {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.vfd-status.stopped {
+  background: rgba(100, 116, 139, 0.2);
+  color: #94a3b8;
+}
+
+.vfd-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.vfd-info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vfd-info-section h5 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #334155;
+}
+
+.vfd-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.vfd-info-row:last-child {
+  border-bottom: none;
+}
+
+.vfd-label {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.vfd-value {
+  color: #e2e8f0;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.vfd-value.highlight {
+  color: #3b82f6;
+  font-size: 1.25rem;
+}
+
+.vfd-value.success {
+  color: #10b981;
+}
+
+@media (max-width: 768px) {
+  .control-tabs {
+    flex-direction: column;
+  }
+
+  .mode-grid,
+  .pid-grid,
+  .vfd-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
