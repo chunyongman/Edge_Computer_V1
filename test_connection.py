@@ -1,106 +1,121 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Modbus 연결 테스트 스크립트
+PLC 연결 진단 테스트
 """
 
 import sys
-import io
 
-# Windows 콘솔 인코딩 문제 해결
-if sys.platform == 'win32':
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+print("=" * 60)
+print("  PLC 연결 진단 테스트")
+print("=" * 60)
 
-from pymodbus.client.sync import ModbusTcpClient
-import time
+# pymodbus 버전 확인
+try:
+    import pymodbus
+    print(f"\n✅ pymodbus 버전: {pymodbus.__version__}")
+except Exception as e:
+    print(f"\n❌ pymodbus 임포트 실패: {e}")
+    sys.exit(1)
 
-print("=" * 70)
-print("  Modbus TCP 연결 테스트")
-print("=" * 70)
+# pymodbus.client 임포트 테스트
+try:
+    from pymodbus.client import ModbusTcpClient
+    print("✅ pymodbus.client.ModbusTcpClient 임포트 성공 (3.x)")
+except ImportError:
+    try:
+        from pymodbus.client.sync import ModbusTcpClient
+        print("✅ pymodbus.client.sync.ModbusTcpClient 임포트 성공 (2.x)")
+    except ImportError as e:
+        print(f"❌ ModbusTcpClient 임포트 실패: {e}")
+        sys.exit(1)
 
 # 연결 테스트
-client = ModbusTcpClient('localhost', port=502)
+print("\n[테스트 1] PLC 연결 시도...")
+print(f"  대상: 127.0.0.1:502")
 
-print("\n[TEST 1] PLC 연결 시도...")
-connected = client.connect()
+try:
+    client = ModbusTcpClient(host="127.0.0.1", port=502, timeout=3)
+    connected = client.connect()
 
-if connected:
-    print("✅ 연결 성공!")
+    print(f"  연결 결과: {connected}")
+    print(f"  클라이언트 객체: {client}")
 
-    # 센서 데이터 읽기 테스트
-    print("\n[TEST 2] 센서 데이터 읽기 (레지스터 10-19)...")
-    try:
-        result = client.read_holding_registers(
-            address=10,
-            count=10,
-            unit=3
-        )
+    if connected:
+        print("\n✅ PLC 연결 성공!")
 
-        if result.isError():
-            print(f"❌ 읽기 실패: {result}")
-        else:
-            print("✅ 읽기 성공!")
-            print(f"데이터: {result.registers}")
+        # 레지스터 읽기 테스트
+        print("\n[테스트 2] 레지스터 읽기 테스트...")
+        print("  주소: 10, 개수: 10, Slave ID: 3")
 
-            # 실제 값으로 변환
-            print("\n[센서 값]")
-            print(f"  TX1: {result.registers[0] / 10.0}°C")
-            print(f"  TX2: {result.registers[1] / 10.0}°C")
-            print(f"  TX3: {result.registers[2] / 10.0}°C")
-            print(f"  TX4: {result.registers[3] / 10.0}°C")
-            print(f"  TX5: {result.registers[4] / 10.0}°C")
-            print(f"  TX6: {result.registers[5] / 10.0}°C")
-            print(f"  TX7: {result.registers[6] / 10.0}°C")
-            print(f"  DPX1: {result.registers[7] / 4608.0} kg/cm²")
-            print(f"  DPX2: {result.registers[8] / 10.0} Pa")
-            print(f"  PU1: {result.registers[9] / 276.48}%")
+        try:
+            # pymodbus 3.x는 unit 파라미터 사용
+            result = client.read_holding_registers(
+                address=10,
+                count=10,
+                unit=3
+            )
 
-    except Exception as e:
-        print(f"❌ 예외 발생: {e}")
+            print(f"  결과 타입: {type(result)}")
+            print(f"  결과 내용: {result}")
 
-    # 장비 상태 읽기 테스트
-    print("\n[TEST 3] 장비 상태 읽기 (레지스터 4000-4001)...")
-    try:
-        result = client.read_holding_registers(
-            address=4000,
-            count=2,
-            unit=3
-        )
+            # 에러 체크
+            if hasattr(result, 'isError'):
+                if result.isError():
+                    print(f"  ❌ 에러 발생!")
+                    print(f"     에러 내용: {result}")
+                else:
+                    print(f"  ✅ 읽기 성공!")
+                    print(f"     레지스터 값: {result.registers}")
+            else:
+                print(f"  결과에 isError() 메소드 없음")
+                if hasattr(result, 'registers'):
+                    print(f"  ✅ 읽기 성공!")
+                    print(f"     레지스터 값: {result.registers}")
 
-        if result.isError():
-            print(f"❌ 읽기 실패: {result}")
-        else:
-            print("✅ 읽기 성공!")
-            print(f"데이터: {result.registers}")
+        except Exception as e:
+            print(f"  ❌ 읽기 실패: {e}")
+            import traceback
+            traceback.print_exc()
 
-    except Exception as e:
-        print(f"❌ 예외 발생: {e}")
+        # 다른 slave ID 테스트
+        print("\n[테스트 3] Slave ID 1로 재시도...")
+        try:
+            result = client.read_holding_registers(
+                address=10,
+                count=10,
+                unit=1
+            )
+            print(f"  결과: {result}")
+            if hasattr(result, 'registers'):
+                print(f"  ✅ Slave ID 1 성공! 레지스터: {result.registers}")
+        except Exception as e:
+            print(f"  ❌ Slave ID 1 실패: {e}")
 
-    # VFD 데이터 읽기 테스트
-    print("\n[TEST 4] VFD 데이터 읽기 (레지스터 160-167)...")
-    try:
-        result = client.read_holding_registers(
-            address=160,
-            count=8,
-            unit=3
-        )
+        # 주소 0부터 테스트
+        print("\n[테스트 4] 주소 0부터 읽기...")
+        try:
+            result = client.read_holding_registers(
+                address=0,
+                count=10,
+                unit=3
+            )
+            print(f"  결과: {result}")
+            if hasattr(result, 'registers'):
+                print(f"  ✅ 주소 0 성공! 레지스터: {result.registers}")
+        except Exception as e:
+            print(f"  ❌ 주소 0 실패: {e}")
 
-        if result.isError():
-            print(f"❌ 읽기 실패: {result}")
-        else:
-            print("✅ 읽기 성공!")
-            print(f"데이터: {result.registers}")
-            print(f"  SWP1 주파수: {result.registers[0] / 10.0} Hz")
-            print(f"  SWP1 전력: {result.registers[1]} kW")
+        client.close()
+        print("\n✅ 연결 종료")
 
-    except Exception as e:
-        print(f"❌ 예외 발생: {e}")
+    else:
+        print("\n❌ PLC 연결 실패")
+        print("   PLC Simulator가 실행 중인지 확인하세요")
 
-    client.close()
-    print("\n✅ 모든 테스트 완료!")
+except Exception as e:
+    print(f"\n❌ 연결 오류: {e}")
+    import traceback
+    traceback.print_exc()
 
-else:
-    print("❌ 연결 실패!")
-
-print("=" * 70)
+print("\n" + "=" * 60)

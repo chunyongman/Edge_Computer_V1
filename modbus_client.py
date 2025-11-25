@@ -7,7 +7,14 @@ PLC Simulator와 통신하여 센서 데이터 읽기 및 AI 계산 결과 쓰�
 
 import time
 from typing import Dict, List, Optional
-from pymodbus.client.sync import ModbusTcpClient
+
+# pymodbus 3.x 버전 호환
+try:
+    from pymodbus.client import ModbusTcpClient
+except ImportError:
+    # pymodbus 2.x 버전 호환
+    from pymodbus.client.sync import ModbusTcpClient
+
 from pymodbus.exceptions import ModbusException
 import config
 
@@ -15,10 +22,10 @@ import config
 class EdgeModbusClient:
     """Edge AI용 Modbus TCP 클라이언트"""
 
-    def __init__(self, host: str = config.PLC_HOST, port: int = config.PLC_PORT, slave_id: int = config.PLC_SLAVE_ID):
-        self.host = host
-        self.port = port
-        self.slave_id = slave_id
+    def __init__(self, host: str = None, port: int = None, slave_id: int = None):
+        self.host = host if host is not None else config.PLC_HOST
+        self.port = port if port is not None else config.PLC_PORT
+        self.slave_id = slave_id if slave_id is not None else config.PLC_SLAVE_ID
         self.client = None
         self.connected = False
 
@@ -29,18 +36,23 @@ class EdgeModbusClient:
     def connect(self) -> bool:
         """PLC에 연결"""
         try:
-            self.client = ModbusTcpClient(self.host, port=self.port)
+            # pymodbus 3.x 버전 호환 (timeout 명시)
+            self.client = ModbusTcpClient(
+                host=self.host,
+                port=self.port,
+                timeout=3
+            )
             self.connected = self.client.connect()
 
             if self.connected:
-                print(f"[Edge AI] ✅ PLC 연결 성공: {self.host}:{self.port}")
+                print(f"[Edge AI] [OK] PLC 연결 성공: {self.host}:{self.port}")
             else:
-                print(f"[Edge AI] ❌ PLC 연결 실패: {self.host}:{self.port}")
+                print(f"[Edge AI] [ERROR] PLC 연결 실패: {self.host}:{self.port}")
 
             return self.connected
 
         except Exception as e:
-            print(f"[Edge AI] ❌ PLC 연결 오류: {e}")
+            print(f"[Edge AI] [ERROR] PLC 연결 오류: {e}")
             self.connected = False
             return False
 
@@ -54,17 +66,20 @@ class EdgeModbusClient:
     def read_sensors(self) -> Optional[Dict[str, float]]:
         """PLC에서 센서 데이터 읽기 (레지스터 10-19)"""
         if not self.connected:
+            print(f"[Edge AI] [ERROR] PLC가 연결되지 않았습니다")
             return None
 
         try:
             result = self.client.read_holding_registers(
                 address=config.MODBUS_REGISTERS["SENSORS_START"],
                 count=config.MODBUS_REGISTERS["SENSORS_COUNT"],
-                unit=self.slave_id
+                device_id=self.slave_id  # pymodbus 3.x uses 'device_id'
             )
 
             if result.isError():
-                print(f"[Edge AI] ❌ 센서 데이터 읽기 실패: {result}")
+                print(f"[Edge AI] [ERROR] 센서 데이터 읽기 실패")
+                print(f"  오류 타입: {type(result)}")
+                print(f"  오류 내용: {result}")
                 return None
 
             # Raw 값을 실제 값으로 변환
@@ -84,7 +99,28 @@ class EdgeModbusClient:
             return sensors
 
         except Exception as e:
-            print(f"[Edge AI] ❌ 센서 읽기 오류: {e}")
+            print(f"[Edge AI] [ERROR] 센서 읽기 오류: {e}")
+            return None
+
+    def read_holding_registers(self, address: int, count: int) -> Optional[List[int]]:
+        """PLC에서 Holding Register 읽기 (범용 메서드)"""
+        if not self.connected:
+            return None
+
+        try:
+            result = self.client.read_holding_registers(
+                address=address,
+                count=count,
+                device_id=self.slave_id
+            )
+
+            if result.isError():
+                return None
+
+            return result.registers
+
+        except Exception as e:
+            print(f"[Edge AI] [ERROR] 레지스터 읽기 오류 (addr={address}, count={count}): {e}")
             return None
 
     def read_equipment_status(self) -> Optional[List[Dict]]:
@@ -97,22 +133,22 @@ class EdgeModbusClient:
             status_result = self.client.read_holding_registers(
                 address=config.MODBUS_REGISTERS["EQUIPMENT_STATUS_START"],
                 count=config.MODBUS_REGISTERS["EQUIPMENT_STATUS_COUNT"],
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if status_result.isError():
-                print(f"[Edge AI] ❌ 장비 상태 읽기 실패")
+                print(f"[Edge AI] [ERROR] 장비 상태 읽기 실패")
                 return None
 
             # VFD 데이터 읽기 (레지스터 160-238, 10개 장비 × 8 레지스터)
             vfd_result = self.client.read_holding_registers(
                 address=config.MODBUS_REGISTERS["VFD_DATA_START"],
                 count=10 * config.MODBUS_REGISTERS["VFD_DATA_PER_EQUIPMENT"],
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if vfd_result.isError():
-                print(f"[Edge AI] ❌ VFD 데이터 읽기 실패")
+                print(f"[Edge AI] [ERROR] VFD 데이터 읽기 실패")
                 return None
 
             # 장비 데이터 파싱
@@ -168,7 +204,7 @@ class EdgeModbusClient:
             return equipment_list
 
         except Exception as e:
-            print(f"[Edge AI] ❌ 장비 데이터 읽기 오류: {e}")
+            print(f"[Edge AI] [ERROR] 장비 데이터 읽기 오류: {e}")
             return None
 
     def write_ai_target_frequency(self, target_frequencies: List[float]) -> bool:
@@ -183,21 +219,21 @@ class EdgeModbusClient:
             result = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_TARGET_FREQ_START"],
                 values=values,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result.isError():
-                print(f"[Edge AI] ❌ 목표 주파수 쓰기 실패")
+                print(f"[Edge AI] [ERROR] 목표 주파수 쓰기 실패")
                 return False
 
             return True
 
         except Exception as e:
-            print(f"[Edge AI] ❌ 목표 주파수 쓰기 오류: {e}")
+            print(f"[Edge AI] [ERROR] 목표 주파수 쓰기 오류: {e}")
             return False
 
     def write_energy_savings(self, savings_data: Dict) -> bool:
-        """에너지 절감 데이터를 PLC에 쓰기 (레지스터 5100-5109, 5300-5303)"""
+        """에너지 절감 데이터를 PLC에 쓰기 (레지스터 5100-5109, 5300-5303, 5400-5401)"""
         if not self.connected:
             return False
 
@@ -208,7 +244,7 @@ class EdgeModbusClient:
             result1 = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_ENERGY_SAVINGS_START"],
                 values=equipment_savings,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             # 시스템 절감률 (% × 10)
@@ -222,17 +258,72 @@ class EdgeModbusClient:
             result2 = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_SYSTEM_SAVINGS_START"],
                 values=system_savings,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
-            if result1.isError() or result2.isError():
-                print(f"[Edge AI] ❌ 에너지 절감 데이터 쓰기 실패")
+            # 누적 절감량 (kWh × 10) - 오늘/이번달
+            accumulated_kwh = [
+                int(savings_data.get("today_kwh", 0) * 10),
+                int(savings_data.get("month_kwh", 0) * 10),
+            ]
+
+            result3 = self.client.write_registers(
+                address=config.MODBUS_REGISTERS["AI_ACCUMULATED_KWH_START"],
+                values=accumulated_kwh,
+                device_id=self.slave_id
+            )
+
+            # 60Hz 고정 전력 (kW × 10) - total, swp, fwp, fan
+            power_60hz = [
+                int(savings_data.get("total_power_60hz", 0) * 10),
+                int(savings_data.get("swp_power_60hz", 0) * 10),
+                int(savings_data.get("fwp_power_60hz", 0) * 10),
+                int(savings_data.get("fan_power_60hz", 0) * 10),
+            ]
+
+            result4 = self.client.write_registers(
+                address=config.MODBUS_REGISTERS["AI_POWER_60HZ_START"],
+                values=power_60hz,
+                device_id=self.slave_id
+            )
+
+            # VFD 가변 전력 (kW × 10) - total, swp, fwp, fan
+            power_vfd = [
+                int(savings_data.get("total_power_vfd", 0) * 10),
+                int(savings_data.get("swp_power_vfd", 0) * 10),
+                int(savings_data.get("fwp_power_vfd", 0) * 10),
+                int(savings_data.get("fan_power_vfd", 0) * 10),
+            ]
+
+            result5 = self.client.write_registers(
+                address=config.MODBUS_REGISTERS["AI_POWER_VFD_START"],
+                values=power_vfd,
+                device_id=self.slave_id
+            )
+
+            # 절감 전력 (kW × 10) - total, swp, fwp, fan
+            savings_kw = [
+                int(savings_data.get("total_savings_kw", 0) * 10),
+                int(savings_data.get("swp_savings_kw", 0) * 10),
+                int(savings_data.get("fwp_savings_kw", 0) * 10),
+                int(savings_data.get("fan_savings_kw", 0) * 10),
+            ]
+
+            result6 = self.client.write_registers(
+                address=config.MODBUS_REGISTERS["AI_SAVINGS_KW_START"],
+                values=savings_kw,
+                device_id=self.slave_id
+            )
+
+            if result1.isError() or result2.isError() or result3.isError() or \
+               result4.isError() or result5.isError() or result6.isError():
+                print(f"[Edge AI] [ERROR] 에너지 절감 데이터 쓰기 실패")
                 return False
 
             return True
 
         except Exception as e:
-            print(f"[Edge AI] ❌ 에너지 절감 데이터 쓰기 오류: {e}")
+            print(f"[Edge AI] [ERROR] 에너지 절감 데이터 쓰기 오류: {e}")
             return False
 
     def write_vfd_diagnosis(self, diagnosis_scores: List[int]) -> bool:
@@ -244,15 +335,15 @@ class EdgeModbusClient:
             result = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_VFD_DIAGNOSIS_START"],
                 values=diagnosis_scores,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result.isError():
-                print(f"[Edge AI] ❌ VFD 진단 점수 쓰기 실패")
+                print(f"[Edge AI] [ERROR] VFD 진단 점수 쓰기 실패")
                 return False
 
             return True
 
         except Exception as e:
-            print(f"[Edge AI] ❌ VFD 진단 점수 쓰기 오류: {e}")
+            print(f"[Edge AI] [ERROR] VFD 진단 점수 쓰기 오류: {e}")
             return False

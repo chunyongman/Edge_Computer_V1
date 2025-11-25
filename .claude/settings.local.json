@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(start \"\" \"START_HMI_V1.bat\")",
+      "Bash(python test_sensor_sync.py:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(copy \"C:\\Users\\my\\Desktop\\Edge_Computer_V1\\src\\hmi\\dashboard.py\" \"C:\\Users\\my\\Desktop\\Edge_Computer_V1\\src\\hmi\\dashboard_backup_20251125.py\")",
+      "Bash(python -m py_compile:*)",
+      "Bash(venvScriptspython.exe test_connection.py)",
+      "Bash(./venv/Scripts/python.exe:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

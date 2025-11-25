@@ -7,7 +7,7 @@ Edge AI Computer 설정 파일
 import os
 
 # PLC 연결 설정
-PLC_HOST = os.getenv("PLC_HOST", "localhost")  # 기본값: localhost (같은 PC 테스트용)
+PLC_HOST = os.getenv("PLC_HOST", "127.0.0.1")  # localhost (같은 PC)
 PLC_PORT = int(os.getenv("PLC_PORT", "502"))
 PLC_SLAVE_ID = int(os.getenv("PLC_SLAVE_ID", "3"))
 
@@ -43,10 +43,14 @@ MODBUS_REGISTERS = {
     "VFD_DATA_PER_EQUIPMENT": 8,
 
     # Edge AI 결과 저장 영역 (Write)
-    "AI_TARGET_FREQ_START": 5000,      # 목표 주파수 (Hz × 10)
-    "AI_ENERGY_SAVINGS_START": 5100,   # 절감 전력 (kW × 10)
-    "AI_VFD_DIAGNOSIS_START": 5200,    # VFD 진단 점수 (0-100)
-    "AI_SYSTEM_SAVINGS_START": 5300,   # 시스템 절감률 (% × 10)
+    "AI_TARGET_FREQ_START": 5000,      # 목표 주파수 (Hz × 10), 10개
+    "AI_ENERGY_SAVINGS_START": 5100,   # 절감 전력 (kW × 10), 10개
+    "AI_VFD_DIAGNOSIS_START": 5200,    # VFD 진단 점수 (0-100), 10개
+    "AI_SYSTEM_SAVINGS_START": 5300,   # 시스템 절감률 (% × 10), 4개
+    "AI_ACCUMULATED_KWH_START": 5400,  # 누적 절감량 (kWh × 10), 2개 (오늘/이번달)
+    "AI_POWER_60HZ_START": 5500,       # 60Hz 고정 전력 (kW × 10), 4개 (total, swp, fwp, fan)
+    "AI_POWER_VFD_START": 5510,        # VFD 가변 전력 (kW × 10), 4개 (total, swp, fwp, fan)
+    "AI_SAVINGS_KW_START": 5520,       # 절감 전력 (kW × 10), 4개 (total, swp, fwp, fan)
 }
 
 # AI 목표 주파수 기본값 (Hz)
@@ -55,6 +59,9 @@ AI_TARGET_FREQUENCY = {
     "FWP": 48.4,
     "FAN": 47.3,
 }
+
+# 전기요금 단가 (원/kWh)
+ELECTRICITY_RATE = 120.0  # 산업용 평균 단가
 
 # 로그 설정
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")

@@ -16,14 +16,13 @@ if not exist venv (
         pause
         exit /b 1
     )
+)
 
-    echo [설치] 의존성 패키지 설치 중...
-    venv\Scripts\pip install -r requirements.txt
-    if errorlevel 1 (
-        echo [ERROR] 패키지 설치 실패
-        pause
-        exit /b 1
-    )
+REM 의존성 패키지 설치 (항상 확인)
+echo [확인] 의존성 패키지 확인 중...
+venv\Scripts\pip install -q -r requirements.txt
+if errorlevel 1 (
+    echo [WARNING] 일부 패키지 설치 실패 (계속 진행)
 )
 
 echo.
