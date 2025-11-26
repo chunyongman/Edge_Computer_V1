@@ -1,8 +1,7 @@
 """
-데이터베이스 모듈
-SQLite 기반 데이터 저장 및 관리
+Database module for Edge Computer
 """
 
-from .db_schema import DatabaseManager
+from .db_manager import DatabaseManager, get_db_manager
 
-__all__ = ['DatabaseManager']
+__all__ = ['DatabaseManager', 'get_db_manager']

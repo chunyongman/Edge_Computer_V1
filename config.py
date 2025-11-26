@@ -51,6 +51,10 @@ MODBUS_REGISTERS = {
     "AI_POWER_60HZ_START": 5500,       # 60Hz 고정 전력 (kW × 10), 4개 (total, swp, fwp, fan)
     "AI_POWER_VFD_START": 5510,        # VFD 가변 전력 (kW × 10), 4개 (total, swp, fwp, fan)
     "AI_SAVINGS_KW_START": 5520,       # 절감 전력 (kW × 10), 4개 (total, swp, fwp, fan)
+
+    # VFD 이상 징후 관리 (Read/Write)
+    "VFD_ANOMALY_ACKNOWLEDGED_START": 5600,  # 이상 징후 확인 상태 (0/1), 10개
+    "VFD_ANOMALY_ACTIVE_START": 5610,        # 활성 이상 징후 (0/1), 10개
 }
 
 # AI 목표 주파수 기본값 (Hz)
@@ -66,3 +70,35 @@ ELECTRICITY_RATE = 120.0  # 산업용 평균 단가
 # 로그 설정
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 LOG_FILE = os.getenv("LOG_FILE", "edge_ai.log")
+
+# 모터 용량 설정 파일 경로
+MOTOR_CAPACITY_FILE = os.path.join(os.path.dirname(__file__), "config", "motor_capacity.json")
+
+def load_motor_capacity():
+    """모터 용량 설정 로드"""
+    import json
+    if os.path.exists(MOTOR_CAPACITY_FILE):
+        try:
+            with open(MOTOR_CAPACITY_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"모터 용량 설정 로드 실패: {e}")
+    return MOTOR_CAPACITY.copy()
+
+def save_motor_capacity(capacity_dict):
+    """모터 용량 설정 저장"""
+    import json
+    os.makedirs(os.path.dirname(MOTOR_CAPACITY_FILE), exist_ok=True)
+    try:
+        with open(MOTOR_CAPACITY_FILE, 'w', encoding='utf-8') as f:
+            json.dump(capacity_dict, f, ensure_ascii=False, indent=2)
+        # 전역 변수 업데이트
+        global MOTOR_CAPACITY
+        MOTOR_CAPACITY = capacity_dict.copy()
+        return True
+    except Exception as e:
+        print(f"모터 용량 설정 저장 실패: {e}")
+        return False
+
+# 시작 시 모터 용량 로드
+MOTOR_CAPACITY = load_motor_capacity()

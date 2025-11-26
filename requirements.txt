@@ -20,3 +20,7 @@ pymodbus>=3.0.0  # Modbus TCP 통신
 streamlit>=1.25.0  # Web-based dashboard
 plotly>=5.14.0  # Interactive charts and graphs
 streamlit-autorefresh>=0.1.0  # Non-blocking auto refresh for Streamlit dashboards
+
+# HTTP API Server (for HMI_V1)
+fastapi>=0.100.0  # REST API framework
+uvicorn[standard]>=0.23.0  # ASGI server

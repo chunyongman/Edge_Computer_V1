@@ -77,6 +77,12 @@ class SharedDataWriter:
                 "trip_count": diagnostic.trip_count,
                 "error_count": diagnostic.error_count,
                 "warning_count": diagnostic.warning_count,
+
+                # 이상 징후 관리
+                "is_acknowledged": diagnostic.is_acknowledged,
+                "acknowledged_at": diagnostic.acknowledged_at.isoformat() if diagnostic.acknowledged_at else None,
+                "is_cleared": diagnostic.is_cleared,
+                "cleared_at": diagnostic.cleared_at.isoformat() if diagnostic.cleared_at else None,
             }
 
             # 예측 데이터 추가 (있으면)
@@ -90,6 +96,19 @@ class SharedDataWriter:
                     "anomaly_score": prediction.anomaly_score,
                     "maintenance_priority": prediction.maintenance_priority,
                     "prediction_confidence": prediction.prediction_confidence,
+                })
+
+            # AI 분석 결과 추가 (있으면)
+            if hasattr(diagnostic, 'ai_analysis') and diagnostic.ai_analysis:
+                ai = diagnostic.ai_analysis
+                vfd_data.update({
+                    "ai_anomaly_detected": ai.get("anomaly_detected", False),
+                    "ai_anomaly_score": ai.get("anomaly_score", 0),
+                    "ai_predicted_temp_30min": ai.get("predicted_temp_30min"),
+                    "ai_temp_trend": ai.get("temp_trend"),
+                    "ai_fault_prediction": ai.get("fault_prediction", {}),
+                    "ai_risk_level": ai.get("risk_level", "unknown"),
+                    "ai_recommendations": ai.get("recommendations", []),
                 })
 
             data["vfd_diagnostics"][vfd_id] = vfd_data

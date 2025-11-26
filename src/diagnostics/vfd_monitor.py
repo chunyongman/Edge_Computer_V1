@@ -56,7 +56,7 @@ class DanfossStatusBits:
         if self.error:
             score += 30
         if self.warning:
-            score += 15
+            score += 60
         if self.voltage_exceeded:
             score += 20
         if self.torque_exceeded:
@@ -113,6 +113,12 @@ class VFDDiagnostic:
     error_count: int
     warning_count: int
 
+    # 이상 징후 관리
+    is_acknowledged: bool = False  # 사용자 확인 여부
+    acknowledged_at: Optional[datetime] = None  # 확인 시각
+    is_cleared: bool = False  # 해제 여부
+    cleared_at: Optional[datetime] = None  # 해제 시각
+
 
 class VFDMonitor:
     """
@@ -152,6 +158,12 @@ class VFDMonitor:
         self.temp_threshold_motor = 80.0  # °C
         self.temp_threshold_heatsink = 65.0  # °C
         self.voltage_range = (380.0, 420.0)  # V
+
+        # 이상 징후 관리
+        self.active_anomalies: Dict[str, VFDDiagnostic] = {}  # 현재 활성 이상 징후
+        self.anomaly_history: List[VFDDiagnostic] = []  # 전체 이상 징후 히스토리
+        self.auto_clear_delay_minutes = 10  # 자동 해제 대기 시간 (분)
+        self.cleared_anomalies: set = set()  # 해제된 VFD ID (정상 복귀 전까지 다시 등록 안함)
 
     def _initialize_vfds(self) -> Dict[str, VFDInfo]:
         """VFD 정보 초기화"""
@@ -232,6 +244,11 @@ class VFDMonitor:
         # 상태 등급 판정
         status_grade = self._determine_status_grade(severity_score, anomaly_patterns)
 
+        # severity와 anomaly_patterns 일관성 유지
+        # VFD_WARNING은 severity +60을 의미하므로, severity < 51이면 제거
+        if severity_score < 51 and "VFD_WARNING" in anomaly_patterns:
+            anomaly_patterns.remove("VFD_WARNING")
+
         # 권고사항
         recommendation = self._generate_recommendation(
             status_grade, anomaly_patterns, status_bits
@@ -272,6 +289,9 @@ class VFDMonitor:
         self.diagnostic_history[vfd_id].append(diagnostic)
         if len(self.diagnostic_history[vfd_id]) > 1000:
             self.diagnostic_history[vfd_id] = self.diagnostic_history[vfd_id][-1000:]
+
+        # 활성 이상 징후 업데이트
+        self.update_active_anomalies(vfd_id, diagnostic)
 
         return diagnostic
 
@@ -435,6 +455,169 @@ class VFDMonitor:
             if self.diagnostic_history[vfd_id]:
                 status[vfd_id] = self.diagnostic_history[vfd_id][-1]
         return status
+
+    def acknowledge_anomaly(self, vfd_id: str) -> bool:
+        """
+        이상 징후 확인 처리
+
+        Args:
+            vfd_id: VFD ID
+
+        Returns:
+            bool: 성공 여부
+        """
+        if vfd_id not in self.active_anomalies:
+            return False
+
+        anomaly = self.active_anomalies[vfd_id]
+        anomaly.is_acknowledged = True
+        anomaly.acknowledged_at = datetime.now()
+
+        # 히스토리에도 업데이트
+        for diag in self.diagnostic_history[vfd_id]:
+            if diag.timestamp == anomaly.timestamp:
+                diag.is_acknowledged = True
+                diag.acknowledged_at = anomaly.acknowledged_at
+                break
+
+        return True
+
+    def clear_anomaly(self, vfd_id: str) -> bool:
+        """
+        이상 징후 해제 처리
+
+        Args:
+            vfd_id: VFD ID
+
+        Returns:
+            bool: 성공 여부
+        """
+        if vfd_id not in self.active_anomalies:
+            return False
+
+        anomaly = self.active_anomalies[vfd_id]
+        anomaly.is_cleared = True
+        anomaly.cleared_at = datetime.now()
+
+        # 히스토리에 저장
+        self.anomaly_history.append(anomaly)
+
+        # active_anomalies에서 제거
+        del self.active_anomalies[vfd_id]
+
+        # cleared_anomalies에 추가하여 다시 등록되지 않도록 함
+        # (정상 상태로 돌아올 때까지 유지)
+        self.cleared_anomalies.add(vfd_id)
+
+        return True
+
+    def check_auto_clear(self):
+        """
+        자동 해제 조건 확인 및 처리
+
+        조건:
+        - 이상 비트가 해제된 후
+        - 설정된 대기 시간(기본 10분) 경과
+        """
+        current_time = datetime.now()
+        vfds_to_clear = []
+
+        for vfd_id, anomaly in self.active_anomalies.items():
+            # 가장 최근 진단 결과 확인
+            if not self.diagnostic_history[vfd_id]:
+                continue
+
+            latest_diag = self.diagnostic_history[vfd_id][-1]
+
+            # 현재 정상 상태이고, 확인 완료 상태인 경우
+            if (latest_diag.status_grade == VFDStatus.NORMAL and
+                anomaly.is_acknowledged and
+                anomaly.acknowledged_at):
+
+                # 대기 시간 경과 확인
+                elapsed = (current_time - anomaly.acknowledged_at).total_seconds() / 60
+                if elapsed >= self.auto_clear_delay_minutes:
+                    vfds_to_clear.append(vfd_id)
+
+        # 자동 해제
+        for vfd_id in vfds_to_clear:
+            self.clear_anomaly(vfd_id)
+
+    def update_active_anomalies(self, vfd_id: str, diagnostic: VFDDiagnostic):
+        """
+        활성 이상 징후 업데이트
+
+        Args:
+            vfd_id: VFD ID
+            diagnostic: 진단 결과
+        """
+        # 정상 상태로 돌아오면 cleared_anomalies에서 제거 (다음 이상 발생 시 다시 표시)
+        if diagnostic.status_grade == VFDStatus.NORMAL:
+            if vfd_id in self.cleared_anomalies:
+                self.cleared_anomalies.discard(vfd_id)
+            return
+
+        # 이미 해제된 VFD는 다시 등록하지 않음
+        if vfd_id in self.cleared_anomalies:
+            return
+
+        # 이상 상태인 경우 active_anomalies에 추가
+        if diagnostic.status_grade != VFDStatus.NORMAL:
+            if vfd_id not in self.active_anomalies:
+                # 새로운 이상 징후
+                self.active_anomalies[vfd_id] = diagnostic
+            else:
+                # 기존 이상 징후 업데이트 (확인 상태는 유지)
+                existing = self.active_anomalies[vfd_id]
+                diagnostic.is_acknowledged = existing.is_acknowledged
+                diagnostic.acknowledged_at = existing.acknowledged_at
+                self.active_anomalies[vfd_id] = diagnostic
+
+        # 자동 해제 체크
+        self.check_auto_clear()
+
+    def get_anomaly_status(self, vfd_id: str) -> Optional[VFDDiagnostic]:
+        """
+        특정 VFD의 활성 이상 징후 상태 조회
+
+        Args:
+            vfd_id: VFD ID
+
+        Returns:
+            VFDDiagnostic: 활성 이상 징후 (없으면 None)
+        """
+        return self.active_anomalies.get(vfd_id)
+
+    def get_anomaly_history(self, vfd_id: Optional[str] = None, limit: int = 100) -> List[VFDDiagnostic]:
+        """
+        이상 징후 히스토리 조회
+
+        Args:
+            vfd_id: VFD ID (None이면 전체)
+            limit: 최대 개수
+
+        Returns:
+            List[VFDDiagnostic]: 이상 징후 히스토리 (최신순)
+        """
+        if vfd_id:
+            # 특정 VFD의 히스토리
+            history = [diag for diag in self.anomaly_history if diag.vfd_id == vfd_id]
+        else:
+            # 전체 히스토리
+            history = self.anomaly_history
+
+        # 최신순으로 정렬
+        history_sorted = sorted(history, key=lambda x: x.timestamp, reverse=True)
+        return history_sorted[:limit]
+
+    def get_active_anomalies(self) -> Dict[str, VFDDiagnostic]:
+        """
+        현재 활성 이상 징후 전체 조회
+
+        Returns:
+            Dict[str, VFDDiagnostic]: 활성 이상 징후 딕셔너리
+        """
+        return self.active_anomalies.copy()
 
     def get_vfd_status_summary(self) -> Dict:
         """VFD 상태 요약"""

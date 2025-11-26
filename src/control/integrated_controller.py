@@ -345,7 +345,7 @@ class IntegratedController:
             sw_pump_freq=rule_decision.sw_pump_freq,
             fw_pump_freq=rule_decision.fw_pump_freq,
             er_fan_freq=rule_decision.er_fan_freq,
-            er_fan_count=current_frequencies.get('er_fan_count', 3),
+            er_fan_count=3,  # 초기값, _apply_count_control()에서 재설정됨
             control_mode="rule_based_ai",
             emergency_action=rule_decision.safety_override,
             reason=rule_decision.reason,
