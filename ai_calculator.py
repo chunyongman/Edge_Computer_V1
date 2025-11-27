@@ -167,7 +167,7 @@ class EdgeAICalculator:
 
         Args:
             equipment_list: 펌프/팬 리스트
-            sensors: 센서 데이터 (TX1-7, DPX1-2, PU1)
+            sensors: 센서 데이터 (TX1-7, PX1-2, PU1)
 
         Returns:
             AI 목표 주파수 데이터 리스트

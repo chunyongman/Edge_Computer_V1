@@ -91,8 +91,8 @@ class EdgeModbusClient:
                 "TX5": result.registers[4] / 10.0,   # ESS Batt Temp (°C)
                 "TX6": result.registers[5] / 10.0,   # E/R Inside Temp (°C)
                 "TX7": result.registers[6] / 10.0,   # E/R Outside Temp (°C)
-                "DPX1": result.registers[7] / 4608.0,  # CSW PP Disc Press (kg/cm²)
-                "DPX2": result.registers[8] / 10.0,  # E/R Diff Press (Pa)
+                "PX1": result.registers[7] / 4608.0,  # CSW PP Disc Press (kg/cm²)
+                "PX2": result.registers[8] / 10.0,  # E/R Diff Press (Pa)
                 "PU1": result.registers[9] / 276.48,  # M/E Load (%)
             }
 
