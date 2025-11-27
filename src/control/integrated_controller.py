@@ -110,6 +110,14 @@ class IntegratedController:
         if enable_predictive_control:
             self._initialize_ml_models()
 
+        # 대수 제어 상태 메모리 (타이머 저장)
+        self.fan_control_state = {
+            'time_at_max_freq': 0,
+            'time_at_min_freq': 0,
+            'count_change_cooldown': 0,
+            'last_count': 3
+        }
+
         # 제어 모드
         self.emergency_mode = False
 
@@ -254,47 +262,72 @@ class IntegratedController:
         try:
             # Random Forest로 최적 주파수 예측
             # (실제로는 학습된 모델 사용, 여기서는 간단한 휴리스틱)
-            
-            # 기본 주파수 (엔진 부하 기반)
+
+            # 기본 주파수 (엔진 부하 기반 - SW와 ER만 사용)
             if engine_load > 80:
-                base_freq = 52.0
+                base_freq_sw_er = 52.0
             elif engine_load > 50:
-                base_freq = 48.0
+                base_freq_sw_er = 48.0
             else:
-                base_freq = 45.0
-            
+                base_freq_sw_er = 45.0
+
+            # FW는 현재 온도 기반 (엔진 부하 무관)
+            t4_current = temperatures.get('T4', 45.0)
+            if t4_current > 46.0:
+                fw_base = 50.0
+            elif t4_current > 44.0:
+                fw_base = 48.0
+            elif t4_current < 40.0:
+                fw_base = 40.0
+            else:
+                fw_base = 45.0
+
             # 온도 예측 반영 (선제적 조치)
             sw_adj = 0.0
             fw_adj = 0.0
             er_adj = 0.0
-            
+
             if temp_prediction and temp_prediction.confidence > 0.5:
                 # 10분 후 온도 변화 예측
                 t4_delta = temp_prediction.t4_pred_10min - temp_prediction.t4_current
                 t5_delta = temp_prediction.t5_pred_10min - temp_prediction.t5_current
                 t6_delta = temp_prediction.t6_pred_10min - temp_prediction.t6_current
-                
+
                 # 예측 기반 선제적 조정
                 if t5_delta > 0.5:
                     sw_adj = 3.0
                 elif t5_delta > 0.3:
                     sw_adj = 2.0
-                
+
+                # FW는 T4 예측 변화만 사용
                 if t4_delta > 1.0:
                     fw_adj = 3.0
                 elif t4_delta > 0.5:
                     fw_adj = 2.0
-                
+
                 if t6_delta > 1.0:
                     er_adj = 4.0
                 elif t6_delta > 0.5:
                     er_adj = 2.0
-            
-            return {
-                'sw_pump_freq': base_freq + sw_adj,
-                'fw_pump_freq': base_freq + fw_adj,
-                'er_fan_freq': base_freq + er_adj
+
+            # ML 예측 결과 (온도 예측 정보 포함)
+            ml_result = {
+                'sw_pump_freq': base_freq_sw_er + sw_adj,
+                'fw_pump_freq': fw_base + fw_adj,  # T4 기반
+                'er_fan_freq': base_freq_sw_er + er_adj
             }
+
+            # 온도 예측 정보 추가 (Rule-based AI에서 활용)
+            if temp_prediction:
+                ml_result['t4_pred_5min'] = temp_prediction.t4_pred_5min
+                ml_result['t4_pred_10min'] = temp_prediction.t4_pred_10min
+                ml_result['t5_pred_5min'] = temp_prediction.t5_pred_5min
+                ml_result['t5_pred_10min'] = temp_prediction.t5_pred_10min
+                ml_result['t6_pred_5min'] = temp_prediction.t6_pred_5min
+                ml_result['t6_pred_10min'] = temp_prediction.t6_pred_10min
+                ml_result['confidence'] = temp_prediction.confidence
+
+            return ml_result
             
         except Exception as e:
             print(f"[WARNING] ML 예측 실패: {e}")
@@ -361,7 +394,7 @@ class IntegratedController:
         
         # 대수 제어 적용
         decision = self._apply_count_control(
-            decision, temperatures, current_frequencies
+            decision, temperatures, current_frequencies, ml_prediction
         )
         
         return decision
@@ -370,7 +403,8 @@ class IntegratedController:
         self,
         decision: ControlDecision,
         temperatures: Dict[str, float],
-        current_frequencies: Dict[str, float]
+        current_frequencies: Dict[str, float],
+        ml_prediction: Optional[Dict] = None
     ) -> ControlDecision:
         """
         대수 제어 적용
@@ -398,18 +432,17 @@ class IntegratedController:
 
             # ML 예측값 가져오기
             t6_pred_5min = t6  # 기본값
-            if hasattr(decision, 'ml_prediction') and decision.ml_prediction:
-                if hasattr(decision.ml_prediction, 't6_pred_5min'):
-                    t6_pred_5min = decision.ml_prediction.t6_pred_5min
+            if ml_prediction and 't6_pred_5min' in ml_prediction:
+                t6_pred_5min = ml_prediction['t6_pred_5min']
 
-            # 시간 추적
-            time_at_max = current_frequencies.get('time_at_max_freq', 0)
-            time_at_min = current_frequencies.get('time_at_min_freq', 0)
-            count_change_cooldown = current_frequencies.get('count_change_cooldown', 0)
+            # 시간 추적 (메모리에서 읽기)
+            time_at_max = self.fan_control_state['time_at_max_freq']
+            time_at_min = self.fan_control_state['time_at_min_freq']
+            count_change_cooldown = self.fan_control_state['count_change_cooldown']
 
             # 대수 변경 쿨다운 감소
             if count_change_cooldown > 0:
-                current_frequencies['count_change_cooldown'] = count_change_cooldown - 2
+                self.fan_control_state['count_change_cooldown'] = count_change_cooldown - 2
 
             # ===================================================================
             # 대수 증가 로직 (우선순위별)
@@ -419,51 +452,51 @@ class IntegratedController:
             if t6 >= 47.0 and count_change_cooldown <= 0 and current_count < 4:
                 decision.er_fan_count = current_count + 1
                 decision.count_change_reason = f"[긴급] 극한 온도 {t6:.1f}°C ≥ 47°C → 즉시 {current_count + 1}대 증설!"
-                current_frequencies['time_at_max_freq'] = 0
-                current_frequencies['time_at_min_freq'] = 0
-                current_frequencies['count_change_cooldown'] = 30
+                self.fan_control_state['time_at_max_freq'] = 0
+                self.fan_control_state['time_at_min_freq'] = 0
+                self.fan_control_state['count_change_cooldown'] = 30
                 decision.er_fan_freq = max(50.0, decision.er_fan_freq - 8.0)
             
             # Priority 2: 극한 예상 (즉시! 주파수 무관)
             elif t6 >= 46.0 and t6_pred_5min >= 47.0 and count_change_cooldown <= 0 and current_count < 4:
                 decision.er_fan_count = current_count + 1
                 decision.count_change_reason = f"[선제] 극한 예상 (예측 {t6_pred_5min:.1f}°C ≥ 47°C) → 즉시 {current_count + 1}대 증설!"
-                current_frequencies['time_at_max_freq'] = 0
-                current_frequencies['time_at_min_freq'] = 0
-                current_frequencies['count_change_cooldown'] = 30
+                self.fan_control_state['time_at_max_freq'] = 0
+                self.fan_control_state['time_at_min_freq'] = 0
+                self.fan_control_state['count_change_cooldown'] = 30
                 decision.er_fan_freq = max(50.0, decision.er_fan_freq - 8.0)
             
             # Priority 3: 고온 (5초 대기, 주파수 무관)
             elif t6 >= 45.0 and count_change_cooldown <= 0 and current_count < 4:
                 new_time = time_at_max + 2
-                current_frequencies['time_at_max_freq'] = new_time
+                self.fan_control_state['time_at_max_freq'] = new_time
                 if new_time >= 5:
                     decision.er_fan_count = current_count + 1
                     decision.count_change_reason = f"[고온] {t6:.1f}°C ≥ 45°C, 5초 대기 → {current_count + 1}대 증설"
-                    current_frequencies['time_at_max_freq'] = 0
-                    current_frequencies['count_change_cooldown'] = 30
+                    self.fan_control_state['time_at_max_freq'] = 0
+                    self.fan_control_state['count_change_cooldown'] = 30
                     decision.er_fan_freq = max(50.0, decision.er_fan_freq - 8.0)
                 else:
                     decision.er_fan_count = current_count
                     decision.count_change_reason = f"[고온 대기] {t6:.1f}°C ≥ 45°C, {new_time}초/5초 (주파수 {decision.er_fan_freq:.1f}Hz)"
                 # 감소 타이머 리셋
-                current_frequencies['time_at_min_freq'] = 0
+                self.fan_control_state['time_at_min_freq'] = 0
             
             # Priority 4: 정상 (10초 대기, 60Hz 조건 필요)
             elif decision.er_fan_freq >= 59.5 and count_change_cooldown <= 0 and current_count < 4:
                 new_time = time_at_max + 2
-                current_frequencies['time_at_max_freq'] = new_time
+                self.fan_control_state['time_at_max_freq'] = new_time
                 if new_time >= 10:
                     decision.er_fan_count = current_count + 1
                     decision.count_change_reason = f"[정상] {decision.er_fan_freq:.1f}Hz 10초 지속 → {current_count + 1}대 증설"
-                    current_frequencies['time_at_max_freq'] = 0
-                    current_frequencies['count_change_cooldown'] = 30
+                    self.fan_control_state['time_at_max_freq'] = 0
+                    self.fan_control_state['count_change_cooldown'] = 30
                     decision.er_fan_freq = max(50.0, decision.er_fan_freq - 8.0)
                 else:
                     decision.er_fan_count = current_count
                     decision.count_change_reason = f"[증가 대기] {decision.er_fan_freq:.1f}Hz {new_time}초/10초 (T6={t6:.1f}°C)"
                 # 감소 타이머 리셋
-                current_frequencies['time_at_min_freq'] = 0
+                self.fan_control_state['time_at_min_freq'] = 0
             
             # ===================================================================
             # 대수 감소 로직 (10초 대기)
@@ -471,27 +504,27 @@ class IntegratedController:
             # 조건: 40.5Hz 이하 (피드백 제어의 부동소수점 오차 허용)
             elif decision.er_fan_freq <= 40.5 and count_change_cooldown <= 0 and current_count > 2:
                 new_time = time_at_min + 2
-                current_frequencies['time_at_min_freq'] = new_time
+                self.fan_control_state['time_at_min_freq'] = new_time
                 if new_time >= 10:
                     decision.er_fan_count = current_count - 1
                     decision.count_change_reason = f"[절감] {decision.er_fan_freq:.1f}Hz 10초 지속 → {current_count - 1}대 감소"
-                    current_frequencies['time_at_min_freq'] = 0
-                    current_frequencies['count_change_cooldown'] = 30
+                    self.fan_control_state['time_at_min_freq'] = 0
+                    self.fan_control_state['count_change_cooldown'] = 30
                     decision.er_fan_freq = 48.0  # 재분배
                 else:
                     decision.er_fan_count = current_count
                     decision.count_change_reason = f"[감소 대기] {decision.er_fan_freq:.1f}Hz {new_time}초/10초"
                 
                 # 감소 조건에서는 증가 타이머 리셋
-                current_frequencies['time_at_max_freq'] = 0
+                self.fan_control_state['time_at_max_freq'] = 0
             
             # ===================================================================
             # 현재 대수 유지
             # ===================================================================
             else:
                 decision.er_fan_count = current_count
-                current_frequencies['time_at_max_freq'] = 0
-                current_frequencies['time_at_min_freq'] = 0
+                self.fan_control_state['time_at_max_freq'] = 0
+                self.fan_control_state['time_at_min_freq'] = 0
                 if count_change_cooldown > 0:
                     decision.count_change_reason = f"[안정화] {decision.er_fan_freq:.1f}Hz, T6={t6:.1f}°C, {current_count}대 (쿨다운 {count_change_cooldown}초)"
                 elif current_count >= 4:

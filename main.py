@@ -93,6 +93,9 @@ class EdgeAISystem:
         self.cycle_count = 0
         self.ai_inference_times = []
 
+        # 대수 제어 상태
+        self.current_fan_count = 3  # 현재 운전 중인 팬 대수
+
         # Ctrl+C 처리
         signal.signal(signal.SIGINT, self.signal_handler)
 
@@ -203,7 +206,7 @@ class EdgeAISystem:
                     'T6': sensors.get('TX6', 43.0),
                     'T7': sensors.get('TX7', 30.0),
                 }
-                pressure = sensors.get('DPX1', 1.5)
+                pressure = sensors.get('PX1', 1.5)
                 engine_load = sensors.get('PU1', 75.0)
 
                 # 현재 주파수 (장비 상태에서 추출)
@@ -243,6 +246,9 @@ class EdgeAISystem:
                 # 목표 주파수 쓰기
                 target_frequencies = self._extract_target_frequencies(control_decision)
                 self.plc.write_ai_target_frequency(target_frequencies)
+
+                # 대수 제어 명령 전송 (팬 START/STOP)
+                self._apply_fan_count_control(control_decision.er_fan_count)
 
                 # 에너지 절감 데이터 쓰기
                 savings_for_plc = self._format_savings_for_plc(savings_data)
@@ -398,6 +404,34 @@ class EdgeAISystem:
             logger.info(f"   평균 AI 추론: {avg_inference:.1f}ms")
 
         logger.info("=" * 80)
+
+    def _apply_fan_count_control(self, target_count: int):
+        """
+        E/R 팬 대수 제어 명령 전송
+
+        현재 작동 대수와 목표 대수를 비교하여 START/STOP 명령 전송
+
+        Args:
+            target_count: 목표 팬 대수 (2-4)
+        """
+        if target_count == self.current_fan_count:
+            return  # 변경 없음
+
+        if target_count > self.current_fan_count:
+            # 대수 증가: 정지된 팬 중 첫 번째 START
+            fan_index = 6 + self.current_fan_count  # FAN1=6, FAN2=7, FAN3=8, FAN4=9
+            if fan_index < 10:
+                self.plc.send_equipment_start(fan_index)
+                logger.info(f"[대수 제어] 팬 {self.current_fan_count} → {target_count}대: FAN{self.current_fan_count+1} START")
+                self.current_fan_count = target_count
+
+        elif target_count < self.current_fan_count:
+            # 대수 감소: 운전 중인 팬 중 마지막 STOP
+            fan_index = 6 + (self.current_fan_count - 1)  # 마지막 팬
+            if fan_index >= 6:
+                self.plc.send_equipment_stop(fan_index)
+                logger.info(f"[대수 제어] 팬 {self.current_fan_count} → {target_count}대: FAN{self.current_fan_count} STOP")
+                self.current_fan_count = target_count
 
 
 def main():

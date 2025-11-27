@@ -91,8 +91,8 @@ class EdgeModbusClient:
                 "TX5": result.registers[4] / 10.0,   # ESS Batt Temp (°C)
                 "TX6": result.registers[5] / 10.0,   # E/R Inside Temp (°C)
                 "TX7": result.registers[6] / 10.0,   # E/R Outside Temp (°C)
-                "DPX1": result.registers[7] / 4608.0,  # CSW PP Disc Press (kg/cm²)
-                "DPX2": result.registers[8] / 10.0,  # E/R Diff Press (Pa)
+                "PX1": result.registers[7] / 4608.0,  # CSW PP Disc Press (kg/cm²)
+                "PX2": result.registers[8] / 10.0,  # E/R Diff Press (Pa)
                 "PU1": result.registers[9] / 276.48,  # M/E Load (%)
             }
 
@@ -346,4 +346,79 @@ class EdgeModbusClient:
 
         except Exception as e:
             print(f"[Edge AI] [ERROR] VFD 진단 점수 쓰기 오류: {e}")
+            return False
+
+    def send_equipment_start(self, equipment_index: int) -> bool:
+        """
+        장비 START 명령 전송
+
+        Args:
+            equipment_index: 장비 인덱스 (0-9)
+                0-2: SWP1-3
+                3-5: FWP1-3
+                6-9: FAN1-4
+
+        Returns:
+            성공 여부
+        """
+        if not self.connected:
+            print(f"[Edge AI] [ERROR] PLC가 연결되지 않았습니다")
+            return False
+
+        try:
+            # START 코일 주소: 64064 + (equipment_index * 2)
+            coil_addr = 64064 + (equipment_index * 2)
+
+            result = self.client.write_coil(
+                address=coil_addr,
+                value=True,
+                device_id=self.slave_id
+            )
+
+            if result.isError():
+                print(f"[Edge AI] [ERROR] START 명령 전송 실패 (장비 인덱스: {equipment_index})")
+                return False
+
+            equipment_name = config.EQUIPMENT_LIST[equipment_index]
+            print(f"[Edge AI] ✅ START 명령 전송: {equipment_name} (코일: {coil_addr})")
+            return True
+
+        except Exception as e:
+            print(f"[Edge AI] [ERROR] START 명령 전송 오류: {e}")
+            return False
+
+    def send_equipment_stop(self, equipment_index: int) -> bool:
+        """
+        장비 STOP 명령 전송
+
+        Args:
+            equipment_index: 장비 인덱스 (0-9)
+
+        Returns:
+            성공 여부
+        """
+        if not self.connected:
+            print(f"[Edge AI] [ERROR] PLC가 연결되지 않았습니다")
+            return False
+
+        try:
+            # STOP 코일 주소: 64064 + (equipment_index * 2) + 1
+            coil_addr = 64064 + (equipment_index * 2) + 1
+
+            result = self.client.write_coil(
+                address=coil_addr,
+                value=True,
+                device_id=self.slave_id
+            )
+
+            if result.isError():
+                print(f"[Edge AI] [ERROR] STOP 명령 전송 실패 (장비 인덱스: {equipment_index})")
+                return False
+
+            equipment_name = config.EQUIPMENT_LIST[equipment_index]
+            print(f"[Edge AI] ✅ STOP 명령 전송: {equipment_name} (코일: {coil_addr})")
+            return True
+
+        except Exception as e:
+            print(f"[Edge AI] [ERROR] STOP 명령 전송 오류: {e}")
             return False
