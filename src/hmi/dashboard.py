@@ -66,6 +66,23 @@ class EdgeComputerDashboard:
             st.session_state.integrated_controller = IntegratedController()
         self.integrated_controller = st.session_state.integrated_controller
 
+        # VFD 이상 패턴 한글 매핑
+        self.anomaly_pattern_names = {
+            "MOTOR_OVERTEMP": "⚠️ 모터 과열 (80°C 초과)",
+            "MOTOR_TEMP_WARNING": "📊 모터 온도 주의 (예측: 70°C 이상)",
+            "HEATSINK_OVERTEMP": "⚠️ 히트싱크 과열",
+            "VOLTAGE_LOW": "⚡ 출력 전압 저하",
+            "VOLTAGE_HIGH": "⚡ 출력 전압 과다",
+            "DC_BUS_ABNORMAL": "🔌 DC 버스 전압 이상",
+            "CURRENT_HIGH": "⚡ 전류 과다",
+            "VIBRATION_HIGH": "📳 진동 과다",
+            "THERMAL_EXCEEDED": "🔥 열 보호 작동",
+            "VFD_TRIP": "🛑 VFD 트립",
+            "VFD_ERROR": "❌ VFD 오류",
+            "TEMP_RISING": "📈 온도 상승 추세 (예측)",
+            "CURRENT_UNSTABLE": "⚡ 전류 불안정 (예측)",
+        }
+
     def _apply_custom_css(self):
         """HMI_V1 스타일 CSS 적용"""
         st.markdown("""
@@ -814,25 +831,22 @@ class EdgeComputerDashboard:
         with st.sidebar:
             st.markdown("### 🎛️ 제어판")
 
-            # PLC 연결 제어
+            # PLC 재연결
             st.markdown("#### PLC 연결")
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("🔌 연결", use_container_width=True):
-                    client = st.session_state.modbus_client
-                    if client.connect():
-                        st.success("연결 성공!")
-                        time.sleep(0.5)
-                        st.rerun()
-                    else:
-                        st.error("연결 실패!")
-
-            with col2:
-                if st.button("❌ 끊기", use_container_width=True):
-                    st.session_state.modbus_client.disconnect()
-                    st.info("연결 종료")
+            if st.button("🔄 재연결", use_container_width=True):
+                client = st.session_state.modbus_client
+                # 기존 연결 끊기
+                if client.connected:
+                    client.disconnect()
+                    time.sleep(0.3)
+                # 재연결 시도
+                if client.connect():
+                    st.success("✅ PLC 재연결 성공!")
                     time.sleep(0.5)
                     st.rerun()
+                else:
+                    st.error("❌ PLC 연결 실패! PLC Simulator가 실행 중인지 확인하세요.")
+                    st.info(f"연결 대상: {client.host}:{client.port}")
 
             st.markdown("---")
 
@@ -869,52 +883,87 @@ class EdgeComputerDashboard:
         # 1. 주파수 비교 테이블 (최우선!)
         st.markdown("### 🎯 주파수 비교 (목표 vs 실제)")
 
+        # DataFrame 생성 및 Pandas Styler로 다크 테마 적용
         freq_df = self._create_frequency_comparison_table(plc_data)
 
-        # 스타일 적용
-        st.markdown("""
-        <style>
-        .stDataFrame {
-            font-size: 20px !important;
+        # 그룹별 색상 정의
+        group_colors = {
+            'SWP': {'bg': '#0f4c5c', 'text': '#5eead4'},
+            'FWP': {'bg': '#4c1d95', 'text': '#c4b5fd'},
+            'FAN': {'bg': '#7c2d12', 'text': '#fdba74'},
+            'default': {'bg': '#1e293b', 'text': '#e2e8f0'}
         }
-        .stDataFrame [data-testid="stDataFrameResizable"] > div {
-            background-color: #1e293b !important;
-        }
-        .stDataFrame table {
-            background-color: #1e293b !important;
-        }
-        .stDataFrame table * {
-            color: #ffffff !important;
-            font-weight: 800 !important;
-        }
-        .stDataFrame thead tr th {
-            background-color: #0f172a !important;
-            color: #ffffff !important;
-            font-size: 22px !important;
-            font-weight: 900 !important;
-            padding: 14px !important;
-        }
-        .stDataFrame tbody tr td {
-            background-color: #1e293b !important;
-            color: #ffffff !important;
-            font-size: 20px !important;
-            font-weight: 800 !important;
-            padding: 12px !important;
-        }
-        .stDataFrame tbody tr td * {
-            color: #ffffff !important;
-            font-size: 20px !important;
-            font-weight: 800 !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
 
-        st.dataframe(
-            freq_df,
-            use_container_width=True,
-            height=400,
-            hide_index=True
-        )
+        # HTML 테이블 직접 생성
+        html_rows = []
+        for idx, row in freq_df.iterrows():
+            equipment_name = row['장비명']
+            # 그룹 색상 결정
+            if 'SWP' in equipment_name:
+                colors = group_colors['SWP']
+            elif 'FWP' in equipment_name:
+                colors = group_colors['FWP']
+            elif 'FAN' in equipment_name:
+                colors = group_colors['FAN']
+            else:
+                colors = group_colors['default']
+
+            bg = colors['bg']
+            txt = colors['text']
+
+            # 각 셀 생성
+            cells = []
+            for col in freq_df.columns:
+                val = row[col]
+                cell_bg = bg
+                cell_txt = txt
+                font_weight = 'normal'
+
+                # 상태 컬럼 특별 처리
+                if col == '상태':
+                    if "정상" in str(val):
+                        cell_bg = '#064e3b'
+                        cell_txt = '#10b981'
+                        font_weight = 'bold'
+                    elif "편차" in str(val):
+                        cell_bg = '#78350f'
+                        cell_txt = '#fbbf24'
+                        font_weight = 'bold'
+
+                # 편차 컬럼 특별 처리
+                elif col == '편차 (Hz)':
+                    try:
+                        v = float(str(val).replace('+', ''))
+                        if v > 0:
+                            cell_bg = '#7f1d1d'
+                            cell_txt = '#fca5a5'
+                            font_weight = 'bold'
+                        elif v < 0:
+                            cell_bg = '#1e3a5f'
+                            cell_txt = '#93c5fd'
+                            font_weight = 'bold'
+                    except:
+                        pass
+
+                # 장비명/목표주파수 볼드
+                if col in ['장비명', '목표 주파수 (Hz)']:
+                    font_weight = 'bold'
+
+                cells.append(f'<td style="background-color:{cell_bg};color:{cell_txt};font-weight:{font_weight};text-align:center;padding:6px;font-size:11px;border-bottom:1px solid #334155">{val}</td>')
+
+            html_rows.append(f'<tr>{"".join(cells)}</tr>')
+
+        # 헤더 생성
+        header_cells = ''.join([f'<th style="background-color:#1e40af;color:white;font-weight:bold;text-align:center;padding:8px;font-size:11px;border-bottom:2px solid #3b82f6">{col}</th>' for col in freq_df.columns])
+
+        html_table = f'''
+        <table style="width:100%;border-collapse:collapse;margin-bottom:10px">
+            <thead><tr>{header_cells}</tr></thead>
+            <tbody>{"".join(html_rows)}</tbody>
+        </table>
+        '''
+
+        st.markdown(html_table, unsafe_allow_html=True)
 
         st.markdown("---")
 
@@ -1030,59 +1079,18 @@ class EdgeComputerDashboard:
         if equipment is None:
             equipment = []
 
-        # HTML 테이블 시작
+        # HTML 테이블 시작 (다크 테마)
         html = """
-        <style>
-        .freq-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #1e293b;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-        .freq-table th {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
-            padding: 16px 12px;
-            text-align: center;
-            font-size: 1.15rem;
-            font-weight: 700;
-            border-bottom: 2px solid #3b82f6;
-        }
-        .freq-table td {
-            background-color: #1e293b;
-            color: #e2e8f0;
-            padding: 14px 12px;
-            text-align: center;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #334155;
-        }
-        .freq-table tr:hover td {
-            background-color: #334155;
-        }
-        .freq-table .eq-name {
-            font-weight: 600;
-            color: #60a5fa;
-        }
-        .freq-table .status-ok {
-            color: #10b981;
-            font-weight: 600;
-        }
-        .freq-table .status-warning {
-            color: #f59e0b;
-            font-weight: 600;
-        }
-        </style>
-        <table class="freq-table">
+        <div style="background-color: #1e293b; border-radius: 12px; padding: 4px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);">
+        <table style="width: 100%; border-collapse: collapse; background-color: #1e293b;">
             <thead>
-                <tr>
-                    <th>장비명</th>
-                    <th>목표 주파수 (Hz)</th>
-                    <th>실제 주파수 (Hz)</th>
-                    <th>편차 (Hz)</th>
-                    <th>전력 (kW)</th>
-                    <th>상태</th>
+                <tr style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);">
+                    <th style="color: white; padding: 16px 12px; text-align: center; font-size: 1.1rem; font-weight: 700;">장비명</th>
+                    <th style="color: white; padding: 16px 12px; text-align: center; font-size: 1.1rem; font-weight: 700;">목표 주파수 (Hz)</th>
+                    <th style="color: white; padding: 16px 12px; text-align: center; font-size: 1.1rem; font-weight: 700;">실제 주파수 (Hz)</th>
+                    <th style="color: white; padding: 16px 12px; text-align: center; font-size: 1.1rem; font-weight: 700;">편차 (Hz)</th>
+                    <th style="color: white; padding: 16px 12px; text-align: center; font-size: 1.1rem; font-weight: 700;">전력 (kW)</th>
+                    <th style="color: white; padding: 16px 12px; text-align: center; font-size: 1.1rem; font-weight: 700;">상태</th>
                 </tr>
             </thead>
             <tbody>
@@ -1098,31 +1106,40 @@ class EdgeComputerDashboard:
                 target = 0.0
                 deviation = 0.0
                 status = "✅ 정상"
-                status_class = "status-ok"
+                status_color = "#10b981"
             else:
                 target = target_freq[i] if i < len(target_freq) else 48.4
                 deviation = actual_freq - target
                 if abs(deviation) < 2.0:
                     status = "✅ 정상"
-                    status_class = "status-ok"
+                    status_color = "#10b981"
                 else:
                     status = "⚠️ 편차 큼"
-                    status_class = "status-warning"
+                    status_color = "#f59e0b"
+
+            # 편차 색상 (양수: 빨강, 음수: 파랑, 0: 흰색)
+            if deviation > 0:
+                dev_color = "#ef4444"
+            elif deviation < 0:
+                dev_color = "#3b82f6"
+            else:
+                dev_color = "#94a3b8"
 
             html += f"""
-                <tr>
-                    <td class="eq-name">{name}</td>
-                    <td>{target:.1f}</td>
-                    <td>{actual_freq:.1f}</td>
-                    <td>{deviation:+.1f}</td>
-                    <td>{eq['power']:.1f}</td>
-                    <td class="{status_class}">{status}</td>
+                <tr style="border-bottom: 1px solid #334155;">
+                    <td style="background-color: #1e293b; color: #60a5fa; padding: 14px 12px; text-align: center; font-size: 1.05rem; font-weight: 600;">{name}</td>
+                    <td style="background-color: #1e293b; color: #fbbf24; padding: 14px 12px; text-align: center; font-size: 1.05rem; font-weight: 600;">{target:.1f}</td>
+                    <td style="background-color: #1e293b; color: #e2e8f0; padding: 14px 12px; text-align: center; font-size: 1.05rem; font-weight: 500;">{actual_freq:.1f}</td>
+                    <td style="background-color: #1e293b; color: {dev_color}; padding: 14px 12px; text-align: center; font-size: 1.05rem; font-weight: 600;">{deviation:+.1f}</td>
+                    <td style="background-color: #1e293b; color: #a78bfa; padding: 14px 12px; text-align: center; font-size: 1.05rem; font-weight: 500;">{eq['power']:.1f}</td>
+                    <td style="background-color: #1e293b; color: {status_color}; padding: 14px 12px; text-align: center; font-size: 1.05rem; font-weight: 600;">{status}</td>
                 </tr>
             """
 
         html += """
             </tbody>
         </table>
+        </div>
         """
 
         return html
@@ -1396,7 +1413,50 @@ class EdgeComputerDashboard:
             })
 
         detail_df = pd.DataFrame(detail_data)
-        st.dataframe(detail_df, use_container_width=True, height=400)
+
+        # 장비별 상세 분석 테이블 스타일 적용
+        def style_detail_row(row):
+            """장비별 테이블 행 스타일"""
+            equipment_name = row['장비명']
+            # SWP 그룹: 청록색 계열
+            if 'SWP' in equipment_name:
+                bg_color = '#0f4c5c'
+                text_color = '#5eead4'
+            # FWP 그룹: 보라색 계열
+            elif 'FWP' in equipment_name:
+                bg_color = '#4c1d95'
+                text_color = '#c4b5fd'
+            # FAN 그룹: 주황색 계열
+            elif 'FAN' in equipment_name:
+                bg_color = '#7c2d12'
+                text_color = '#fdba74'
+            else:
+                bg_color = '#1e293b'
+                text_color = '#e2e8f0'
+
+            return [f'background-color: {bg_color}; color: {text_color}; font-size: 11px'] * len(row)
+
+        styled_detail_df = detail_df.style.apply(
+            style_detail_row, axis=1
+        ).set_table_styles([
+            {'selector': 'th', 'props': [
+                ('background-color', '#1e40af'),
+                ('color', 'white'),
+                ('font-weight', 'bold'),
+                ('text-align', 'center'),
+                ('padding', '8px'),
+                ('font-size', '11px'),
+                ('border-bottom', '2px solid #3b82f6')
+            ]},
+            {'selector': 'td', 'props': [
+                ('text-align', 'center'),
+                ('padding', '6px'),
+                ('font-size', '11px'),
+                ('border-bottom', '1px solid #334155')
+            ]}
+        ])
+
+        st.write(styled_detail_df.to_html(escape=False), unsafe_allow_html=True)
 
     # ==================== 탭 3: VFD 예방진단 ====================
     def _render_vfd_diagnostics(self):
@@ -1637,9 +1697,16 @@ class EdgeComputerDashboard:
             anomaly_patterns = vfd_detail.get('anomaly_patterns', [])
             if anomaly_patterns:
                 st.markdown("---")
-                st.markdown("#### ⚠️ 이상 패턴")
+                st.markdown("#### ⚠️ 감지된 패턴")
                 for pattern in anomaly_patterns:
-                    st.error(f"🔴 {pattern}")
+                    # 한글 패턴 이름 가져오기
+                    pattern_name = self.anomaly_pattern_names.get(pattern, f"⚠️ {pattern}")
+
+                    # 예측 패턴은 경고로, 실제 문제는 에러로 표시
+                    if "예측" in pattern_name or "주의" in pattern_name:
+                        st.warning(f"🔔 {pattern_name}")
+                    else:
+                        st.error(f"🔴 {pattern_name}")
             else:
                 st.markdown("---")
                 st.success("✅ 이상 패턴 없음 - 정상 운전 중")
@@ -1911,7 +1978,7 @@ class EdgeComputerDashboard:
                 next_maint = f"{(80 - health_score) * 5}일 후"
                 action = "냉각 시스템 점검 권장"
                 status_grade = "caution"
-                anomaly_patterns = ["MOTOR_TEMP_HIGH"]
+                anomaly_patterns = ["MOTOR_TEMP_WARNING"]
             else:
                 warning = "비정상 진동 감지"
                 priority = "높음"
@@ -2001,12 +2068,55 @@ class EdgeComputerDashboard:
             {'센서': 'TX5', '설명': 'COOLER FW Out Temp', '값': f"{sensors.get('TX5', 0):.1f} °C", '상태': '✅ 정상'},
             {'센서': 'TX6', '설명': 'E/R Inside Temp', '값': f"{sensors.get('TX6', 0):.1f} °C", '상태': '✅ 정상'},
             {'센서': 'TX7', '설명': 'E/R Outside Temp', '값': f"{sensors.get('TX7', 0):.1f} °C", '상태': '✅ 정상'},
-            {'센서': 'PX1', '설명': 'CSW PP Disc Press', '값': f"{sensors.get('DPX1', 0):.2f} kg/cm²", '상태': '✅ 정상'},
+            {'센서': 'PX1', '설명': 'CSW PP Disc Press', '값': f"{sensors.get('PX1', 0):.2f} kg/cm²", '상태': '✅ 정상'},
             {'센서': 'PU1', '설명': 'M/E Load', '값': f"{sensors.get('PU1', 0):.1f} %", '상태': '✅ 정상'},
         ]
 
         sensor_df = pd.DataFrame(sensor_data)
-        st.dataframe(sensor_df, use_container_width=True, height=400)
+
+        # 센서 테이블 스타일 적용
+        def style_sensor_row(row):
+            """센서 테이블 행 스타일"""
+            sensor_name = row['센서']
+            # TX 센서: 청록색 계열
+            if sensor_name.startswith('TX'):
+                bg_color = '#0f4c5c'
+                text_color = '#5eead4'
+            # PX 센서: 보라색 계열
+            elif sensor_name.startswith('PX'):
+                bg_color = '#4c1d95'
+                text_color = '#c4b5fd'
+            # PU 센서: 주황색 계열
+            elif sensor_name.startswith('PU'):
+                bg_color = '#7c2d12'
+                text_color = '#fdba74'
+            else:
+                bg_color = '#1e293b'
+                text_color = '#e2e8f0'
+
+            return [f'background-color: {bg_color}; color: {text_color}; font-size: 11px'] * len(row)
+
+        styled_sensor_df = sensor_df.style.apply(
+            style_sensor_row, axis=1
+        ).set_table_styles([
+            {'selector': 'th', 'props': [
+                ('background-color', '#1e40af'),
+                ('color', 'white'),
+                ('font-weight', 'bold'),
+                ('text-align', 'center'),
+                ('padding', '8px'),
+                ('font-size', '11px'),
+                ('border-bottom', '2px solid #3b82f6')
+            ]},
+            {'selector': 'td', 'props': [
+                ('text-align', 'center'),
+                ('padding', '6px'),
+                ('font-size', '11px'),
+                ('border-bottom', '1px solid #334155')
+            ]}
+        ])
+
+        st.write(styled_sensor_df.to_html(escape=False), unsafe_allow_html=True)
 
         st.markdown("---")
 

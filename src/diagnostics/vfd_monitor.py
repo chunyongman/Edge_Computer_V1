@@ -323,9 +323,9 @@ class VFDMonitor:
 
         # 온도 기반
         if motor_temp > self.temp_threshold_motor:
-            patterns.append("MOTOR_OVERTEMP")
+            patterns.append("MOTOR_OVERTEMP")  # 현재 과열
         elif motor_temp > self.temp_threshold_motor - 10:
-            patterns.append("MOTOR_TEMP_HIGH")
+            patterns.append("MOTOR_TEMP_WARNING")  # 예방 경고 (70°C 이상)
 
         if heatsink_temp > self.temp_threshold_heatsink:
             patterns.append("HEATSINK_OVERTEMP")
