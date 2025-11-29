@@ -15,6 +15,7 @@ import io
 import time
 import signal
 import logging
+import threading
 from datetime import datetime
 from typing import Dict, Any, Optional
 from collections import deque
@@ -434,9 +435,24 @@ class EdgeAISystem:
                 self.current_fan_count = target_count
 
 
+def start_api_server_thread():
+    """API 서버를 별도 스레드에서 시작"""
+    try:
+        from api_server import start_api_server
+        start_api_server(host="0.0.0.0", port=8000)
+    except Exception as e:
+        logger.error(f"API 서버 시작 실패: {e}")
+
+
 def main():
     """메인 함수"""
     try:
+        # API 서버를 별도 스레드에서 시작
+        api_thread = threading.Thread(target=start_api_server_thread, daemon=True)
+        api_thread.start()
+        logger.info("[API] Edge Computer API 서버 시작됨 (포트 8000)")
+
+        # Edge AI 시스템 시작
         system = EdgeAISystem()
         system.run()
 

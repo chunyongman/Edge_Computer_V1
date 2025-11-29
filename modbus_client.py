@@ -8,8 +8,8 @@ PLC Simulator와 통신하여 센서 데이터 읽기 및 AI 계산 결과 쓰�
 import time
 from typing import Dict, List, Optional
 
-# pymodbus 2.5.3
-from pymodbus.client.sync import ModbusTcpClient
+# pymodbus 3.x
+from pymodbus.client import ModbusTcpClient
 
 from pymodbus.exceptions import ModbusException
 import config
@@ -66,10 +66,11 @@ class EdgeModbusClient:
             return None
 
         try:
+            # pymodbus 3.x는 slave 파라미터 사용 (unit은 deprecated)
             result = self.client.read_holding_registers(
                 address=config.MODBUS_REGISTERS["SENSORS_START"],
                 count=config.MODBUS_REGISTERS["SENSORS_COUNT"],
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result.isError():
@@ -81,10 +82,10 @@ class EdgeModbusClient:
             # Raw 값을 실제 값으로 변환
             sensors = {
                 "TX1": result.registers[0] / 10.0,   # CSW PP Disc Temp (°C)
-                "TX2": result.registers[1] / 10.0,   # CSW PP Suc Temp (°C)
-                "TX3": result.registers[2] / 10.0,   # FW CLNG In Temp (°C)
-                "TX4": result.registers[3] / 10.0,   # FW CLNG Out Temp (°C)
-                "TX5": result.registers[4] / 10.0,   # ESS Batt Temp (°C)
+                "TX2": result.registers[1] / 10.0,   # No.1 CLR SW Out Temp (°C)
+                "TX3": result.registers[2] / 10.0,   # No.2 CLR SW Out Temp (°C)
+                "TX4": result.registers[3] / 10.0,   # CLR FW In Temp (°C)
+                "TX5": result.registers[4] / 10.0,   # CLR FW Out Temp (°C)
                 "TX6": result.registers[5] / 10.0,   # E/R Inside Temp (°C)
                 "TX7": result.registers[6] / 10.0,   # E/R Outside Temp (°C)
                 "PX1": result.registers[7] / 4608.0,  # CSW PP Disc Press (kg/cm²)
@@ -104,10 +105,11 @@ class EdgeModbusClient:
             return None
 
         try:
+            # pymodbus 3.x는 slave 파라미터 사용 (unit은 deprecated)
             result = self.client.read_holding_registers(
                 address=address,
                 count=count,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result.isError():
@@ -125,10 +127,11 @@ class EdgeModbusClient:
             return False
 
         try:
+            # pymodbus 3.x는 slave 파라미터 사용 (unit은 deprecated)
             result = self.client.write_registers(
                 address=address,
                 values=values,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result.isError():
@@ -150,7 +153,7 @@ class EdgeModbusClient:
             status_result = self.client.read_holding_registers(
                 address=config.MODBUS_REGISTERS["EQUIPMENT_STATUS_START"],
                 count=config.MODBUS_REGISTERS["EQUIPMENT_STATUS_COUNT"],
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if status_result.isError():
@@ -161,7 +164,7 @@ class EdgeModbusClient:
             vfd_result = self.client.read_holding_registers(
                 address=config.MODBUS_REGISTERS["VFD_DATA_START"],
                 count=10 * config.MODBUS_REGISTERS["VFD_DATA_PER_EQUIPMENT"],
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if vfd_result.isError():
@@ -236,7 +239,7 @@ class EdgeModbusClient:
             result = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_TARGET_FREQ_START"],
                 values=values,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result.isError():
@@ -261,7 +264,7 @@ class EdgeModbusClient:
             result1 = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_ENERGY_SAVINGS_START"],
                 values=equipment_savings,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             # 시스템 절감률 (% × 10)
@@ -275,7 +278,7 @@ class EdgeModbusClient:
             result2 = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_SYSTEM_SAVINGS_START"],
                 values=system_savings,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             # 누적 절감량 (kWh × 10) - 오늘/이번달
@@ -287,7 +290,7 @@ class EdgeModbusClient:
             result3 = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_ACCUMULATED_KWH_START"],
                 values=accumulated_kwh,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             # 60Hz 고정 전력 (kW × 10) - total, swp, fwp, fan
@@ -301,7 +304,7 @@ class EdgeModbusClient:
             result4 = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_POWER_60HZ_START"],
                 values=power_60hz,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             # VFD 가변 전력 (kW × 10) - total, swp, fwp, fan
@@ -315,7 +318,7 @@ class EdgeModbusClient:
             result5 = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_POWER_VFD_START"],
                 values=power_vfd,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             # 절감 전력 (kW × 10) - total, swp, fwp, fan
@@ -329,7 +332,7 @@ class EdgeModbusClient:
             result6 = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_SAVINGS_KW_START"],
                 values=savings_kw,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result1.isError() or result2.isError() or result3.isError() or \
@@ -352,7 +355,7 @@ class EdgeModbusClient:
             result = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_VFD_DIAGNOSIS_START"],
                 values=diagnosis_scores,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result.isError():
@@ -389,7 +392,7 @@ class EdgeModbusClient:
             result = self.client.write_coil(
                 address=coil_addr,
                 value=True,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result.isError():
@@ -425,7 +428,7 @@ class EdgeModbusClient:
             result = self.client.write_coil(
                 address=coil_addr,
                 value=True,
-                unit=self.slave_id
+                device_id=self.slave_id
             )
 
             if result.isError():

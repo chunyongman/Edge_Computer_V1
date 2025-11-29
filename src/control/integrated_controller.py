@@ -263,15 +263,11 @@ class IntegratedController:
             # Random Forest로 최적 주파수 예측
             # (실제로는 학습된 모델 사용, 여기서는 간단한 휴리스틱)
 
-            # 기본 주파수 (엔진 부하 기반 - SW와 ER만 사용)
-            if engine_load > 80:
-                base_freq_sw_er = 52.0
-            elif engine_load > 50:
-                base_freq_sw_er = 48.0
-            else:
-                base_freq_sw_er = 45.0
+            # 기본 주파수 (온도 기반 - 엔진 부하는 대수 제어에서만 사용)
+            # SW/ER은 T5/T6 기반으로 rule_based_controller에서 계산
+            base_freq_sw_er = 48.0  # 기본값, 온도 기반으로 조정됨
 
-            # FW는 현재 온도 기반 (엔진 부하 무관)
+            # FW는 T4 온도 기반
             t4_current = temperatures.get('T4', 45.0)
             if t4_current > 46.0:
                 fw_base = 50.0

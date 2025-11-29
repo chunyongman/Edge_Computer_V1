@@ -149,23 +149,60 @@ class RuleBasedController:
                 applied_rules.append("S3_PRESSURE_CONSTRAINT")
                 reason_parts.append(f"[CONSTRAINT] 압력 제약: PX1={pressure:.2f}bar < {self.px1_min}bar (감속 금지)")
         
-        # Rule S4: T5 극한 온도 안전 제어 (극고온/극저온만 개입)
-        # 일반 범위(30~40°C)는 ML이 예측 제어 수행
+        # Rule S4: T5 온도 기반 SW 펌프 주파수 직접 결정
+        # 목표: 35°C, 범위: 30~40°C
         t5_temp = temperatures.get('T5', 35.0)
-        
+
+        # === T5 온도 기반 직접 주파수 결정 ===
+        # 온도가 낮으면 주파수도 낮게, 온도가 높으면 주파수도 높게
+
         if t5_temp > 40.0:  # 극고온 (40°C 초과) - 긴급 상황
             sw_freq = self.freq_max  # 강제 60Hz
             safety_override = True
             applied_rules.append("S4_T5_EMERGENCY_HIGH")
             reason_parts.append(f"[EMERGENCY] T5={t5_temp:.1f}°C > 40°C → 강제 60Hz")
-        
+
         elif t5_temp < 30.0:  # 극저온 (30°C 미만) - 긴급 상황
             sw_freq = self.freq_min  # 강제 40Hz
             safety_override = True
             applied_rules.append("S4_T5_EMERGENCY_LOW")
             reason_parts.append(f"[EMERGENCY] T5={t5_temp:.1f}°C < 30°C → 강제 40Hz")
-        
-        # 일반 범위 (30~40°C): ML이 예측 제어 수행 → Safety Layer 통과
+
+        else:
+            # === 일반 범위 (30~40°C): T5 온도 기반 직접 주파수 결정 ===
+            if t5_temp >= 38.0:  # 38~40°C: 고온 경고
+                target_sw_freq = 56.0
+                applied_rules.append("S4_T5_HIGH_WARNING")
+                reason_parts.append(f"[경고] T5={t5_temp:.1f}°C (고온) → 목표 {target_sw_freq:.0f}Hz")
+            elif t5_temp >= 36.0:  # 36~38°C: 약간 높음
+                target_sw_freq = 52.0
+                applied_rules.append("S4_T5_SLIGHTLY_HIGH")
+                reason_parts.append(f"[주의] T5={t5_temp:.1f}°C (약간 높음) → 목표 {target_sw_freq:.0f}Hz")
+            elif t5_temp >= 34.0:  # 34~36°C: 정상 (목표 35°C 포함)
+                target_sw_freq = 48.0
+                applied_rules.append("S4_T5_NORMAL")
+                reason_parts.append(f"[정상] T5={t5_temp:.1f}°C → 목표 {target_sw_freq:.0f}Hz")
+            elif t5_temp >= 32.0:  # 32~34°C: 약간 낮음
+                target_sw_freq = 44.0
+                applied_rules.append("S4_T5_SLIGHTLY_LOW")
+                reason_parts.append(f"[절감] T5={t5_temp:.1f}°C (낮음) → 목표 {target_sw_freq:.0f}Hz")
+            else:  # 30~32°C: 저온
+                target_sw_freq = 40.0
+                applied_rules.append("S4_T5_LOW")
+                reason_parts.append(f"[최대절감] T5={t5_temp:.1f}°C (저온) → 목표 {target_sw_freq:.0f}Hz")
+
+            # 변화율 제한 적용 (급격한 변화 방지)
+            freq_diff = target_sw_freq - self.prev_sw_freq
+            if abs(freq_diff) > self.max_change_per_cycle:
+                if freq_diff > 0:
+                    sw_freq = self.prev_sw_freq + self.max_change_per_cycle
+                else:
+                    sw_freq = self.prev_sw_freq - self.max_change_per_cycle
+            else:
+                sw_freq = target_sw_freq
+
+            sw_freq = max(self.freq_min, min(self.freq_max, sw_freq))
+            safety_override = True  # T5 제어는 Safety Layer에서 처리
 
         # Rule S6: T4 극한 온도 안전 제어 (극저온만 개입)
         # 정상 범위(38~48°C)는 ML이 예측 제어 수행
@@ -182,80 +219,64 @@ class RuleBasedController:
         # Rule S5: T6 온도 피드백 제어 (Safety Layer + ML 통합)
         # 목표: 43°C, 극한: 47°C, 갭: 4.0°C
         t6_temp = temperatures.get('T6', 43.0)
-        
+
         # ML 예측값 가져오기 (5분 후 T6 온도 예측)
         if ml_prediction and 't6_pred_5min' in ml_prediction:
             t6_pred_5min = ml_prediction['t6_pred_5min']
         else:
             t6_pred_5min = t6_temp
-        
+
         # === Safety Layer: 극한 온도 강제 제어 ===
         if t6_temp >= self.t6_emergency:  # 47°C 이상
             er_freq = self.freq_max  # 강제 60Hz
             safety_override = True
             applied_rules.append("S5_T6_EMERGENCY")
             reason_parts.append(f"[EMERGENCY] T6={t6_temp:.1f}°C ≥ {self.t6_emergency}°C → 강제 60Hz")
-        
+
         else:
-            # === 피드백 제어: 온도 오차 기반 주파수 조정 ===
-            
-            # 1. 현재 온도 오차
-            error_current = t6_temp - self.t6_target
-            
-            # 2. 예측 온도 오차
-            error_predicted = t6_pred_5min - self.t6_target
-            
-            # 3. 가중치 동적 조정
-            if abs(error_predicted) > 2.0:
-                # 큰 변화 예측 → 예측 중시
-                w_current, w_predicted = 0.2, 0.8
-            elif abs(error_current) > 1.0:
-                # 현재 이미 벗어남 → 현재 중시
-                w_current, w_predicted = 0.6, 0.4
+            # === T6 온도 기반 직접 주파수 결정 ===
+            # 온도가 낮으면 주파수도 낮게, 온도가 높으면 주파수도 높게
+            # 이전 주파수(prev_er_freq)에 의존하지 않고 현재 온도로 직접 결정
+
+            # T6 온도 범위에 따른 목표 주파수 결정
+            if t6_temp >= 46.0:  # 46~47°C: 고온 경고
+                target_er_freq = 58.0
+                applied_rules.append("S5_T6_HIGH_WARNING")
+                reason_parts.append(f"[경고] T6={t6_temp:.1f}°C (고온) → 목표 {target_er_freq:.0f}Hz")
+            elif t6_temp >= 44.0:  # 44~46°C: 약간 높음
+                target_er_freq = 52.0
+                applied_rules.append("S5_T6_SLIGHTLY_HIGH")
+                reason_parts.append(f"[주의] T6={t6_temp:.1f}°C (약간 높음) → 목표 {target_er_freq:.0f}Hz")
+            elif t6_temp >= 42.0:  # 42~44°C: 정상 (목표 43°C 포함)
+                target_er_freq = 48.0
+                applied_rules.append("S5_T6_NORMAL")
+                reason_parts.append(f"[정상] T6={t6_temp:.1f}°C → 목표 {target_er_freq:.0f}Hz")
+            elif t6_temp >= 40.0:  # 40~42°C: 약간 낮음
+                target_er_freq = 44.0
+                applied_rules.append("S5_T6_SLIGHTLY_LOW")
+                reason_parts.append(f"[절감] T6={t6_temp:.1f}°C (낮음) → 목표 {target_er_freq:.0f}Hz")
+            else:  # 40°C 미만: 저온
+                target_er_freq = 40.0
+                applied_rules.append("S5_T6_LOW")
+                reason_parts.append(f"[최대절감] T6={t6_temp:.1f}°C (저온) → 목표 {target_er_freq:.0f}Hz")
+
+            # 변화율 제한 적용 (급격한 변화 방지)
+            freq_diff = target_er_freq - self.prev_er_freq
+            if abs(freq_diff) > self.max_change_per_cycle:
+                if freq_diff > 0:
+                    er_freq = self.prev_er_freq + self.max_change_per_cycle
+                else:
+                    er_freq = self.prev_er_freq - self.max_change_per_cycle
             else:
-                # 정상 범위 → 균형
-                w_current, w_predicted = 0.4, 0.6
-            
-            # 4. 통합 오차
-            error_combined = w_current * error_current + w_predicted * error_predicted
-            
-            # 5. 비례 제어 (P-Control)
-            adjustment = self.kp_t6 * error_combined
-            
-            # 6. 변화율 제한
-            adjustment = max(-self.max_change_per_cycle, min(self.max_change_per_cycle, adjustment))
-            
-            # 7. 새 주파수 계산
-            er_freq = self.prev_er_freq + adjustment
+                er_freq = target_er_freq
+
             er_freq = max(self.freq_min, min(self.freq_max, er_freq))
-            
-            # 8. 제어 모드 결정
-            if abs(error_combined) < 0.3:
-                applied_rules.append("S5_T6_STABLE")
-                reason_parts.append(f"[안정] T6={t6_temp:.1f}°C (목표 {self.t6_target}°C) → {er_freq:.0f}Hz")
-                # 40Hz에 도달하면 대수 제어 허용
-                if er_freq <= self.freq_min:
-                    self.prev_sw_freq = sw_freq
-                    self.prev_fw_freq = fw_freq
-                    self.prev_er_freq = er_freq
-                    safety_override = False
-                else:
-                    safety_override = True
-            elif error_combined > 0:
-                applied_rules.append("S5_T6_COOLING")
-                reason_parts.append(f"[냉각] T6={t6_temp:.1f}°C → 예측 {t6_pred_5min:.1f}°C | {adjustment:+.1f}Hz → {er_freq:.0f}Hz")
-                safety_override = True
+
+            # 제어 모드 결정 (대수 제어 허용 여부)
+            if er_freq <= self.freq_min:
+                safety_override = False  # 40Hz에서 대수 제어 허용
             else:
-                applied_rules.append("S5_T6_ENERGY_SAVING")
-                reason_parts.append(f"[절감] T6={t6_temp:.1f}°C → 예측 {t6_pred_5min:.1f}°C | {adjustment:+.1f}Hz → {er_freq:.0f}Hz")
-                # 40Hz에 도달하면 대수 제어 허용
-                if er_freq <= self.freq_min:
-                    self.prev_sw_freq = sw_freq
-                    self.prev_fw_freq = fw_freq
-                    self.prev_er_freq = er_freq
-                    safety_override = False
-                else:
-                    safety_override = True
+                safety_override = True
         
         # 안전 계층에서 처리되었으면 즉시 반환
         if safety_override:
@@ -331,24 +352,9 @@ class RuleBasedController:
         
         # Rule R3: (T6 제어는 Safety Layer S5로 이동됨)
         
-        # Rule R4: 엔진 부하 기반 보정
-        load_category = self._get_load_category(engine_load)
-        
-        if load_category == LoadCategory.HIGH:  # 70-100%
-            correction = 1.1  # 10% 증속
-            sw_freq = min(self.freq_max, sw_freq * correction)
-            fw_freq = min(self.freq_max, fw_freq * correction)
-            er_freq = min(self.freq_max, er_freq * correction)
-            applied_rules.append("R4_HIGH_LOAD")
-            reason_parts.append(f"고부하 ({engine_load:.0f}%) → 10% 증속")
-        elif load_category == LoadCategory.LOW:  # 0-30%
-            correction = 0.95  # 5% 감속
-            sw_freq = max(self.freq_min, sw_freq * correction)
-            fw_freq = max(self.freq_min, fw_freq * correction)
-            er_freq = max(self.freq_min, er_freq * correction)
-            applied_rules.append("R4_LOW_LOAD")
-            reason_parts.append(f"저부하 ({engine_load:.0f}%) → 5% 감속")
-        
+        # Rule R4: (제거됨 - 엔진 부하는 온도에 이미 반영되므로 이중 적용 방지)
+        # 엔진 부하는 대수 제어(count_controller)에서만 사용
+
         # Rule R5: 해수 온도 기반 보정
         t1_temp = temperatures.get('T1', 28.0)
         sw_category = self._get_seawater_category(t1_temp)
@@ -497,7 +503,7 @@ class RuleBasedController:
                 "  ├─ Phase 1: 에너지 절감 모드 (T4<48°C & 예측<48°C → 최대한 40Hz 운전)",
                 "  ├─ Phase 2: 선제 대응 모드 (예측≥48°C → 온도 상승 억제 증속)",
                 "  └─ Phase 3: 긴급 모드 (T4≥48°C → Safety Layer S2 강제 60Hz)",
-                "R4: 엔진 부하 기반 보정",
+                "R4: (제거됨 - 엔진 부하는 온도에 반영되므로 대수 제어에서만 사용)",
                 "R5: 해수 온도 기반 보정",
                 "R6: 히스테리시스 (떨림 방지)"
             ],

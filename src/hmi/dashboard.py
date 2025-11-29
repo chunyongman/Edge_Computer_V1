@@ -2062,10 +2062,10 @@ class EdgeComputerDashboard:
         sensors = plc_data.get('sensors', {})
         sensor_data = [
             {'센서': 'TX1', '설명': 'CSW PP Disc Temp', '값': f"{sensors.get('TX1', 0):.1f} °C", '상태': '✅ 정상'},
-            {'센서': 'TX2', '설명': 'No.1 COOLER SW Out Temp', '값': f"{sensors.get('TX2', 0):.1f} °C", '상태': '✅ 정상'},
-            {'센서': 'TX3', '설명': 'No.2 COOLER SW Out Temp', '값': f"{sensors.get('TX3', 0):.1f} °C", '상태': '✅ 정상'},
-            {'센서': 'TX4', '설명': 'COOLER FW In Temp', '값': f"{sensors.get('TX4', 0):.1f} °C", '상태': '✅ 정상'},
-            {'센서': 'TX5', '설명': 'COOLER FW Out Temp', '값': f"{sensors.get('TX5', 0):.1f} °C", '상태': '✅ 정상'},
+            {'센서': 'TX2', '설명': 'No.1 CLR SW Out Temp', '값': f"{sensors.get('TX2', 0):.1f} °C", '상태': '✅ 정상'},
+            {'센서': 'TX3', '설명': 'No.2 CLR SW Out Temp', '값': f"{sensors.get('TX3', 0):.1f} °C", '상태': '✅ 정상'},
+            {'센서': 'TX4', '설명': 'CLR FW In Temp', '값': f"{sensors.get('TX4', 0):.1f} °C", '상태': '✅ 정상'},
+            {'센서': 'TX5', '설명': 'CLR FW Out Temp', '값': f"{sensors.get('TX5', 0):.1f} °C", '상태': '✅ 정상'},
             {'센서': 'TX6', '설명': 'E/R Inside Temp', '값': f"{sensors.get('TX6', 0):.1f} °C", '상태': '✅ 정상'},
             {'센서': 'TX7', '설명': 'E/R Outside Temp', '값': f"{sensors.get('TX7', 0):.1f} °C", '상태': '✅ 정상'},
             {'센서': 'PX1', '설명': 'CSW PP Disc Press', '값': f"{sensors.get('PX1', 0):.2f} kg/cm²", '상태': '✅ 정상'},
@@ -2168,16 +2168,20 @@ class EdgeComputerDashboard:
         equipment = plc_data.get('equipment', [])
 
         for eq in equipment:
-            with st.expander(f"**{eq['name']}** - {eq['frequency']:.1f} Hz, {eq['power']:.1f} kW"):
+            freq = eq.get('frequency', 0.0)
+            power = eq.get('power', 0.0)
+            avg_power = eq.get('avg_power', power)  # avg_power가 없으면 power 사용
+            run_hours = eq.get('run_hours', 0)
+            with st.expander(f"**{eq['name']}** - {freq:.1f} Hz, {power:.1f} kW"):
                 col1, col2, col3 = st.columns(3)
 
                 with col1:
-                    st.metric("주파수", f"{eq['frequency']:.1f} Hz")
-                    st.metric("전력", f"{eq['power']:.1f} kW")
+                    st.metric("주파수", f"{freq:.1f} Hz")
+                    st.metric("전력", f"{power:.1f} kW")
 
                 with col2:
-                    st.metric("평균 전력", f"{eq['avg_power']:.1f} kW")
-                    st.metric("운전 시간", f"{eq['run_hours']:,} h")
+                    st.metric("평균 전력", f"{avg_power:.1f} kW")
+                    st.metric("운전 시간", f"{run_hours:,} h")
 
                 with col3:
                     running = eq.get('running', False) or eq.get('running_fwd', False) or eq.get('running_bwd', False)
@@ -3534,7 +3538,7 @@ class EdgeComputerDashboard:
                 client = st.session_state.modbus_client
                 if client.connected:
                     try:
-                        result = client.client.write_registers(write_addr, [write_value], unit=client.slave_id)
+                        result = client.client.write_registers(write_addr, [write_value], device_id=client.slave_id)
                         if not result.isError():
                             st.success(f"✅ 쓰기 성공! 레지스터 {write_addr}에 {write_value} 저장됨")
                         else:
@@ -3558,10 +3562,10 @@ class EdgeComputerDashboard:
                     'sensors': plc_data.get('sensors', {}),
                     'equipment': [
                         {
-                            'name': eq['name'],
-                            'frequency': eq['frequency'],
-                            'power': eq['power'],
-                            'run_hours': eq['run_hours']
+                            'name': eq.get('name', 'Unknown'),
+                            'frequency': eq.get('frequency', 0.0),
+                            'power': eq.get('power', 0.0),
+                            'run_hours': eq.get('run_hours', 0)
                         }
                         for eq in plc_data.get('equipment', [])
                     ]
@@ -3605,7 +3609,9 @@ class EdgeComputerDashboard:
                         'running_fwd': False,
                         'running_bwd': False,
                         'frequency': 0.0,
-                        'power': 0.0
+                        'power': 0.0,
+                        'avg_power': 0.0,
+                        'run_hours': 0
                     })
                 for i in range(3):
                     equipment.append({
@@ -3614,7 +3620,9 @@ class EdgeComputerDashboard:
                         'running_fwd': False,
                         'running_bwd': False,
                         'frequency': 0.0,
-                        'power': 0.0
+                        'power': 0.0,
+                        'avg_power': 0.0,
+                        'run_hours': 0
                     })
                 for i in range(4):
                     equipment.append({
@@ -3623,7 +3631,9 @@ class EdgeComputerDashboard:
                         'running_fwd': False,
                         'running_bwd': False,
                         'frequency': 0.0,
-                        'power': 0.0
+                        'power': 0.0,
+                        'avg_power': 0.0,
+                        'run_hours': 0
                     })
 
             # AI 목표 주파수 읽기 (레지스터 5000-5009)

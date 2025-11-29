@@ -201,10 +201,10 @@ def generate_test_scenario(scenario_id: int) -> dict:
 
     return {
         'TX1': random.uniform(23.0, 28.0),   # CSW PP Disc Temp
-        'TX2': random.uniform(25.0, 30.0),   # CSW PP Suc Temp
-        'TX3': random.uniform(24.0, 29.0),   # FW CLNG In Temp
-        'TX4': random.uniform(43.0, 48.0),   # FW CLNG Out Temp (FW In)
-        'TX5': random.uniform(33.0, 38.0),   # ESS Batt Temp (FW Out)
+        'TX2': random.uniform(25.0, 30.0),   # No.1 CLR SW Out Temp
+        'TX3': random.uniform(24.0, 29.0),   # No.2 CLR SW Out Temp
+        'TX4': random.uniform(43.0, 48.0),   # CLR FW In Temp
+        'TX5': random.uniform(33.0, 38.0),   # CLR FW Out Temp
         'TX6': random.uniform(38.0, 48.0),   # E/R Inside Temp
         'TX7': random.uniform(25.0, 35.0),   # E/R Outside Temp
         'PX1': random.uniform(2.0, 2.5),     # CSW PP Disc Press
