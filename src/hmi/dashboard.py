@@ -1160,28 +1160,30 @@ class EdgeComputerDashboard:
 
         for i, eq in enumerate(equipment):
             freq = eq['frequency']
-            power = eq['power']
             running = eq.get('running', False) or eq.get('running_fwd', False) or eq.get('running_bwd', False)
 
             if not running:
                 continue
 
-            # 60Hz 기준 전력 (P = P_rated × (f/60)^3)
+            # 큐빅 법칙 적용: P = P_rated × (f/60)³
             if i < 3:  # SWP
                 rated = config.MOTOR_CAPACITY['SWP']
                 power_60hz = rated
+                power_vfd = rated * ((freq / 60) ** 3) if freq > 0 else 0
                 swp_power_60hz += power_60hz
-                swp_power_vfd += power
+                swp_power_vfd += power_vfd
             elif i < 6:  # FWP
                 rated = config.MOTOR_CAPACITY['FWP']
                 power_60hz = rated
+                power_vfd = rated * ((freq / 60) ** 3) if freq > 0 else 0
                 fwp_power_60hz += power_60hz
-                fwp_power_vfd += power
+                fwp_power_vfd += power_vfd
             else:  # FAN
                 rated = config.MOTOR_CAPACITY['FAN']
                 power_60hz = rated
+                power_vfd = rated * ((freq / 60) ** 3) if freq > 0 else 0
                 fan_power_60hz += power_60hz
-                fan_power_vfd += power
+                fan_power_vfd += power_vfd
 
         # 절감량 및 절감률 계산
         swp_savings = swp_power_60hz - swp_power_vfd
@@ -1399,14 +1401,16 @@ class EdgeComputerDashboard:
                 rated = config.MOTOR_CAPACITY['FAN']
 
             power_60hz = rated if running else 0
-            savings_kw = power_60hz - power if running else 0
+            # 큐빅 법칙 적용: P = P_rated × (f/60)³
+            power_vfd = rated * ((freq / 60) ** 3) if freq > 0 else 0
+            savings_kw = power_60hz - power_vfd if running else 0
             savings_ratio = (savings_kw / power_60hz * 100) if power_60hz > 0 else 0
 
             detail_data.append({
                 '장비명': name,
                 '운전 상태': '✅ 운전중' if running else '⚪ 정지',
                 '주파수 (Hz)': f"{freq:.1f}",
-                '실제 전력 (kW)': f"{power:.1f}",
+                '실제 전력 (kW)': f"{power_vfd:.1f}",
                 '60Hz 전력 (kW)': f"{power_60hz:.1f}",
                 '절감 전력 (kW)': f"{savings_kw:.1f}",
                 '절감률 (%)': f"{savings_ratio:.1f}"

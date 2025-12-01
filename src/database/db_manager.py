@@ -179,6 +179,22 @@ class DatabaseManager:
                 )
             """)
 
+            # 8. 운전 이력 테이블 (장비별/일별 운전 기록)
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS operation_history (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    equipment_name TEXT NOT NULL,
+                    date TEXT NOT NULL,
+                    runtime_hours REAL DEFAULT 0,
+                    start_count INTEGER DEFAULT 0,
+                    energy_kwh REAL DEFAULT 0,
+                    saved_kwh REAL DEFAULT 0,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(equipment_name, date)
+                )
+            """)
+
             # 인덱스 생성
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_alarm_equipment ON alarm_history(equipment_id)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_alarm_occurred ON alarm_history(occurred_at)")
@@ -187,6 +203,8 @@ class DatabaseManager:
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_vfd_diag_timestamp ON vfd_diagnostic_history(timestamp)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_trend_min_vfd ON trend_data_minute(vfd_id, timestamp)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_trend_hour_vfd ON trend_data_hour(vfd_id, timestamp)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_operation_equipment ON operation_history(equipment_name)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_operation_date ON operation_history(date)")
 
             logger.info("✅ 데이터베이스 테이블 초기화 완료")
 
@@ -617,6 +635,79 @@ class DatabaseManager:
                     d['parameters'] = json.loads(d['parameters'])
                 return d
             return None
+
+    # ==================== 운전 이력 ====================
+
+    def upsert_operation_record(
+        self,
+        equipment_name: str,
+        date: str,
+        runtime_hours: float = 0,
+        start_count: int = 0,
+        energy_kwh: float = 0,
+        saved_kwh: float = 0
+    ) -> int:
+        """운전 이력 추가/업데이트 (UPSERT)"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            # 기존 레코드 확인
+            cursor.execute("""
+                SELECT id, runtime_hours, start_count, energy_kwh, saved_kwh
+                FROM operation_history
+                WHERE equipment_name = ? AND date = ?
+            """, (equipment_name, date))
+            existing = cursor.fetchone()
+
+            if existing:
+                # 기존 값에 누적
+                cursor.execute("""
+                    UPDATE operation_history
+                    SET runtime_hours = runtime_hours + ?,
+                        start_count = start_count + ?,
+                        energy_kwh = energy_kwh + ?,
+                        saved_kwh = saved_kwh + ?,
+                        updated_at = CURRENT_TIMESTAMP
+                    WHERE equipment_name = ? AND date = ?
+                """, (runtime_hours, start_count, energy_kwh, saved_kwh, equipment_name, date))
+                return existing['id']
+            else:
+                # 새 레코드 생성
+                cursor.execute("""
+                    INSERT INTO operation_history
+                    (equipment_name, date, runtime_hours, start_count, energy_kwh, saved_kwh)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, (equipment_name, date, runtime_hours, start_count, energy_kwh, saved_kwh))
+                return cursor.lastrowid
+
+    def get_operation_records(
+        self,
+        equipment_name: str = None,
+        start_date: str = None,
+        end_date: str = None,
+        limit: int = 100
+    ) -> List[Dict]:
+        """운전 이력 조회"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            query = "SELECT * FROM operation_history WHERE 1=1"
+            params = []
+
+            if equipment_name:
+                query += " AND equipment_name = ?"
+                params.append(equipment_name)
+            if start_date:
+                query += " AND date >= ?"
+                params.append(start_date)
+            if end_date:
+                query += " AND date <= ?"
+                params.append(end_date)
+
+            query += f" ORDER BY date DESC, equipment_name LIMIT {limit}"
+
+            cursor.execute(query, params)
+            return [dict(row) for row in cursor.fetchall()]
 
     # ==================== 유틸리티 ====================
 

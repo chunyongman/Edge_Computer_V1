@@ -17,7 +17,7 @@ import signal
 import logging
 import threading
 from datetime import datetime
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from collections import deque
 
 # Windows 콘솔 인코딩 문제 해결
@@ -252,7 +252,7 @@ class EdgeAISystem:
                 self._apply_fan_count_control(control_decision.er_fan_count)
 
                 # 에너지 절감 데이터 쓰기
-                savings_for_plc = self._format_savings_for_plc(savings_data)
+                savings_for_plc = self._format_savings_for_plc(savings_data, equipment)
                 self.plc.write_energy_savings(savings_for_plc)
 
                 # VFD 진단 점수 쓰기
@@ -302,12 +302,13 @@ class EdgeAISystem:
             decision.er_fan_freq    # FAN4
         ]
 
-    def _format_savings_for_plc(self, savings_data: Dict) -> Dict:
+    def _format_savings_for_plc(self, savings_data: Dict, equipment: List[Dict] = None) -> Dict:
         """
         AI 계산기 출력을 PLC 쓰기 포맷으로 변환
 
         Args:
             savings_data: ai_calculator.calculate_energy_savings() 출력
+            equipment: 개별 장비 데이터 리스트 (주파수 포함)
 
         Returns:
             PLC write_energy_savings() 형식
@@ -321,6 +322,23 @@ class EdgeAISystem:
         swp = realtime.get("swp", {})
         fwp = realtime.get("fwp", {})
         fan = realtime.get("fan", {})
+
+        # 개별 장비 전력 계산 (큐빅 법칙: P = P_rated × (f/60)³)
+        # 정격 용량: SWP=132kW, FWP=75kW, FAN=54.3kW
+        rated_powers = [132, 132, 132, 75, 75, 75, 54.3, 54.3, 54.3, 54.3]
+        equipment_powers = []
+
+        if equipment:
+            for i, eq in enumerate(equipment):
+                freq = eq.get("frequency", 0)
+                running = eq.get("running", False) or eq.get("running_fwd", False) or eq.get("running_bwd", False)
+                if running and freq > 0:
+                    power = rated_powers[i] * (freq / 60) ** 3
+                else:
+                    power = 0
+                equipment_powers.append(power)
+        else:
+            equipment_powers = [0] * 10
 
         return {
             "total_ratio": total.get("savings_rate", 0.0),
@@ -338,6 +356,17 @@ class EdgeAISystem:
             "equipment_7": fan.get("savings_kw", 0.0) / 4,  # FAN2
             "equipment_8": fan.get("savings_kw", 0.0) / 4,  # FAN3
             "equipment_9": fan.get("savings_kw", 0.0) / 4,  # FAN4
+            # 개별 장비 실제 전력 (kW) - 큐빅 법칙으로 계산
+            "equipment_power_0": equipment_powers[0],  # SWP1
+            "equipment_power_1": equipment_powers[1],  # SWP2
+            "equipment_power_2": equipment_powers[2],  # SWP3
+            "equipment_power_3": equipment_powers[3],  # FWP1
+            "equipment_power_4": equipment_powers[4],  # FWP2
+            "equipment_power_5": equipment_powers[5],  # FWP3
+            "equipment_power_6": equipment_powers[6],  # FAN1
+            "equipment_power_7": equipment_powers[7],  # FAN2
+            "equipment_power_8": equipment_powers[8],  # FAN3
+            "equipment_power_9": equipment_powers[9],  # FAN4
             # 누적 절감량 (kWh)
             "today_kwh": today.get("total_kwh_saved", 0.0),
             "month_kwh": month.get("total_kwh_saved", 0.0),

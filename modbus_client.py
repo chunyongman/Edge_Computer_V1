@@ -335,8 +335,17 @@ class EdgeModbusClient:
                 device_id=self.slave_id
             )
 
+            # 개별 장비 실제 전력 (kW × 10) - 10개 장비
+            equipment_power = [int(savings_data.get(f"equipment_power_{i}", 0) * 10) for i in range(10)]
+
+            result7 = self.client.write_registers(
+                address=config.MODBUS_REGISTERS["AI_EQUIPMENT_POWER_START"],
+                values=equipment_power,
+                device_id=self.slave_id
+            )
+
             if result1.isError() or result2.isError() or result3.isError() or \
-               result4.isError() or result5.isError() or result6.isError():
+               result4.isError() or result5.isError() or result6.isError() or result7.isError():
                 print(f"[Edge AI] [ERROR] 에너지 절감 데이터 쓰기 실패")
                 return False
 

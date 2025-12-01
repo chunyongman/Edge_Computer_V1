@@ -55,6 +55,9 @@ MODBUS_REGISTERS = {
     # VFD 이상 징후 관리 (Read/Write)
     "VFD_ANOMALY_ACKNOWLEDGED_START": 5600,  # 이상 징후 확인 상태 (0/1), 10개
     "VFD_ANOMALY_ACTIVE_START": 5610,        # 활성 이상 징후 (0/1), 10개
+
+    # 개별 장비 전력 (Write)
+    "AI_EQUIPMENT_POWER_START": 5620,        # 개별 장비 실제 전력 (kW × 10), 10개
 }
 
 # AI 목표 주파수 기본값 (Hz)

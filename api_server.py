@@ -76,10 +76,11 @@ class EventCreate(BaseModel):
 class OperationRecordCreate(BaseModel):
     """운전 이력 생성 요청"""
     equipment_name: str
-    runtime_hours: float
-    start_count: int
-    energy_kwh: float
-    saved_kwh: float
+    date: str  # YYYY-MM-DD 형식
+    runtime_hours: float = 0
+    start_count: int = 0
+    energy_kwh: float = 0
+    saved_kwh: float = 0
 
 
 # ===== API 엔드포인트 =====
@@ -309,56 +310,27 @@ async def get_operations(
     equipment_name: Optional[str] = None,
     limit: int = Query(100, ge=1, le=1000)
 ):
-    """운전 이력 조회"""
+    """운전 이력 조회 (장비별/일별 운전 기록)"""
     db = get_db()
 
-    # control_data 테이블에서 조회
-    with db.get_connection() as conn:
-        cursor = conn.cursor()
-
-        query = """
-            SELECT * FROM control_data
-            WHERE 1=1
-        """
-        params = []
-
-        if start_date:
-            query += " AND timestamp >= ?"
-            params.append(start_date)
-        if end_date:
-            query += " AND timestamp <= ?"
-            params.append(end_date)
-
-        query += f" ORDER BY timestamp DESC LIMIT {limit}"
-
-        try:
-            cursor.execute(query, params)
-            rows = cursor.fetchall()
-        except Exception:
-            # 테이블이 없으면 빈 배열 반환
-            rows = []
-
-    if not rows:
-        return {
-            "success": True,
-            "data": [],
-            "count": 0,
-            "timestamp": datetime.now().isoformat()
-        }
+    # operation_history 테이블에서 조회
+    records = db.get_operation_records(
+        equipment_name=equipment_name,
+        start_date=start_date,
+        end_date=end_date,
+        limit=limit
+    )
 
     # HMI 형식으로 변환
     formatted = []
-    for row in rows:
-        row_dict = dict(row)
+    for record in records:
         formatted.append({
-            "timestamp": row_dict.get("timestamp"),
-            "sw_pump_count": row_dict.get("sw_pump_count"),
-            "sw_pump_freq": row_dict.get("sw_pump_freq"),
-            "fw_pump_count": row_dict.get("fw_pump_count"),
-            "fw_pump_freq": row_dict.get("fw_pump_freq"),
-            "er_fan_count": row_dict.get("er_fan_count"),
-            "er_fan_freq": row_dict.get("er_fan_freq"),
-            "control_mode": row_dict.get("control_mode")
+            "equipment_name": record.get("equipment_name"),
+            "date": record.get("date"),
+            "runtime_hours": record.get("runtime_hours", 0),
+            "start_count": record.get("start_count", 0),
+            "energy_kwh": record.get("energy_kwh", 0),
+            "saved_kwh": record.get("saved_kwh", 0)
         })
 
     return {
@@ -371,21 +343,20 @@ async def get_operations(
 
 @app.post("/api/operations")
 async def create_operation(record: OperationRecordCreate):
-    """운전 이력 생성 (HMI에서 호출)"""
+    """운전 이력 생성/업데이트 (HMI에서 호출)"""
     db = get_db()
 
-    db.insert_event(
-        event_type="control",
-        source="HMI",
-        description=f"{record.equipment_name} 운전 기록",
-        details={
-            "equipment_name": record.equipment_name,
-            "runtime_hours": record.runtime_hours,
-            "start_count": record.start_count,
-            "energy_kwh": record.energy_kwh,
-            "saved_kwh": record.saved_kwh
-        }
+    # operation_history 테이블에 저장 (UPSERT)
+    db.upsert_operation_record(
+        equipment_name=record.equipment_name,
+        date=record.date,
+        runtime_hours=record.runtime_hours,
+        start_count=record.start_count,
+        energy_kwh=record.energy_kwh,
+        saved_kwh=record.saved_kwh
     )
+
+    logger.info(f"운전 이력 저장: {record.equipment_name} ({record.date})")
 
     return {"success": True}
 
