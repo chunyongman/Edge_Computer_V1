@@ -160,16 +160,35 @@ class EdgeModbusClient:
                 print(f"[Edge AI] [ERROR] 장비 상태 읽기 실패: {status_result}")
                 return None
 
-            # VFD 데이터 읽기 (레지스터 160-238, 10개 장비 × 8 레지스터)
-            vfd_result = self.client.read_holding_registers(
-                address=config.MODBUS_REGISTERS["VFD_DATA_START"],
-                count=10 * config.MODBUS_REGISTERS["VFD_DATA_PER_EQUIPMENT"],
+            # VFD 데이터 읽기 (레지스터 160-359, 10개 장비 × 20 레지스터)
+            # Modbus는 한 번에 최대 125개 레지스터만 읽을 수 있으므로 두 번에 나눠 읽기
+            vfd_start = config.MODBUS_REGISTERS["VFD_DATA_START"]
+            regs_per_equip = config.MODBUS_REGISTERS["VFD_DATA_PER_EQUIPMENT"]
+
+            # 첫 번째 읽기: 장비 0-5 (SWP1-3, FWP1-3) = 120 레지스터
+            vfd_result1 = self.client.read_holding_registers(
+                address=vfd_start,
+                count=6 * regs_per_equip,  # 120 레지스터
                 device_id=self.slave_id
             )
 
-            if vfd_result.isError():
-                print(f"[Edge AI] [ERROR] VFD 데이터 읽기 실패: {vfd_result}")
+            if vfd_result1.isError():
+                print(f"[Edge AI] [ERROR] VFD 데이터 읽기 실패 (파트1): {vfd_result1}")
                 return None
+
+            # 두 번째 읽기: 장비 6-9 (FAN1-4) = 80 레지스터
+            vfd_result2 = self.client.read_holding_registers(
+                address=vfd_start + 6 * regs_per_equip,
+                count=4 * regs_per_equip,  # 80 레지스터
+                device_id=self.slave_id
+            )
+
+            if vfd_result2.isError():
+                print(f"[Edge AI] [ERROR] VFD 데이터 읽기 실패 (파트2): {vfd_result2}")
+                return None
+
+            # 두 결과 합치기
+            vfd_registers = vfd_result1.registers + vfd_result2.registers
 
             # 장비 데이터 파싱
             equipment_list = []
@@ -178,7 +197,36 @@ class EdgeModbusClient:
 
             for i, eq_name in enumerate(config.EQUIPMENT_LIST):
                 vfd_offset = i * config.MODBUS_REGISTERS["VFD_DATA_PER_EQUIPMENT"]
-                vfd_data = vfd_result.registers[vfd_offset:vfd_offset + 8]
+                vfd_data = vfd_registers[vfd_offset:vfd_offset + 20]
+
+                # VFD 진단 데이터 파싱 (확장된 20개 레지스터)
+                # [0] frequency, [1] power, [2] avg_power
+                # [3] motor_current, [4] motor_thermal, [5] heatsink_temp
+                # [6] torque, [7] inverter_thermal, [8] system_temp
+                # [9-10] kwh_counter (32bit), [11] num_starts, [12] over_temps
+                # [13-15] phase_u/v/w_current, [16] warning_word, [17] dc_link_voltage
+                # [18-19] run_hours (32bit)
+
+                vfd_diagnosis = {
+                    "frequency": vfd_data[0] / 10.0,           # Hz
+                    "power": vfd_data[1],                       # kW
+                    "avg_power": vfd_data[2],                   # kW
+                    "motor_current": vfd_data[3] / 10.0,        # A
+                    "motor_thermal": vfd_data[4],               # %
+                    "heatsink_temp": vfd_data[5],               # °C
+                    "torque": vfd_data[6],                      # Nm
+                    "inverter_thermal": vfd_data[7],            # %
+                    "system_temp": vfd_data[8],                 # °C
+                    "kwh_counter": (vfd_data[10] << 16) | vfd_data[9],  # kWh
+                    "num_starts": vfd_data[11],                 # 회
+                    "over_temps": vfd_data[12],                 # 회
+                    "phase_u_current": vfd_data[13] / 10.0,     # A
+                    "phase_v_current": vfd_data[14] / 10.0,     # A
+                    "phase_w_current": vfd_data[15] / 10.0,     # A
+                    "warning_word": vfd_data[16],               # 비트 플래그
+                    "dc_link_voltage": vfd_data[17],            # V
+                    "run_hours": (vfd_data[19] << 16) | vfd_data[18],  # 시간
+                }
 
                 # 장비 상태 비트 추출
                 if i < 6:  # Pumps
@@ -197,10 +245,7 @@ class EdgeModbusClient:
                         "running": running,
                         "ess_mode": ess_mode,
                         "abnormal": abnormal,
-                        "frequency": vfd_data[0] / 10.0,  # Hz
-                        "power": vfd_data[1],  # kW
-                        "avg_power": vfd_data[2],  # kW
-                        "run_hours": (vfd_data[7] << 16) | vfd_data[6],
+                        **vfd_diagnosis  # VFD 진단 데이터 포함
                     })
 
                 else:  # Fans (FAN1-4)
@@ -215,10 +260,7 @@ class EdgeModbusClient:
                         "running_fwd": running_fwd,
                         "running_bwd": running_bwd,
                         "abnormal": abnormal,
-                        "frequency": vfd_data[0] / 10.0,  # Hz
-                        "power": vfd_data[1],  # kW
-                        "avg_power": vfd_data[2],  # kW
-                        "run_hours": (vfd_data[7] << 16) | vfd_data[6],
+                        **vfd_diagnosis  # VFD 진단 데이터 포함
                     })
 
             return equipment_list
@@ -355,27 +397,83 @@ class EdgeModbusClient:
             print(f"[Edge AI] [ERROR] 에너지 절감 데이터 쓰기 오류: {e}")
             return False
 
-    def write_vfd_diagnosis(self, diagnosis_scores: List[int]) -> bool:
-        """VFD 진단 점수를 PLC에 쓰기 (레지스터 5200-5209)"""
+    def write_vfd_diagnosis(self, diagnosis_scores: List[int], severity_levels: List[int] = None) -> bool:
+        """VFD 진단 점수 및 중증도 레벨을 PLC에 쓰기 (레지스터 5200-5209, 5210-5219)"""
         if not self.connected:
             return False
 
         try:
-            result = self.client.write_registers(
+            # 진단 점수 쓰기 (0-100)
+            result1 = self.client.write_registers(
                 address=config.MODBUS_REGISTERS["AI_VFD_DIAGNOSIS_START"],
                 values=diagnosis_scores,
                 device_id=self.slave_id
             )
 
-            if result.isError():
+            if result1.isError():
                 print(f"[Edge AI] [ERROR] VFD 진단 점수 쓰기 실패")
                 return False
+
+            # 중증도 레벨 쓰기 (0-3: Normal/Attention/Planning/Critical)
+            if severity_levels:
+                result2 = self.client.write_registers(
+                    address=config.MODBUS_REGISTERS["AI_VFD_SEVERITY_START"],
+                    values=severity_levels,
+                    device_id=self.slave_id
+                )
+
+                if result2.isError():
+                    print(f"[Edge AI] [ERROR] VFD 중증도 레벨 쓰기 실패")
+                    return False
 
             return True
 
         except Exception as e:
             print(f"[Edge AI] [ERROR] VFD 진단 점수 쓰기 오류: {e}")
             return False
+
+    def read_vfd_diagnosis(self) -> Dict:
+        """
+        Edge Computer가 계산한 VFD 진단 결과를 PLC에서 읽기
+
+        Returns:
+            {
+                'health_scores': [10개 장비 건강도 점수 0-100],
+                'severity_levels': [10개 장비 중증도 레벨 0-3]
+            }
+        """
+        if not self.connected:
+            return None
+
+        try:
+            # 건강도 점수 읽기 (레지스터 5200-5209)
+            scores_result = self.client.read_holding_registers(
+                address=config.MODBUS_REGISTERS["AI_VFD_DIAGNOSIS_START"],
+                count=10,
+                device_id=self.slave_id
+            )
+
+            if scores_result.isError():
+                return None
+
+            # 중증도 레벨 읽기 (레지스터 5210-5219)
+            levels_result = self.client.read_holding_registers(
+                address=config.MODBUS_REGISTERS["AI_VFD_SEVERITY_START"],
+                count=10,
+                device_id=self.slave_id
+            )
+
+            if levels_result.isError():
+                return None
+
+            return {
+                'health_scores': list(scores_result.registers),
+                'severity_levels': list(levels_result.registers)
+            }
+
+        except Exception as e:
+            print(f"[Edge AI] [ERROR] VFD 진단 결과 읽기 오류: {e}")
+            return None
 
     def send_equipment_start(self, equipment_index: int) -> bool:
         """

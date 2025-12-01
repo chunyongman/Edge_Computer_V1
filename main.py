@@ -36,6 +36,8 @@ from src.ml.pattern_classifier import PatternClassifier
 from src.ml.batch_learning import BatchLearningSystem, LearningSchedule
 from src.core.safety_constraints import SafetyConstraints
 from ai_calculator import EdgeAICalculator
+from src.database.db_manager import DatabaseManager
+import json
 
 
 # 로깅 설정
@@ -76,6 +78,12 @@ class EdgeAISystem:
 
         # AI 계산기 (에너지 절감, VFD 진단)
         self.ai_calculator = EdgeAICalculator()
+
+        # 데이터베이스 매니저 (이상 징후 히스토리 저장)
+        self.db = DatabaseManager(db_dir="data")
+
+        # VFD 이상 징후 추적 (장비별 현재 활성 anomaly_id)
+        self.active_anomalies = {}  # {equipment_id: anomaly_id}
 
         # 온도 시퀀스 버퍼 (30분, 90개 데이터 포인트)
         self.temp_buffer = {
@@ -240,8 +248,11 @@ class EdgeAISystem:
                 # ===== Step 5: 에너지 절감 계산 =====
                 savings_data = self.ai_calculator.calculate_energy_savings(equipment)
 
-                # ===== Step 6: VFD 진단 점수 계산 =====
-                diagnosis_scores = self.ai_calculator.calculate_vfd_diagnosis(equipment, sensors)
+                # ===== Step 6: VFD 진단 점수 계산 (4단계 중증도 진단) =====
+                diagnosis_scores, severity_levels, diagnosis_details = self.ai_calculator.calculate_vfd_diagnosis(equipment, sensors)
+
+                # ===== Step 6.5: VFD 이상 징후 감지 및 DB 저장 =====
+                self._process_vfd_anomalies(equipment, diagnosis_scores, severity_levels, diagnosis_details)
 
                 # ===== Step 7: PLC로 제어 명령 전송 =====
                 # 목표 주파수 쓰기
@@ -255,8 +266,8 @@ class EdgeAISystem:
                 savings_for_plc = self._format_savings_for_plc(savings_data, equipment)
                 self.plc.write_energy_savings(savings_for_plc)
 
-                # VFD 진단 점수 쓰기
-                self.plc.write_vfd_diagnosis(diagnosis_scores)
+                # VFD 진단 점수 및 중증도 레벨 쓰기
+                self.plc.write_vfd_diagnosis(diagnosis_scores, severity_levels)
 
                 # ===== Step 8: 주기적 상태 출력 (10초마다) =====
                 if time.time() - last_status_time >= 10:
@@ -462,6 +473,128 @@ class EdgeAISystem:
                 self.plc.send_equipment_stop(fan_index)
                 logger.info(f"[대수 제어] 팬 {self.current_fan_count} → {target_count}대: FAN{self.current_fan_count} STOP")
                 self.current_fan_count = target_count
+
+    def _process_vfd_anomalies(self, equipment: List[Dict], diagnosis_scores: List[int],
+                                severity_levels: List[int], diagnosis_details: List[Dict]):
+        """
+        VFD 이상 징후 감지 및 DB 저장
+
+        - 새로운 이상 징후 발생 시 DB에 저장
+        - 기존 이상 징후가 정상으로 복귀 시 자동 해제
+
+        Args:
+            equipment: 장비 상태 리스트 (10개)
+            diagnosis_scores: 건강도 점수 리스트 (10개, 0-100)
+            severity_levels: 중증도 레벨 리스트 (10개, 0-3)
+            diagnosis_details: 진단 상세 정보 리스트 (10개)
+        """
+        equipment_names = [
+            "SW_PUMP_1", "SW_PUMP_2", "SW_PUMP_3",
+            "FW_PUMP_1", "FW_PUMP_2", "FW_PUMP_3",
+            "ER_FAN_1", "ER_FAN_2", "ER_FAN_3", "ER_FAN_4"
+        ]
+
+        severity_names = {0: "정상", 1: "주의", 2: "경고", 3: "위험"}
+
+        for i, eq in enumerate(equipment):
+            if i >= len(severity_levels):
+                break
+
+            eq_id = equipment_names[i]
+            severity_level = severity_levels[i]
+            health_score = diagnosis_scores[i]
+            detail = diagnosis_details[i] if i < len(diagnosis_details) else {}
+
+            has_anomaly = severity_level > 0
+            had_anomaly = eq_id in self.active_anomalies
+
+            if has_anomaly and not had_anomaly:
+                # 새로운 이상 징후 발생 - DB에 저장
+                import uuid
+                anomaly_id = f"ANO-{eq_id}-{datetime.now().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
+
+                # 권고사항 생성
+                recommendations = self._generate_recommendations(eq_id, severity_level, detail)
+
+                # DB에 저장
+                self.db.insert_vfd_anomaly(
+                    anomaly_id=anomaly_id,
+                    equipment_id=eq_id,
+                    severity_level=severity_level,
+                    severity_name=severity_names.get(severity_level, "알 수 없음"),
+                    health_score=health_score,
+                    total_severity_score=detail.get('total_severity_score', 100 - health_score),
+                    motor_thermal=detail.get('motor_thermal', 0),
+                    heatsink_temp=detail.get('heatsink_temp', 0),
+                    inverter_thermal=detail.get('inverter_thermal', 0),
+                    motor_current=detail.get('motor_current', 0),
+                    current_imbalance=detail.get('current_imbalance', 0),
+                    warning_word=detail.get('warning_word', 0),
+                    over_temps=detail.get('over_temps', 0),
+                    recommendations=recommendations
+                )
+
+                # 활성 이상 징후로 등록
+                self.active_anomalies[eq_id] = anomaly_id
+                logger.warning(f"⚠️  [이상 징후 발생] {eq_id}: 중증도 {severity_level} ({severity_names[severity_level]}), 건강도 {health_score}%")
+
+            elif has_anomaly and had_anomaly:
+                # 기존 이상 징후 유지 - 중증도 변경 확인 (로깅만)
+                pass  # 필요시 중증도 변경 시 업데이트 로직 추가 가능
+
+            elif not has_anomaly and had_anomaly:
+                # 이상 징후 해소 - 자동 해제
+                anomaly_id = self.active_anomalies[eq_id]
+                self.db.auto_clear_vfd_anomaly(anomaly_id)
+                del self.active_anomalies[eq_id]
+                logger.info(f"✅ [이상 징후 해소] {eq_id}: 정상 복귀, anomaly_id={anomaly_id}")
+
+    def _generate_recommendations(self, eq_id: str, severity_level: int, detail: Dict) -> str:
+        """
+        이상 징후에 대한 권고사항 생성
+
+        Args:
+            eq_id: 장비 ID
+            severity_level: 중증도 레벨 (1-3)
+            detail: 진단 상세 정보
+
+        Returns:
+            권고사항 문자열
+        """
+        recommendations = []
+
+        # 중증도별 기본 권고사항
+        if severity_level == 3:
+            recommendations.append("즉시 장비 점검 필요")
+            recommendations.append("운전 중단 검토")
+        elif severity_level == 2:
+            recommendations.append("정비 계획 수립 권장")
+            recommendations.append("모니터링 강화")
+        elif severity_level == 1:
+            recommendations.append("주의 관찰 필요")
+            recommendations.append("정기 점검 시 확인")
+
+        # 상세 정보 기반 추가 권고사항
+        motor_thermal = detail.get('motor_thermal', 0)
+        heatsink_temp = detail.get('heatsink_temp', 0)
+        current_imbalance = detail.get('current_imbalance', 0)
+
+        if motor_thermal > 120:
+            recommendations.append("모터 과열 - 냉각 시스템 점검")
+        elif motor_thermal > 100:
+            recommendations.append("모터 온도 상승 - 부하 확인")
+
+        if heatsink_temp > 80:
+            recommendations.append("히트싱크 과열 - 환기 상태 점검")
+        elif heatsink_temp > 70:
+            recommendations.append("히트싱크 온도 상승 - 먼지 청소 권장")
+
+        if current_imbalance > 15:
+            recommendations.append("전류 불균형 심함 - 전원 품질 점검")
+        elif current_imbalance > 10:
+            recommendations.append("전류 불균형 - 케이블 연결 확인")
+
+        return "; ".join(recommendations)
 
 
 def start_api_server_thread():

@@ -83,6 +83,12 @@ class OperationRecordCreate(BaseModel):
     saved_kwh: float = 0
 
 
+class VFDAnomalyAcknowledge(BaseModel):
+    """VFD 이상 징후 확인 요청"""
+    anomaly_id: str
+    user: str = "Operator"
+
+
 # ===== API 엔드포인트 =====
 
 @app.get("/")
@@ -359,6 +365,108 @@ async def create_operation(record: OperationRecordCreate):
     logger.info(f"운전 이력 저장: {record.equipment_name} ({record.date})")
 
     return {"success": True}
+
+
+# ----- VFD 이상 징후 히스토리 API -----
+
+@app.get("/api/vfd/anomalies/active")
+async def get_active_vfd_anomalies():
+    """활성 VFD 이상 징후 조회"""
+    db = get_db()
+    anomalies = db.get_active_vfd_anomalies()
+
+    # 요약 계산
+    summary = {
+        "level_1": sum(1 for a in anomalies if a.get("severity_level") == 1),
+        "level_2": sum(1 for a in anomalies if a.get("severity_level") == 2),
+        "level_3": sum(1 for a in anomalies if a.get("severity_level") == 3),
+        "total": len(anomalies)
+    }
+
+    return {
+        "success": True,
+        "data": anomalies,
+        "summary": summary,
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@app.get("/api/vfd/anomalies/history")
+async def get_vfd_anomaly_history(
+    limit: int = Query(100, ge=1, le=1000),
+    equipment_id: Optional[str] = None,
+    status: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None
+):
+    """VFD 이상 징후 히스토리 조회"""
+    db = get_db()
+
+    # 날짜 파싱
+    start_dt = datetime.fromisoformat(start_date) if start_date else None
+    end_dt = datetime.fromisoformat(end_date) if end_date else None
+
+    anomalies = db.get_vfd_anomaly_history(
+        equipment_id=equipment_id,
+        status=status,
+        start_date=start_dt,
+        end_date=end_dt,
+        limit=limit
+    )
+
+    return {
+        "success": True,
+        "data": anomalies,
+        "count": len(anomalies),
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@app.get("/api/vfd/anomalies/statistics")
+async def get_vfd_anomaly_statistics(days: int = Query(30, ge=1, le=365)):
+    """VFD 이상 징후 통계 조회"""
+    db = get_db()
+    stats = db.get_vfd_anomaly_statistics(days=days)
+
+    return {
+        "success": True,
+        "data": stats,
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@app.post("/api/vfd/anomalies/acknowledge")
+async def acknowledge_vfd_anomaly(ack: VFDAnomalyAcknowledge):
+    """VFD 이상 징후 확인 처리"""
+    db = get_db()
+    db.acknowledge_vfd_anomaly(ack.anomaly_id, ack.user)
+
+    # 이벤트 로그 추가
+    db.insert_event(
+        event_type="vfd_anomaly",
+        source="HMI",
+        description=f"VFD 이상 징후 확인: {ack.anomaly_id}",
+        details={"anomaly_id": ack.anomaly_id, "user": ack.user}
+    )
+
+    return {"success": True, "anomaly_id": ack.anomaly_id}
+
+
+@app.post("/api/vfd/anomalies/clear/{anomaly_id}")
+async def clear_vfd_anomaly(anomaly_id: str, user: str = "Operator"):
+    """VFD 이상 징후 해제 처리"""
+    db = get_db()
+    db.clear_vfd_anomaly(anomaly_id, user)
+
+    # 이벤트 로그 추가
+    db.insert_event(
+        event_type="vfd_anomaly",
+        source="HMI",
+        description=f"VFD 이상 징후 해제: {anomaly_id}",
+        details={"anomaly_id": anomaly_id, "user": user}
+    )
+
+    return {"success": True, "anomaly_id": anomaly_id}
 
 
 # ===== 서버 시작 =====

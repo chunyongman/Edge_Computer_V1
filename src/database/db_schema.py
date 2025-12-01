@@ -187,6 +187,55 @@ class DatabaseManager:
         ON vfd_health(equipment_id)
         """)
 
+        # 8. vfd_anomaly_history 테이블 (VFD 이상 징후 히스토리 - 알람과 별도 관리)
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS vfd_anomaly_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            anomaly_id TEXT UNIQUE NOT NULL,
+            equipment_id TEXT NOT NULL,
+            occurred_at DATETIME NOT NULL,
+            severity_level INTEGER NOT NULL,
+            severity_name TEXT NOT NULL,
+            health_score INTEGER NOT NULL,
+            total_severity_score INTEGER,
+            motor_thermal REAL,
+            heatsink_temp REAL,
+            inverter_thermal REAL,
+            motor_current REAL,
+            current_imbalance REAL,
+            warning_word INTEGER,
+            over_temps INTEGER,
+            recommendations TEXT,
+            status TEXT DEFAULT 'ACTIVE',
+            acknowledged_at DATETIME,
+            acknowledged_by TEXT,
+            cleared_at DATETIME,
+            cleared_by TEXT,
+            duration_minutes INTEGER,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+        """)
+
+        cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_anomaly_occurred_at
+        ON vfd_anomaly_history(occurred_at)
+        """)
+
+        cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_anomaly_equipment
+        ON vfd_anomaly_history(equipment_id)
+        """)
+
+        cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_anomaly_status
+        ON vfd_anomaly_history(status)
+        """)
+
+        cursor.execute("""
+        CREATE INDEX IF NOT EXISTS idx_anomaly_severity
+        ON vfd_anomaly_history(severity_level)
+        """)
+
         # 7. learning_history 테이블 (AI 학습 이력)
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS learning_history (
@@ -483,3 +532,284 @@ class DatabaseManager:
 
         conn.close()
         return count
+
+    # ===== VFD 이상 징후 히스토리 관련 메서드 =====
+
+    def insert_vfd_anomaly(self, data: Dict[str, Any]) -> bool:
+        """
+        VFD 이상 징후 발생 기록
+
+        Args:
+            data: {
+                'anomaly_id': 고유 ID (예: 'ANO_SWP1_20251201_153000'),
+                'equipment_id': 장비 ID (예: 'SWP1'),
+                'occurred_at': 발생 시간,
+                'severity_level': 중증도 레벨 (1-3),
+                'severity_name': 중증도 명칭 (주의/경고/위험),
+                'health_score': 건강도 점수 (0-100),
+                'total_severity_score': 종합 중증도 점수,
+                'motor_thermal': 모터 열부하 (%),
+                'heatsink_temp': 방열판 온도 (°C),
+                'inverter_thermal': 인버터 열부하 (%),
+                'motor_current': 모터 전류 (A),
+                'current_imbalance': 3상 불평형률 (%),
+                'warning_word': 경고 워드,
+                'over_temps': 과열 이력 횟수,
+                'recommendations': 권장 조치 (JSON 문자열)
+            }
+        """
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute("""
+            INSERT INTO vfd_anomaly_history (
+                anomaly_id, equipment_id, occurred_at, severity_level, severity_name,
+                health_score, total_severity_score, motor_thermal, heatsink_temp,
+                inverter_thermal, motor_current, current_imbalance, warning_word,
+                over_temps, recommendations, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'ACTIVE')
+            """, (
+                data.get('anomaly_id'),
+                data.get('equipment_id'),
+                data.get('occurred_at', datetime.now()),
+                data.get('severity_level'),
+                data.get('severity_name'),
+                data.get('health_score'),
+                data.get('total_severity_score'),
+                data.get('motor_thermal'),
+                data.get('heatsink_temp'),
+                data.get('inverter_thermal'),
+                data.get('motor_current'),
+                data.get('current_imbalance'),
+                data.get('warning_word'),
+                data.get('over_temps'),
+                data.get('recommendations')
+            ))
+
+            conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            # 이미 존재하는 anomaly_id인 경우 무시
+            return False
+        finally:
+            conn.close()
+
+    def acknowledge_vfd_anomaly(self, anomaly_id: str, user: str = "Operator") -> bool:
+        """VFD 이상 징후 확인 처리"""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+        UPDATE vfd_anomaly_history
+        SET status = 'ACKNOWLEDGED',
+            acknowledged_at = ?,
+            acknowledged_by = ?
+        WHERE anomaly_id = ? AND status = 'ACTIVE'
+        """, (datetime.now(), user, anomaly_id))
+
+        affected = cursor.rowcount
+        conn.commit()
+        conn.close()
+
+        return affected > 0
+
+    def clear_vfd_anomaly(self, anomaly_id: str, user: str = "Operator") -> bool:
+        """VFD 이상 징후 해제 처리"""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        # 발생 시간을 가져와서 지속 시간 계산
+        cursor.execute("""
+        SELECT occurred_at FROM vfd_anomaly_history WHERE anomaly_id = ?
+        """, (anomaly_id,))
+        row = cursor.fetchone()
+
+        duration_minutes = None
+        if row:
+            occurred_at = datetime.fromisoformat(row[0]) if isinstance(row[0], str) else row[0]
+            duration_minutes = int((datetime.now() - occurred_at).total_seconds() / 60)
+
+        cursor.execute("""
+        UPDATE vfd_anomaly_history
+        SET status = 'CLEARED',
+            cleared_at = ?,
+            cleared_by = ?,
+            duration_minutes = ?
+        WHERE anomaly_id = ? AND status IN ('ACTIVE', 'ACKNOWLEDGED')
+        """, (datetime.now(), user, duration_minutes, anomaly_id))
+
+        affected = cursor.rowcount
+        conn.commit()
+        conn.close()
+
+        return affected > 0
+
+    def auto_clear_vfd_anomaly(self, equipment_id: str) -> bool:
+        """
+        장비가 정상으로 돌아왔을 때 자동 해제
+        (severity_level이 0으로 돌아온 경우)
+        """
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        # 해당 장비의 ACTIVE 또는 ACKNOWLEDGED 상태인 이상 징후 조회
+        cursor.execute("""
+        SELECT anomaly_id, occurred_at FROM vfd_anomaly_history
+        WHERE equipment_id = ? AND status IN ('ACTIVE', 'ACKNOWLEDGED')
+        ORDER BY occurred_at DESC LIMIT 1
+        """, (equipment_id,))
+        row = cursor.fetchone()
+
+        if row:
+            anomaly_id = row[0]
+            occurred_at = datetime.fromisoformat(row[1]) if isinstance(row[1], str) else row[1]
+            duration_minutes = int((datetime.now() - occurred_at).total_seconds() / 60)
+
+            cursor.execute("""
+            UPDATE vfd_anomaly_history
+            SET status = 'AUTO_CLEARED',
+                cleared_at = ?,
+                cleared_by = 'SYSTEM',
+                duration_minutes = ?
+            WHERE anomaly_id = ?
+            """, (datetime.now(), duration_minutes, anomaly_id))
+
+            conn.commit()
+            conn.close()
+            return True
+
+        conn.close()
+        return False
+
+    def get_vfd_anomaly_history(
+        self,
+        equipment_id: Optional[str] = None,
+        status: Optional[str] = None,
+        severity_level: Optional[int] = None,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
+        limit: int = 100
+    ) -> List[Dict[str, Any]]:
+        """
+        VFD 이상 징후 히스토리 조회
+
+        Args:
+            equipment_id: 특정 장비만 조회 (None이면 전체)
+            status: 'ACTIVE', 'ACKNOWLEDGED', 'CLEARED', 'AUTO_CLEARED'
+            severity_level: 특정 중증도 레벨만 조회
+            start_time: 시작 시간
+            end_time: 종료 시간
+            limit: 최대 조회 개수
+
+        Returns:
+            이상 징후 히스토리 리스트
+        """
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        query = "SELECT * FROM vfd_anomaly_history WHERE 1=1"
+        params = []
+
+        if equipment_id:
+            query += " AND equipment_id = ?"
+            params.append(equipment_id)
+
+        if status:
+            query += " AND status = ?"
+            params.append(status)
+
+        if severity_level:
+            query += " AND severity_level = ?"
+            params.append(severity_level)
+
+        if start_time:
+            query += " AND occurred_at >= ?"
+            params.append(start_time)
+
+        if end_time:
+            query += " AND occurred_at <= ?"
+            params.append(end_time)
+
+        query += " ORDER BY occurred_at DESC LIMIT ?"
+        params.append(limit)
+
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        conn.close()
+
+        return [dict(row) for row in rows]
+
+    def get_active_vfd_anomalies(self) -> List[Dict[str, Any]]:
+        """현재 활성화된 VFD 이상 징후 조회"""
+        return self.get_vfd_anomaly_history(status='ACTIVE')
+
+    def get_vfd_anomaly_statistics(
+        self,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None
+    ) -> Dict[str, Any]:
+        """
+        VFD 이상 징후 통계 조회
+
+        Returns:
+            {
+                'total_count': 총 이상 징후 수,
+                'by_equipment': {장비별 카운트},
+                'by_severity': {중증도별 카운트},
+                'avg_duration_minutes': 평균 지속 시간,
+                'active_count': 현재 활성 이상 징후 수
+            }
+        """
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        # 시간 범위 조건
+        time_condition = ""
+        params = []
+        if start_time and end_time:
+            time_condition = "WHERE occurred_at BETWEEN ? AND ?"
+            params = [start_time, end_time]
+
+        # 총 카운트
+        cursor.execute(f"SELECT COUNT(*) FROM vfd_anomaly_history {time_condition}", params)
+        total_count = cursor.fetchone()[0]
+
+        # 장비별 카운트
+        cursor.execute(f"""
+        SELECT equipment_id, COUNT(*) as cnt
+        FROM vfd_anomaly_history {time_condition}
+        GROUP BY equipment_id
+        """, params)
+        by_equipment = {row[0]: row[1] for row in cursor.fetchall()}
+
+        # 중증도별 카운트
+        cursor.execute(f"""
+        SELECT severity_level, severity_name, COUNT(*) as cnt
+        FROM vfd_anomaly_history {time_condition}
+        GROUP BY severity_level
+        """, params)
+        by_severity = {f"Level {row[0]} ({row[1]})": row[2] for row in cursor.fetchall()}
+
+        # 평균 지속 시간
+        cursor.execute(f"""
+        SELECT AVG(duration_minutes)
+        FROM vfd_anomaly_history
+        WHERE duration_minutes IS NOT NULL
+        {' AND occurred_at BETWEEN ? AND ?' if start_time and end_time else ''}
+        """, params if start_time and end_time else [])
+        avg_duration = cursor.fetchone()[0] or 0
+
+        # 현재 활성 이상 징후 수
+        cursor.execute("SELECT COUNT(*) FROM vfd_anomaly_history WHERE status = 'ACTIVE'")
+        active_count = cursor.fetchone()[0]
+
+        conn.close()
+
+        return {
+            'total_count': total_count,
+            'by_equipment': by_equipment,
+            'by_severity': by_severity,
+            'avg_duration_minutes': round(avg_duration, 1),
+            'active_count': active_count
+        }

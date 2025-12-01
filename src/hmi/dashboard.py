@@ -1464,10 +1464,10 @@ class EdgeComputerDashboard:
 
     # ==================== 탭 3: VFD 예방진단 ====================
     def _render_vfd_diagnostics(self):
-        """VFD 예방진단 탭"""
+        """VFD 예방진단 탭 - 4단계 중증도 시스템"""
         st.markdown("## 🔧 VFD 예방진단")
 
-        st.info("💡 **VFD 예방진단 시스템** - PLC 레지스터 6000-6099를 통해 VFD 진단 데이터를 수집합니다.")
+        st.info("💡 **VFD 예방진단 시스템 (4단계 중증도)** - VFD로부터 20개 진단 파라미터를 수집하여 7개 항목 기준으로 건강도를 평가합니다.")
 
         # PLC 데이터 가져오기
         plc_data = self._get_plc_data()
@@ -1476,11 +1476,21 @@ class EdgeComputerDashboard:
             st.error("⚠️ PLC 연결이 필요합니다.")
             return
 
-        # VFD 진단 데이터 (임시 - 향후 PLC 레지스터 6000-6099에서 읽기)
+        # VFD 진단 데이터
         vfd_diagnostics = self._get_vfd_diagnostics_data(plc_data)
 
         # 1. 10대 VFD 상태 카드
-        st.markdown("### 📊 VFD 건강도 현황")
+        st.markdown("### 📊 VFD 건강도 현황 (4단계 중증도)")
+
+        # 중증도 레벨 범례
+        st.markdown("""
+        <div style="display: flex; gap: 20px; margin-bottom: 15px; font-size: 0.85em;">
+            <span style="color: #10b981;">🟢 Level 0: 정상 (0-2점)</span>
+            <span style="color: #f59e0b;">🟡 Level 1: 주의 (3-5점)</span>
+            <span style="color: #ff9800;">🟠 Level 2: 경고 (6-8점)</span>
+            <span style="color: #f44336;">🔴 Level 3: 위험 (9점+)</span>
+        </div>
+        """, unsafe_allow_html=True)
 
         # 2행 5열로 배치
         for row in range(2):
@@ -1490,31 +1500,38 @@ class EdgeComputerDashboard:
                 if vfd_idx < len(vfd_diagnostics):
                     vfd = vfd_diagnostics[vfd_idx]
                     with cols[col_idx]:
-                        # 건강도에 따른 색상 (VFDMonitor 등급과 일치)
-                        # health_score = 100 - severity_score 이므로:
-                        # severity 0-20 (normal) → health 80-100
-                        # severity 21-50 (caution) → health 50-79
-                        # severity 51-75 (warning) → health 25-49
-                        # severity 76-100 (critical) → health 0-24
-                        if vfd['health_score'] >= 80:
-                            color = "#10b981"  # 녹색
+                        # 4단계 중증도 레벨에 따른 색상
+                        severity_level = vfd.get('severity_level', 0)
+                        severity_name = vfd.get('severity_name', '정상')
+
+                        if severity_level == 0:
+                            color = "#10b981"  # 녹색 - 정상
                             status = "정상"
-                        elif vfd['health_score'] >= 50:
-                            color = "#9e9e9e"  # 회색
+                            icon = "🟢"
+                        elif severity_level == 1:
+                            color = "#f59e0b"  # 노란색 - 주의
                             status = "주의"
-                        elif vfd['health_score'] >= 25:
-                            color = "#ff9800"  # 주황색
+                            icon = "🟡"
+                        elif severity_level == 2:
+                            color = "#ff9800"  # 주황색 - 경고
                             status = "경고"
+                            icon = "🟠"
                         else:
-                            color = "#f44336"  # 빨간색
+                            color = "#f44336"  # 빨간색 - 위험
                             status = "위험"
+                            icon = "🔴"
+
+                        # 진단 파라미터 요약 (모터/인버터 열부하)
+                        motor_thermal = vfd.get('motor_thermal', 0)
+                        heatsink_temp = vfd.get('heatsink_temp', 0)
 
                         st.markdown(f"""
                         <div class="card" style="border-left: 4px solid {color};">
-                            <h4 style="margin: 0; color: #e2e8f0;">{vfd['name']}</h4>
+                            <h4 style="margin: 0; color: #e2e8f0;">{icon} {vfd['name']}</h4>
                             <h2 style="margin: 0.5rem 0; color: {color};">{vfd['health_score']}</h2>
-                            <p style="margin: 0; color: #94a3b8;">건강도 점수</p>
-                            <p style="margin: 0.5rem 0; color: {color}; font-weight: 600;">{status}</p>
+                            <p style="margin: 0; color: #94a3b8; font-size: 0.8em;">건강도 점수</p>
+                            <p style="margin: 0.3rem 0; color: {color}; font-weight: 600;">{status} (Lv.{severity_level})</p>
+                            <p style="margin: 0; color: #64748b; font-size: 0.75em;">모터:{motor_thermal}% | 방열판:{heatsink_temp}°C</p>
                         </div>
                         """, unsafe_allow_html=True)
 
@@ -1648,54 +1665,113 @@ class EdgeComputerDashboard:
         vfd_detail = next((vfd for vfd in vfd_diagnostics if vfd['name'] == selected_vfd), None)
 
         if vfd_detail:
+            # 중증도 레벨 표시
+            severity_level = vfd_detail.get('severity_level', 0)
+            severity_name = vfd_detail.get('severity_name', '정상')
+            total_score = vfd_detail.get('total_severity_score', 0)
+            health_score = vfd_detail.get('health_score', 100)
+
+            level_colors = {0: "#10b981", 1: "#f59e0b", 2: "#ff9800", 3: "#f44336"}
+            level_icons = {0: "🟢", 1: "🟡", 2: "🟠", 3: "🔴"}
+
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, {level_colors[severity_level]}22, #1e293b);
+                        border: 2px solid {level_colors[severity_level]}; border-radius: 10px; padding: 15px; margin: 10px 0;">
+                <h3 style="margin: 0; color: {level_colors[severity_level]};">
+                    {level_icons[severity_level]} {vfd_detail['name']} - 중증도 Level {severity_level} ({severity_name})
+                </h3>
+                <p style="margin: 5px 0; color: #94a3b8;">
+                    종합 점수: <b>{total_score}점</b> | 건강도: <b>{health_score}</b>/100
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # 7개 진단 파라미터 테이블
+            st.markdown("#### 📊 7개 진단 파라미터 상세")
+
+            params = vfd_detail.get('parameters', {})
+
+            # 파라미터별 점수 색상
+            def get_score_color(score):
+                if score == 0: return "#10b981", "정상"
+                elif score == 1: return "#f59e0b", "주의"
+                elif score == 2: return "#ff9800", "경고"
+                else: return "#f44336", "위험"
+
+            param_data = []
+            param_names = {
+                'motor_thermal': ('모터 열부하', '%', '<80: 정상, 80-90: 주의, 90-100: 경고, >100: 위험'),
+                'heatsink_temp': ('방열판 온도', '°C', '<60: 정상, 60-70: 주의, 70-80: 경고, >80: 위험'),
+                'inverter_thermal': ('인버터 열부하', '%', '<80: 정상, 80-90: 주의, 90-100: 경고, >100: 위험'),
+                'motor_current': ('모터 전류', 'A', '정격대비 <90%: 정상, 90-100%: 주의, 100-110%: 경고, >110%: 위험'),
+                'current_imbalance': ('3상 불평형률', '%', '<5: 정상, 5-10: 주의, 10-15: 경고, >15: 위험'),
+                'warning_word': ('경고 워드', '-', '0: 정상, >0: 1점'),
+                'over_temps': ('과열 횟수', '회', '0: 정상, 1-2: 2점, 3+: 3점'),
+            }
+
+            for key, (name, unit, threshold) in param_names.items():
+                p = params.get(key, {})
+                value = p.get('value', 0)
+                score = p.get('score', 0)
+                ratio = p.get('ratio', None)
+                color, status = get_score_color(score)
+
+                value_str = f"{value}{unit}"
+                if ratio is not None:
+                    value_str += f" ({ratio}%)"
+
+                param_data.append({
+                    '파라미터': name,
+                    '현재값': value_str,
+                    '점수': f"{score}점",
+                    '상태': status,
+                    '기준': threshold
+                })
+
+            param_df = pd.DataFrame(param_data)
+
+            # 상태별 색상 적용
+            def color_status(val):
+                colors = {'정상': '#10b981', '주의': '#f59e0b', '경고': '#ff9800', '위험': '#f44336'}
+                return f'color: {colors.get(val, "#94a3b8")}'
+
+            styled_df = param_df.style.applymap(color_status, subset=['상태'])
+            st.dataframe(styled_df, use_container_width=True, hide_index=True)
+
+            st.markdown("---")
+
             # 실시간 운전 데이터
             st.markdown("#### 🔧 실시간 운전 데이터")
             col1, col2, col3, col4 = st.columns(4)
 
             with col1:
-                st.metric("주파수", f"{vfd_detail.get('current_frequency_hz', 0):.1f} Hz")
-                st.metric("모터 온도", f"{vfd_detail['avg_temp']:.1f} °C")
+                st.metric("주파수", f"{vfd_detail.get('frequency', 0):.1f} Hz")
+                st.metric("모터 전류", f"{vfd_detail.get('motor_current', 0):.1f} A")
 
             with col2:
-                st.metric("출력 전류", f"{vfd_detail.get('output_current_a', 0):.1f} A")
-                st.metric("히트싱크 온도", f"{vfd_detail.get('heatsink_temperature_c', 0):.1f} °C")
+                st.metric("모터 열부하", f"{vfd_detail.get('motor_thermal', 0)} %")
+                st.metric("방열판 온도", f"{vfd_detail.get('heatsink_temp', 0)} °C")
 
             with col3:
-                st.metric("출력 전압", f"{vfd_detail.get('output_voltage_v', 0):.0f} V")
-                st.metric("DC 버스 전압", f"{vfd_detail.get('dc_bus_voltage_v', 0):.0f} V")
+                st.metric("인버터 열부하", f"{vfd_detail.get('inverter_thermal', 0)} %")
+                st.metric("DC 링크 전압", f"{vfd_detail.get('dc_link_voltage', 0)} V")
 
             with col4:
-                st.metric("운전 시간", f"{vfd_detail['run_hours']:.1f} h")
-                st.metric("트립 횟수", f"{vfd_detail['start_count']} 회")
+                st.metric("운전 시간", f"{vfd_detail.get('run_hours', 0)} h")
+                st.metric("기동 횟수", f"{vfd_detail.get('num_starts', 0)} 회")
 
-            st.markdown("---")
-
-            # 예측 분석
-            st.markdown("#### 🔮 예측 분석")
+            # 3상 전류
+            st.markdown("#### ⚡ 3상 전류 상태")
             col1, col2, col3, col4 = st.columns(4)
-
             with col1:
-                trend_icon = {"rising": "↑", "stable": "→", "falling": "↓"}.get(vfd_detail.get('temp_trend', 'stable'), '→')
-                st.metric("30분 후 예측 온도", f"{vfd_detail.get('predicted_temp_30min', 0):.1f} °C")
-                st.metric("온도 트렌드", f"{trend_icon} {vfd_detail.get('temp_trend', 'stable')}")
-
+                st.metric("U상 전류", f"{vfd_detail.get('phase_u_current', 0):.1f} A")
             with col2:
-                st.metric("온도 상승률", f"{vfd_detail.get('temp_rise_rate', 0):.3f} °C/min")
-                st.metric("이상 점수", f"{vfd_detail.get('anomaly_score', 0):.1f}")
-
+                st.metric("V상 전류", f"{vfd_detail.get('phase_v_current', 0):.1f} A")
             with col3:
-                st.metric("수명 잔여율", f"{vfd_detail.get('remaining_life_percent', 100):.1f} %")
-                st.metric("정비 예상", vfd_detail['next_maintenance'])
-
+                st.metric("W상 전류", f"{vfd_detail.get('phase_w_current', 0):.1f} A")
             with col4:
-                status_color = {
-                    'normal': '🟢',
-                    'caution': '🟡',
-                    'warning': '🟠',
-                    'critical': '🔴'
-                }.get(vfd_detail.get('status_grade', 'normal'), '⚪')
-                st.metric("상태 등급", f"{status_color} {vfd_detail.get('status_grade', 'normal')}")
-                st.metric("심각도 점수", f"{vfd_detail.get('severity_score', 0)}/100")
+                imbalance = params.get('current_imbalance', {}).get('value', 0)
+                st.metric("불평형률", f"{imbalance:.1f} %")
 
             # 이상 패턴 표시
             anomaly_patterns = vfd_detail.get('anomaly_patterns', [])
@@ -1778,176 +1854,97 @@ class EdgeComputerDashboard:
 
             st.plotly_chart(fig, use_container_width=True)
 
-            # 권고사항
+            # 권장 조치 (AI 알고리즘 기반)
             st.markdown("---")
-            st.markdown("#### 💡 권고사항")
-            st.info(vfd_detail['recommended_action'])
+            st.markdown("#### 💡 권장 조치")
+
+            recommendations = vfd_detail.get('recommendations', [])
+            if recommendations:
+                for rec in recommendations:
+                    if "즉시 점검" in rec or "위험" in rec:
+                        st.error(f"🔴 {rec}")
+                    elif "정비 계획" in rec or "경고" in rec:
+                        st.warning(f"🟠 {rec}")
+                    elif "모니터링 강화" in rec or "주의" in rec:
+                        st.info(f"🟡 {rec}")
+                    else:
+                        st.success(f"🟢 {rec}")
+            else:
+                st.success("✅ 정상 운전 중. 정기 점검 일정에 따라 모니터링 유지.")
 
         st.markdown("---")
 
-        # 4. 이상 징후 히스토리
+        # 4. 이상 징후 히스토리 (DB에서 가져오기)
         st.markdown("### 📜 이상 징후 히스토리")
 
-        if hasattr(st.session_state, 'vfd_monitor') and st.session_state.vfd_monitor:
-            history = st.session_state.vfd_monitor.get_anomaly_history(limit=50)
+        try:
+            from src.database.db_manager import DatabaseManager
+            db = DatabaseManager(db_dir="data")
+            history = db.get_vfd_anomaly_history(limit=50)
 
             if history:
                 history_data = []
-                for diag in history:
-                    eq_name = diag.vfd_id.replace("SW_PUMP_", "SWP").replace("FW_PUMP_", "FWP").replace("ER_FAN_", "FAN")
+                for item in history:
+                    eq_name = item.get('equipment_id', '').replace("SW_PUMP_", "SWP").replace("FW_PUMP_", "FWP").replace("ER_FAN_", "FAN")
 
-                    status_text = "정상" if diag.status_grade.value == "normal" else \
-                                  "주의" if diag.status_grade.value == "caution" else \
-                                  "경고" if diag.status_grade.value == "warning" else "위험"
+                    status_text = item.get('severity_name', '정상')
+                    status_value = item.get('status', 'ACTIVE')
 
-                    ack_text = "✓" if diag.is_acknowledged else "✗"
-                    cleared_text = "✓" if diag.is_cleared else "진행중"
+                    ack_text = "✓" if status_value in ['ACKNOWLEDGED', 'CLEARED', 'AUTO_CLEARED'] else "✗"
+                    cleared_text = "자동해제" if status_value == 'AUTO_CLEARED' else \
+                                   "해제됨" if status_value == 'CLEARED' else \
+                                   "확인됨" if status_value == 'ACKNOWLEDGED' else "활성"
+
+                    occurred_at = item.get('occurred_at', '')
+                    if occurred_at:
+                        try:
+                            from datetime import datetime
+                            if isinstance(occurred_at, str):
+                                occurred_at = datetime.fromisoformat(occurred_at).strftime("%Y-%m-%d %H:%M:%S")
+                        except:
+                            pass
+
+                    duration = item.get('duration_minutes')
+                    duration_text = f"{duration}분" if duration else "-"
 
                     history_data.append({
-                        "시간": diag.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+                        "시간": occurred_at,
                         "장비": eq_name,
-                        "상태": status_text,
-                        "건강도": 100 - diag.severity_score,
-                        "이상패턴": ", ".join(diag.anomaly_patterns) if diag.anomaly_patterns else "-",
-                        "확인": ack_text,
-                        "해제": cleared_text,
-                        "권고사항": diag.recommendation
+                        "중증도": f"Lv.{item.get('severity_level', 0)} ({status_text})",
+                        "건강도": item.get('health_score', 100),
+                        "상태": cleared_text,
+                        "지속시간": duration_text,
+                        "권고사항": item.get('recommendations', '-') or '-'
                     })
 
                 df_history = pd.DataFrame(history_data)
                 st.dataframe(df_history, use_container_width=True, height=400)
             else:
                 st.info("📋 이상 징후 히스토리가 없습니다.")
-        else:
-            st.warning("⚠️ VFD Monitor가 초기화되지 않았습니다.")
+        except Exception as e:
+            st.warning(f"⚠️ 이상 징후 히스토리 로드 실패: {e}")
 
     def _get_vfd_diagnostics_data(self, plc_data: Dict) -> List[Dict]:
-        """VFD 진단 데이터 조회 (Edge AI 공유 파일 우선)"""
-        import json
-        from pathlib import Path
-
-        # 1. Edge AI 공유 파일 확인
-        shared_file = Path("C:/shared/vfd_diagnostics.json")
-        if shared_file.exists():
-            try:
-                with open(shared_file, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-
-                vfd_diagnostics_data = data.get("vfd_diagnostics", {})
-                diagnostics = []
-
-                for vfd_id, vfd_data in vfd_diagnostics_data.items():
-                    # VFD ID를 장비 이름으로 변환 (SW_PUMP_1 -> SWP1)
-                    eq_name = vfd_id.replace("SW_PUMP_", "SWP").replace("FW_PUMP_", "FWP").replace("ER_FAN_", "FAN")
-
-                    # 건강도 점수 계산 (100 - severity_score)
-                    severity_score = vfd_data.get("severity_score", 0)
-                    health_score = 100 - severity_score
-
-                    # 정비 우선순위에 따른 메시지
-                    maintenance_priority = vfd_data.get("maintenance_priority", 0)
-                    anomaly_patterns = vfd_data.get("anomaly_patterns", [])
-
-                    if maintenance_priority == 5:
-                        warning = "즉시 점검 필요: " + ", ".join(anomaly_patterns) if anomaly_patterns else "위험 상태"
-                        priority = "높음"
-                        action = "즉시 정밀 점검 필요"
-                    elif maintenance_priority == 3:
-                        warning = "1주일 내 점검: " + ", ".join(anomaly_patterns) if anomaly_patterns else "경고"
-                        priority = "중간"
-                        action = "1주일 내 점검 권장"
-                    elif maintenance_priority == 1:
-                        warning = "정기 점검 예정"
-                        priority = "낮음"
-                        action = "정기 점검"
-                    else:
-                        warning = "정상 운전 중"
-                        priority = "낮음"
-                        action = "정상"
-
-                    # 활성 이상 징후 확인 및 관리
-                    is_acknowledged = False
-                    is_cleared = False
-                    if hasattr(st.session_state, 'vfd_monitor') and st.session_state.vfd_monitor:
-                        vfd_monitor = st.session_state.vfd_monitor
-
-                        # 해제된 VFD는 건너뛰기
-                        if vfd_id in vfd_monitor.cleared_anomalies:
-                            is_cleared = True
-                        else:
-                            # 이상 상태인데 active_anomalies에 없으면 자동 등록
-                            status_grade = vfd_data.get('status_grade', 'normal')
-                            if status_grade != 'normal' and vfd_id not in vfd_monitor.active_anomalies:
-                                # 간단한 VFDDiagnostic 객체 생성하여 등록
-                                from src.diagnostics.vfd_monitor import VFDDiagnostic, DanfossStatusBits, VFDStatus
-                                from datetime import datetime
-                                status_bits = DanfossStatusBits(
-                                    trip=False, error=False, warning=status_grade in ['warning', 'critical'],
-                                    voltage_exceeded=False, torque_exceeded=False, thermal_exceeded=False,
-                                    control_ready=True, drive_ready=True, in_operation=True, speed_equals_reference=True, bus_control=True
-                                )
-                                diag = VFDDiagnostic(
-                                    timestamp=datetime.now(), vfd_id=vfd_id, status_bits=status_bits,
-                                    current_frequency_hz=vfd_data.get('current_frequency_hz', 0),
-                                    output_current_a=vfd_data.get('output_current_a', 0),
-                                    output_voltage_v=vfd_data.get('output_voltage_v', 380),
-                                    dc_bus_voltage_v=vfd_data.get('dc_bus_voltage_v', 540),
-                                    motor_temperature_c=vfd_data.get('motor_temperature_c', 50),
-                                    heatsink_temperature_c=vfd_data.get('heatsink_temperature_c', 45),
-                                    status_grade=VFDStatus(status_grade) if status_grade in ['normal', 'caution', 'warning', 'critical'] else VFDStatus.CAUTION,
-                                    severity_score=severity_score, anomaly_patterns=anomaly_patterns,
-                                    recommendation="점검 필요", cumulative_runtime_hours=0, trip_count=0, error_count=0, warning_count=0
-                                )
-                                vfd_monitor.active_anomalies[vfd_id] = diag
-
-                            # 이상 상태 확인
-                            anomaly_status = vfd_monitor.get_anomaly_status(vfd_id)
-                            if anomaly_status:
-                                is_acknowledged = anomaly_status.is_acknowledged
-
-                    # is_cleared 플래그를 데이터에 포함 (이상 징후 탐지 섹션에서만 필터링)
-                    diagnostics.append({
-                        'id': vfd_id,  # ID 필드 추가
-                        'name': eq_name,
-                        'vfd_id': vfd_id,
-                        'health_score': health_score,
-                        'warning_message': warning,
-                        'next_maintenance': f"{vfd_data.get('estimated_days_to_maintenance', 90)}일 후",
-                        'recommended_action': action,
-                        'priority': priority,
-                        'run_hours': vfd_data.get('cumulative_runtime_hours', 0),
-                        'avg_temp': vfd_data.get('motor_temperature_c', 0),
-                        'max_temp': vfd_data.get('motor_temperature_c', 0) + 5,
-                        'vibration': 0.5,  # TODO: 실제 진동 데이터
-                        'start_count': vfd_data.get('trip_count', 0),
-                        # Edge AI 고급 데이터
-                        'predicted_temp_30min': vfd_data.get('predicted_temp_30min', 0),
-                        'temp_rise_rate': vfd_data.get('temp_rise_rate', 0),
-                        'temp_trend': vfd_data.get('temp_trend', 'stable'),
-                        'remaining_life_percent': vfd_data.get('remaining_life_percent', 100),
-                        'anomaly_score': vfd_data.get('anomaly_score', 0),
-                        'anomaly_patterns': anomaly_patterns,
-                        'severity_score': severity_score,
-                        'status_grade': vfd_data.get('status_grade', 'normal'),
-                        'current_frequency_hz': vfd_data.get('current_frequency_hz', 0),
-                        'output_current_a': vfd_data.get('output_current_a', 0),
-                        'output_voltage_v': vfd_data.get('output_voltage_v', 0),
-                        'dc_bus_voltage_v': vfd_data.get('dc_bus_voltage_v', 0),
-                        'heatsink_temperature_c': vfd_data.get('heatsink_temperature_c', 0),
-                        # 이상 징후 관리
-                        'is_acknowledged': is_acknowledged,
-                        'is_cleared': is_cleared,  # 해제 여부 (이상 징후 목록에서만 필터링용)
-                    })
-
-                return diagnostics
-
-            except Exception as e:
-                st.warning(f"⚠️ Edge AI VFD 데이터 읽기 실패: {e}")
-
-        # 2. Edge AI 파일이 없으면 임시 데이터 생성
+        """VFD 진단 데이터 조회 (Edge Computer가 계산한 결과 사용)"""
+        # PLC에서 읽은 장비 데이터 (VFD raw 데이터)
         equipment = plc_data.get('equipment', [])
         diagnostics = []
-        vfd_diagnostics_for_file = {}  # HMI와 공유할 파일 데이터
+
+        # Edge Computer가 계산한 VFD 진단 결과 읽기 (레지스터 5200-5219)
+        vfd_diagnosis_result = None
+        if hasattr(st.session_state, 'modbus_client') and st.session_state.modbus_client:
+            vfd_diagnosis_result = st.session_state.modbus_client.read_vfd_diagnosis()
+
+        # Edge 결과가 있으면 사용, 없으면 기본값
+        health_scores = vfd_diagnosis_result.get('health_scores', [100] * 10) if vfd_diagnosis_result else [100] * 10
+        severity_levels = vfd_diagnosis_result.get('severity_levels', [0] * 10) if vfd_diagnosis_result else [0] * 10
+
+        # 중증도 레벨 → 이름 매핑
+        severity_names = {0: "정상", 1: "주의", 2: "경고", 3: "위험"}
+        status_grades = {0: "normal", 1: "caution", 2: "warning", 3: "critical"}
+
+        # 장비별 정격 전류 (A) - 파라미터 표시용
+        rated_currents = {'SWP': 300.0, 'FWP': 370.0, 'FAN': 70.0}
 
         for i, eq in enumerate(equipment):
             eq_name = eq.get('name', '')
@@ -1955,96 +1952,167 @@ class EdgeComputerDashboard:
             # VFD ID 생성
             if "SWP" in eq_name:
                 vfd_id = eq_name.replace("SWP", "SW_PUMP_")
+                rated_current = rated_currents['SWP']
             elif "FWP" in eq_name:
                 vfd_id = eq_name.replace("FWP", "FW_PUMP_")
+                rated_current = rated_currents['FWP']
             elif "FAN" in eq_name:
                 vfd_id = eq_name.replace("FAN", "ER_FAN_")
+                rated_current = rated_currents['FAN']
             else:
                 vfd_id = eq_name
+                rated_current = 100.0
 
-            # 임시 건강도 점수 생성
-            base_score = 85
-            score_variation = (i * 7) % 30
-            health_score = base_score - score_variation
-            severity_score = 100 - health_score
+            # Edge Computer가 계산한 결과 사용
+            health_score = health_scores[i] if i < len(health_scores) else 100
+            severity_level = severity_levels[i] if i < len(severity_levels) else 0
+            severity_name = severity_names.get(severity_level, "정상")
+            status_grade = status_grades.get(severity_level, "normal")
 
-            # 경고 메시지
-            if health_score >= 80:
+            # VFD 진단 데이터 추출 (PLC에서 읽은 20개 레지스터 - 표시용)
+            motor_thermal = eq.get('motor_thermal', 0)
+            heatsink_temp = eq.get('heatsink_temp', 0)
+            inverter_thermal = eq.get('inverter_thermal', 0)
+            motor_current = eq.get('motor_current', 0)
+            warning_word = eq.get('warning_word', 0)
+            over_temps = eq.get('over_temps', 0)
+            phase_u = eq.get('phase_u_current', 0)
+            phase_v = eq.get('phase_v_current', 0)
+            phase_w = eq.get('phase_w_current', 0)
+            frequency = eq.get('frequency', 0)
+            dc_link_voltage = eq.get('dc_link_voltage', 0)
+            run_hours = eq.get('run_hours', 0)
+            num_starts = eq.get('num_starts', 0)
+            kwh_counter = eq.get('kwh_counter', 0)
+
+            # 전류 정격 대비 비율 (%) - 표시용
+            current_ratio = (motor_current / rated_current * 100) if rated_current > 0 else 0
+
+            # 3상 불평형률 계산 (%) - 표시용
+            phase_currents = [phase_u, phase_v, phase_w]
+            avg_current = sum(phase_currents) / 3 if any(phase_currents) else 0
+            if avg_current > 0:
+                max_deviation = max(abs(c - avg_current) for c in phase_currents)
+                current_imbalance = (max_deviation / avg_current) * 100
+            else:
+                current_imbalance = 0
+
+            # 총 중증도 점수 역산 (건강도에서)
+            total_severity_score = int((100 - health_score) * 21 / 100)
+
+            # 권장 조치 생성 (severity_level 기반)
+            recommendations = []
+            if severity_level == 0:
+                recommendations.append("정상 운전 중. 정기 점검 일정에 따라 모니터링 유지.")
+            else:
+                if motor_thermal >= 90:
+                    recommendations.append("모터 과열 징후. 냉각 시스템 점검 및 부하 확인 필요.")
+                if heatsink_temp >= 70:
+                    recommendations.append("인버터 방열판 온도 상승. 환기 상태 및 팬 동작 확인 필요.")
+                if inverter_thermal >= 90:
+                    recommendations.append("인버터 열부하 증가. 주변 온도 및 부하 상태 점검 필요.")
+                if current_ratio >= 100:
+                    recommendations.append("모터 전류 과부하. 기계적 부하 및 베어링 상태 점검 필요.")
+                if current_imbalance >= 10:
+                    recommendations.append("3상 전류 불평형 감지. 케이블 및 모터 권선 점검 필요.")
+                if warning_word > 0:
+                    recommendations.append("VFD 경고 발생. 경고 코드 확인 및 원인 분석 필요.")
+                if over_temps >= 1:
+                    recommendations.append("과열 이력 발생. 근본 원인 분석 및 예방 정비 필요.")
+
+                if severity_level == 1:
+                    recommendations.append("▶ 모니터링 주기 강화 권장 (1시간 → 30분)")
+                elif severity_level == 2:
+                    recommendations.append("▶ 정비 계획 수립 필요. 다음 정비 기회에 점검 예정.")
+                elif severity_level == 3:
+                    recommendations.append("▶ 즉시 점검 필요! 장비 손상 방지를 위해 운전 중단 검토.")
+
+            if not recommendations:
+                recommendations.append("정상 운전 중.")
+
+            # 정비 우선순위에 따른 메시지
+            if severity_level >= 3:
+                warning = "즉시 점검 필요"
+                priority = "높음"
+            elif severity_level >= 2:
+                warning = "정비 계획 수립"
+                priority = "중간"
+            elif severity_level >= 1:
+                warning = "모니터링 강화"
+                priority = "낮음"
+            else:
                 warning = "정상 운전 중"
                 priority = "낮음"
-                next_maint = f"{(100 - health_score) * 10}일 후"
-                action = "정기 점검"
-                status_grade = "normal"
-                anomaly_patterns = []
-            elif health_score >= 60:
-                warning = "온도 상승 감지"
-                priority = "중간"
-                next_maint = f"{(80 - health_score) * 5}일 후"
-                action = "냉각 시스템 점검 권장"
-                status_grade = "caution"
-                anomaly_patterns = ["MOTOR_TEMP_WARNING"]
-            else:
-                warning = "비정상 진동 감지"
-                priority = "높음"
-                next_maint = "7일 이내"
-                action = "즉시 정밀 점검 필요"
-                status_grade = "warning"
-                anomaly_patterns = ["VIBRATION_HIGH"]
+
+            # 활성 이상 징후 확인 및 관리
+            is_acknowledged = False
+            is_cleared = False
+            if hasattr(st.session_state, 'vfd_monitor') and st.session_state.vfd_monitor:
+                vfd_monitor = st.session_state.vfd_monitor
+                if vfd_id in vfd_monitor.cleared_anomalies:
+                    is_cleared = True
+                else:
+                    anomaly_status = vfd_monitor.get_anomaly_status(vfd_id)
+                    if anomaly_status:
+                        is_acknowledged = anomaly_status.is_acknowledged
+
+            # 7개 파라미터 상세 정보 (표시용 - 점수는 임계값 기반 계산)
+            def get_param_score(value, thresholds):
+                if value < thresholds[0]: return 0
+                elif value < thresholds[1]: return 1
+                elif value < thresholds[2]: return 2
+                else: return 3
+
+            parameters = {
+                'motor_thermal': {'value': motor_thermal, 'unit': '%', 'score': get_param_score(motor_thermal, [80, 90, 100])},
+                'heatsink_temp': {'value': heatsink_temp, 'unit': '°C', 'score': get_param_score(heatsink_temp, [60, 70, 80])},
+                'inverter_thermal': {'value': inverter_thermal, 'unit': '%', 'score': get_param_score(inverter_thermal, [80, 90, 100])},
+                'motor_current': {'value': motor_current, 'unit': 'A', 'ratio': round(current_ratio, 1), 'score': get_param_score(current_ratio, [90, 100, 110])},
+                'current_imbalance': {'value': round(current_imbalance, 1), 'unit': '%', 'score': get_param_score(current_imbalance, [5, 10, 15])},
+                'warning_word': {'value': warning_word, 'score': 1 if warning_word > 0 else 0},
+                'over_temps': {'value': over_temps, 'unit': '회', 'score': 3 if over_temps >= 3 else (2 if over_temps > 0 else 0)},
+            }
 
             diagnostics.append({
                 'id': vfd_id,
                 'name': eq_name,
                 'vfd_id': vfd_id,
                 'health_score': health_score,
+                'severity_level': severity_level,
+                'severity_name': severity_name,
+                'total_severity_score': total_severity_score,
                 'warning_message': warning,
-                'next_maintenance': next_maint,
-                'recommended_action': action,
+                'next_maintenance': f"{max(7, 90 - severity_level * 30)}일 후",
+                'recommended_action': recommendations[0] if recommendations else "정상",
+                'recommendations': recommendations,
                 'priority': priority,
-                'run_hours': eq.get('run_hours', 5000),
-                'avg_temp': 65.0 + (i * 3) % 15,
-                'max_temp': 75.0 + (i * 3) % 15,
-                'vibration': 0.5 + (i * 0.2) % 1.5,
-                'start_count': 1200 + (i * 150),
-                'severity_score': severity_score,
+                'parameters': parameters,
+                # VFD 운전 데이터 (PLC에서 읽은 raw 데이터)
+                'frequency': frequency,
+                'motor_current': motor_current,
+                'motor_thermal': motor_thermal,
+                'heatsink_temp': heatsink_temp,
+                'inverter_thermal': inverter_thermal,
+                'dc_link_voltage': dc_link_voltage,
+                'run_hours': run_hours,
+                'num_starts': num_starts,
+                'kwh_counter': kwh_counter,
+                'phase_u_current': phase_u,
+                'phase_v_current': phase_v,
+                'phase_w_current': phase_w,
+                'warning_word': warning_word,
+                'over_temps': over_temps,
+                # 레거시 호환 필드
+                'avg_temp': heatsink_temp,
+                'max_temp': heatsink_temp + 5,
+                'start_count': num_starts,
                 'status_grade': status_grade,
-                'anomaly_patterns': anomaly_patterns,
+                'severity_score': total_severity_score,
+                'anomaly_patterns': [],
+                # 이상 징후 관리
+                'is_acknowledged': is_acknowledged,
+                'is_cleared': is_cleared,
             })
-
-            # 파일 저장용 데이터 구성
-            vfd_diagnostics_for_file[vfd_id] = {
-                "vfd_id": vfd_id,
-                "severity_score": severity_score,
-                "status_grade": status_grade,
-                "anomaly_patterns": anomaly_patterns,
-                "recommendation": action,
-                "motor_temperature_c": 65.0 + (i * 3) % 15,
-                "heatsink_temperature_c": 50.0 + (i * 2) % 10,
-                "current_frequency_hz": eq.get('frequency', 0),
-                "output_current_a": 0,
-                "output_voltage_v": 380,
-                "dc_bus_voltage_v": 540,
-                "cumulative_runtime_hours": eq.get('run_hours', 5000),
-                "maintenance_priority": 5 if health_score < 50 else (3 if health_score < 80 else 0),
-                "estimated_days_to_maintenance": int(next_maint.replace("일 후", "").replace("일 이내", "7")) if "일" in next_maint else 90,
-            }
-
-        # HMI와 공유하기 위해 파일에 저장
-        try:
-            shared_dir = Path("C:/shared")
-            shared_dir.mkdir(parents=True, exist_ok=True)
-            shared_file = shared_dir / "vfd_diagnostics.json"
-
-            file_data = {
-                "timestamp": datetime.now().isoformat(),
-                "vfd_count": len(vfd_diagnostics_for_file),
-                "vfd_diagnostics": vfd_diagnostics_for_file,
-                "source": "dashboard_fallback"
-            }
-
-            with open(shared_file, 'w', encoding='utf-8') as f:
-                json.dump(file_data, f, ensure_ascii=False, indent=2)
-        except Exception as e:
-            pass  # 파일 저장 실패는 무시
 
         return diagnostics
 

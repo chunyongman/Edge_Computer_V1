@@ -11,7 +11,9 @@
       "Bash(python -m py_compile:*)",
       "Bash(venvScriptspython.exe test_connection.py)",
       "Bash(./venv/Scripts/python.exe:*)",
-      "Bash(python -c:*)"
+      "Bash(python -c:*)",
+      "Bash(taskkill:*)",
+      "Bash(start \"\" python plc_simulator.py)"
     ],
     "deny": [],
     "ask": []

@@ -319,42 +319,223 @@ class EdgeAICalculator:
 
         return result
 
-    def calculate_vfd_diagnosis(self, equipment_list: List[Dict], sensors: Dict = None) -> List[int]:
+    def calculate_vfd_diagnosis(self, equipment_list: List[Dict], sensors: Dict = None) -> tuple:
         """
-        VFD 예방 진단 점수 계산 (0-100)
+        VFD 예방 진단 - 4단계 중증도 점수 계산
+
+        사양서 기준:
+        - Level 1 (정상 0점): Motor Thermal < 80%, Heatsink < 60°C, Current < 90%
+        - Level 2 (주의 1점): Motor Thermal 80-90%, Heatsink 60-70°C, Warning Word 활성
+        - Level 3 (경고 2점): Motor Thermal 90-100%, Heatsink 70-80°C, Over Temp's 발생
+        - Level 4 (위험 3점): Motor Thermal > 100%, Heatsink > 80°C, 반복적 알람 발생
+
+        종합 점수:
+        - 0-2점: 정상 운전 (Normal)
+        - 3-5점: 모니터링 강화 (Attention)
+        - 6-8점: 정비 계획 수립 (Planning)
+        - 9점 이상: 즉시 점검 필요 (Critical)
 
         Args:
-            equipment_list: 장비 데이터
+            equipment_list: 장비 데이터 (VFD 진단 데이터 포함)
             sensors: 센서 데이터
 
         Returns:
-            각 장비별 진단 점수 (0-100, 100=정상)
+            (diagnosis_scores, severity_levels, diagnosis_details)
+            - diagnosis_scores: 각 장비별 건강도 점수 (0-100, 100=정상)
+            - severity_levels: 각 장비별 중증도 레벨 (0-3)
+            - diagnosis_details: 상세 진단 결과 리스트
         """
-        # 간단한 진단 로직 (실제로는 ML 모델 사용)
-        scores = []
+        thresholds = config.VFD_DIAGNOSIS_THRESHOLDS
 
-        for eq in equipment_list:
-            # 기본 점수 100에서 시작
-            score = 100
+        diagnosis_scores = []
+        severity_levels = []
+        diagnosis_details = []
 
-            # 비정상 상태면 점수 감소
+        for i, eq in enumerate(equipment_list):
+            # 장비 타입별 정격 전류 결정
+            if i < 3:  # SWP
+                rated_current = config.MOTOR_RATED_CURRENT["SWP"]
+            elif i < 6:  # FWP
+                rated_current = config.MOTOR_RATED_CURRENT["FWP"]
+            else:  # FAN
+                rated_current = config.MOTOR_RATED_CURRENT["FAN"]
+
+            # VFD 진단 데이터 추출
+            motor_thermal = eq.get("motor_thermal", 0)
+            heatsink_temp = eq.get("heatsink_temp", 0)
+            inverter_thermal = eq.get("inverter_thermal", 0)
+            motor_current = eq.get("motor_current", 0)
+            warning_word = eq.get("warning_word", 0)
+            over_temps = eq.get("over_temps", 0)
+
+            # 3상 전류 불평형 계산
+            phase_u = eq.get("phase_u_current", 0)
+            phase_v = eq.get("phase_v_current", 0)
+            phase_w = eq.get("phase_w_current", 0)
+
+            # 전류 정격 대비 비율 (%)
+            current_ratio = (motor_current / rated_current * 100) if rated_current > 0 else 0
+
+            # 3상 불평형률 계산 (%)
+            phase_currents = [phase_u, phase_v, phase_w]
+            avg_current = sum(phase_currents) / 3 if any(phase_currents) else 0
+            if avg_current > 0:
+                max_deviation = max(abs(c - avg_current) for c in phase_currents)
+                current_imbalance = (max_deviation / avg_current) * 100
+            else:
+                current_imbalance = 0
+
+            # === 각 파라미터별 중증도 점수 계산 ===
+            param_scores = {}
+
+            # 1. Motor Thermal
+            param_scores["motor_thermal"] = self._get_severity_score(
+                motor_thermal, thresholds["motor_thermal"])
+
+            # 2. Heatsink Temperature
+            param_scores["heatsink_temp"] = self._get_severity_score(
+                heatsink_temp, thresholds["heatsink_temp"])
+
+            # 3. Inverter Thermal
+            param_scores["inverter_thermal"] = self._get_severity_score(
+                inverter_thermal, thresholds["inverter_thermal"])
+
+            # 4. Motor Current Ratio
+            param_scores["motor_current"] = self._get_severity_score(
+                current_ratio, thresholds["motor_current_ratio"])
+
+            # 5. Current Imbalance
+            param_scores["current_imbalance"] = self._get_severity_score(
+                current_imbalance, thresholds["current_imbalance"])
+
+            # 6. Warning Word (비트 활성화 시 1점)
+            param_scores["warning_word"] = 1 if warning_word > 0 else 0
+
+            # 7. Over Temps (과열 이력 발생 시 2점, 반복 시 3점)
+            if over_temps == 0:
+                param_scores["over_temps"] = 0
+            elif over_temps < 3:
+                param_scores["over_temps"] = 2
+            else:
+                param_scores["over_temps"] = 3
+
+            # === 종합 점수 계산 ===
+            total_severity_score = sum(param_scores.values())
+
+            # 중증도 레벨 결정 (0-3)
+            if total_severity_score <= 2:
+                severity_level = 0  # Normal
+                severity_name = "정상"
+            elif total_severity_score <= 5:
+                severity_level = 1  # Attention
+                severity_name = "주의"
+            elif total_severity_score <= 8:
+                severity_level = 2  # Planning
+                severity_name = "경고"
+            else:
+                severity_level = 3  # Critical
+                severity_name = "위험"
+
+            # 건강도 점수 계산 (0-100, 100=정상)
+            # 최대 21점(7개 항목 × 3점) → 0점, 0점 → 100점
+            max_score = 21
+            health_score = max(0, min(100, int(100 - (total_severity_score / max_score * 100))))
+
+            # 비정상 상태 체크 (장비 자체 이상)
             if eq.get("abnormal"):
-                score -= 50
+                health_score = min(health_score, 50)
+                severity_level = max(severity_level, 2)
+                severity_name = "경고" if severity_level == 2 else "위험"
 
-            # 주파수 변동이 크면 점수 감소
-            freq = eq.get("frequency", 0)
-            if freq > 55:
-                score -= 10  # 과속
-            elif freq > 0 and freq < 40:
-                score -= 10  # 저속
+            diagnosis_scores.append(health_score)
+            severity_levels.append(severity_level)
 
-            # 전력이 비정상이면 점수 감소
-            power = eq.get("power", 0)
-            if power > 100:
-                score -= 10  # 과부하
+            # 상세 진단 결과
+            diagnosis_details.append({
+                "name": eq.get("name", f"Equipment_{i}"),
+                "health_score": health_score,
+                "severity_level": severity_level,
+                "severity_name": severity_name,
+                "total_severity_score": total_severity_score,
+                "parameters": {
+                    "motor_thermal": {"value": motor_thermal, "unit": "%", "score": param_scores["motor_thermal"]},
+                    "heatsink_temp": {"value": heatsink_temp, "unit": "°C", "score": param_scores["heatsink_temp"]},
+                    "inverter_thermal": {"value": inverter_thermal, "unit": "%", "score": param_scores["inverter_thermal"]},
+                    "motor_current": {"value": motor_current, "unit": "A", "ratio": round(current_ratio, 1), "score": param_scores["motor_current"]},
+                    "current_imbalance": {"value": round(current_imbalance, 1), "unit": "%", "score": param_scores["current_imbalance"]},
+                    "warning_word": {"value": warning_word, "score": param_scores["warning_word"]},
+                    "over_temps": {"value": over_temps, "unit": "회", "score": param_scores["over_temps"]},
+                },
+                "recommendations": self._get_recommendations(severity_level, param_scores)
+            })
 
-            # 최소 0, 최대 100
-            score = max(0, min(100, score))
-            scores.append(score)
+        return diagnosis_scores, severity_levels, diagnosis_details
 
-        return scores
+    def _get_severity_score(self, value: float, threshold: Dict) -> int:
+        """
+        파라미터 값에 따른 중증도 점수 반환 (0-3점)
+
+        Args:
+            value: 측정값
+            threshold: 임계값 딕셔너리 {"normal": x, "attention": y, "warning": z}
+
+        Returns:
+            중증도 점수 (0=정상, 1=주의, 2=경고, 3=위험)
+        """
+        if value < threshold["normal"]:
+            return 0  # 정상
+        elif value < threshold["attention"]:
+            return 1  # 주의
+        elif value < threshold["warning"]:
+            return 2  # 경고
+        else:
+            return 3  # 위험
+
+    def _get_recommendations(self, severity_level: int, param_scores: Dict) -> List[str]:
+        """
+        중증도 레벨 및 파라미터 점수에 따른 권장 조치 반환
+
+        Args:
+            severity_level: 중증도 레벨 (0-3)
+            param_scores: 각 파라미터별 점수
+
+        Returns:
+            권장 조치 리스트
+        """
+        recommendations = []
+
+        if severity_level == 0:
+            recommendations.append("정상 운전 중. 정기 점검 일정에 따라 모니터링 유지.")
+            return recommendations
+
+        # 파라미터별 권장 조치
+        if param_scores.get("motor_thermal", 0) >= 2:
+            recommendations.append("모터 과열 징후. 냉각 시스템 점검 및 부하 확인 필요.")
+
+        if param_scores.get("heatsink_temp", 0) >= 2:
+            recommendations.append("인버터 방열판 온도 상승. 환기 상태 및 팬 동작 확인 필요.")
+
+        if param_scores.get("inverter_thermal", 0) >= 2:
+            recommendations.append("인버터 열부하 증가. 주변 온도 및 부하 상태 점검 필요.")
+
+        if param_scores.get("motor_current", 0) >= 2:
+            recommendations.append("모터 전류 과부하. 기계적 부하 및 베어링 상태 점검 필요.")
+
+        if param_scores.get("current_imbalance", 0) >= 2:
+            recommendations.append("3상 전류 불평형 감지. 케이블 및 모터 권선 점검 필요.")
+
+        if param_scores.get("warning_word", 0) > 0:
+            recommendations.append("VFD 경고 발생. 경고 코드 확인 및 원인 분석 필요.")
+
+        if param_scores.get("over_temps", 0) >= 2:
+            recommendations.append("과열 이력 다수 발생. 근본 원인 분석 및 예방 정비 필요.")
+
+        # 중증도별 추가 권장 조치
+        if severity_level == 1:
+            recommendations.append("▶ 모니터링 주기 강화 권장 (1시간 → 30분)")
+        elif severity_level == 2:
+            recommendations.append("▶ 정비 계획 수립 필요. 다음 정비 기회에 점검 예정.")
+        elif severity_level == 3:
+            recommendations.append("▶ 즉시 점검 필요! 장비 손상 방지를 위해 운전 중단 검토.")
+
+        return recommendations
