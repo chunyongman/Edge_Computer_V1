@@ -73,6 +73,7 @@ MODBUS_REGISTERS = {
     # Edge AI 결과 저장 영역 (Write)
     "AI_TARGET_FREQ_START": 5000,      # 목표 주파수 (Hz × 10), 10개
     "AI_ENERGY_SAVINGS_START": 5100,   # 절감 전력 (kW × 10), 10개
+    "AI_EQUIPMENT_SAVINGS_RATIO_START": 5110,  # 개별 장비 절감률 (% × 10), 10개
     "AI_VFD_DIAGNOSIS_START": 5200,    # VFD 진단 점수 (0-100), 10개
     "AI_VFD_SEVERITY_START": 5210,     # VFD 중증도 레벨 (0-3), 10개
     "AI_SYSTEM_SAVINGS_START": 5300,   # 시스템 절감률 (% × 10), 4개
@@ -87,6 +88,29 @@ MODBUS_REGISTERS = {
 
     # 개별 장비 전력 (Write)
     "AI_EQUIPMENT_POWER_START": 5620,        # 개별 장비 실제 전력 (kW × 10), 10개
+
+    # ESS 운전 데이터 (Write) - 각 장비별 ESS 모드 운전 시간 및 에너지
+    # ESS 모드 조건: Running + frequency < 60Hz
+    "ESS_RUN_HOURS_START": 5700,             # 개별 장비 ESS 운전시간 (hours × 10), 10개
+    "ESS_TOTAL_HOURS_START": 5710,           # 개별 장비 총 운전시간 (hours × 10), 10개
+    "ESS_ENERGY_KWH_START": 5720,            # 개별 장비 ESS 모드 소비 전력량 (kWh × 10), 10개
+    "ESS_BASELINE_KWH_START": 5730,          # 개별 장비 60Hz 기준 전력량 (kWh × 10), 10개
+    "ESS_SAVED_KWH_START": 5740,             # 개별 장비 절감 전력량 (kWh × 10), 10개
+    "ESS_SAVINGS_RATE_START": 5750,          # 개별 장비 절감률 (% × 10), 10개
+
+    # ESS 그룹별 요약 데이터 (Write)
+    # 순서: [SWP, FWP, FAN, TOTAL]
+    "ESS_GROUP_ESS_HOURS_START": 5800,       # 그룹별 ESS 운전시간 (hours × 10), 4개
+    "ESS_GROUP_TOTAL_HOURS_START": 5804,     # 그룹별 총 운전시간 (hours × 10), 4개
+    "ESS_GROUP_ESS_KWH_START": 5808,         # 그룹별 ESS 모드 소비량 (kWh × 10), 4개
+    "ESS_GROUP_BASELINE_KWH_START": 5812,    # 그룹별 60Hz 기준 전력량 (kWh × 10), 4개
+    "ESS_GROUP_SAVED_KWH_START": 5816,       # 그룹별 절감량 (kWh × 10), 4개
+    "ESS_GROUP_SAVINGS_RATE_START": 5820,    # 그룹별 절감률 (% × 10), 4개
+
+    # 오늘 ESS 데이터 (Write)
+    "ESS_TODAY_ESS_HOURS_START": 5900,       # 오늘 개별 ESS 운전시간 (hours × 100), 10개
+    "ESS_TODAY_SAVED_KWH_START": 5910,       # 오늘 개별 절감량 (kWh × 10), 10개
+    "ESS_TODAY_GROUP_SAVED_KWH_START": 5920, # 오늘 그룹별 절감량 (kWh × 10), 4개 [SWP,FWP,FAN,TOTAL]
 }
 
 # VFD 예방진단 임계값 (4단계 중증도 기준)

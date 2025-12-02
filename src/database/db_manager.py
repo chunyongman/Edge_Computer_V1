@@ -195,7 +195,42 @@ class DatabaseManager:
                 )
             """)
 
-            # 9. VFD 이상 징후 히스토리 테이블 (센서 알람과 별도 관리)
+            # 9. ESS 누적 운전 데이터 테이블 (장비별 누적 통계)
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS ess_cumulative_data (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    equipment_name TEXT NOT NULL UNIQUE,
+                    ess_run_hours REAL DEFAULT 0,
+                    total_run_hours REAL DEFAULT 0,
+                    ess_energy_kwh REAL DEFAULT 0,
+                    baseline_energy_kwh REAL DEFAULT 0,
+                    saved_energy_kwh REAL DEFAULT 0,
+                    last_running_state INTEGER DEFAULT 0,
+                    last_ess_state INTEGER DEFAULT 0,
+                    session_start_time DATETIME,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+
+            # 10. ESS 일별 운전 데이터 테이블 (일별 통계)
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS ess_daily_data (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    equipment_name TEXT NOT NULL,
+                    date TEXT NOT NULL,
+                    ess_run_hours REAL DEFAULT 0,
+                    total_run_hours REAL DEFAULT 0,
+                    ess_energy_kwh REAL DEFAULT 0,
+                    baseline_energy_kwh REAL DEFAULT 0,
+                    saved_energy_kwh REAL DEFAULT 0,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(equipment_name, date)
+                )
+            """)
+
+            # 11. VFD 이상 징후 히스토리 테이블 (센서 알람과 별도 관리)
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS vfd_anomaly_history (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -224,6 +259,33 @@ class DatabaseManager:
                 )
             """)
 
+            # 10. 사용자 테이블
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT UNIQUE NOT NULL,
+                    password_hash TEXT NOT NULL,
+                    role TEXT NOT NULL DEFAULT 'viewer',
+                    display_name TEXT,
+                    is_active INTEGER DEFAULT 1,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    last_login DATETIME
+                )
+            """)
+
+            # 11. 세션 테이블
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS user_sessions (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    session_token TEXT UNIQUE NOT NULL,
+                    user_id INTEGER NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    expires_at DATETIME NOT NULL,
+                    is_valid INTEGER DEFAULT 1,
+                    FOREIGN KEY (user_id) REFERENCES users(id)
+                )
+            """)
+
             # 인덱스 생성
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_alarm_equipment ON alarm_history(equipment_id)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_alarm_occurred ON alarm_history(occurred_at)")
@@ -237,6 +299,9 @@ class DatabaseManager:
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_trend_hour_vfd ON trend_data_hour(vfd_id, timestamp)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_operation_equipment ON operation_history(equipment_name)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_operation_date ON operation_history(date)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_ess_cumulative_equipment ON ess_cumulative_data(equipment_name)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_ess_daily_equipment ON ess_daily_data(equipment_name)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_ess_daily_date ON ess_daily_data(date)")
 
             logger.info("✅ 데이터베이스 테이블 초기화 완료")
 
@@ -936,6 +1001,577 @@ class DatabaseManager:
                 "by_severity": by_severity,
                 "by_equipment": by_equipment,
                 "avg_duration_minutes": round(avg_duration, 1)
+            }
+
+    # ==================== ESS 누적 데이터 ====================
+
+    def get_or_create_ess_cumulative(self, equipment_name: str) -> Dict:
+        """ESS 누적 데이터 조회 또는 생성"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT * FROM ess_cumulative_data WHERE equipment_name = ?",
+                (equipment_name,)
+            )
+            row = cursor.fetchone()
+
+            if row:
+                return dict(row)
+
+            # 새 레코드 생성
+            cursor.execute("""
+                INSERT INTO ess_cumulative_data (equipment_name)
+                VALUES (?)
+            """, (equipment_name,))
+
+            return {
+                'equipment_name': equipment_name,
+                'ess_run_hours': 0.0,
+                'total_run_hours': 0.0,
+                'ess_energy_kwh': 0.0,
+                'baseline_energy_kwh': 0.0,
+                'saved_energy_kwh': 0.0,
+                'last_running_state': 0,
+                'last_ess_state': 0,
+                'session_start_time': None
+            }
+
+    def update_ess_cumulative(
+        self,
+        equipment_name: str,
+        delta_ess_hours: float = 0.0,
+        delta_total_hours: float = 0.0,
+        delta_ess_energy: float = 0.0,
+        delta_baseline_energy: float = 0.0,
+        delta_saved_energy: float = 0.0,
+        last_running_state: int = None,
+        last_ess_state: int = None,
+        session_start_time: datetime = None
+    ):
+        """ESS 누적 데이터 업데이트"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            # 먼저 레코드가 있는지 확인
+            cursor.execute(
+                "SELECT id FROM ess_cumulative_data WHERE equipment_name = ?",
+                (equipment_name,)
+            )
+            if not cursor.fetchone():
+                cursor.execute("""
+                    INSERT INTO ess_cumulative_data (equipment_name)
+                    VALUES (?)
+                """, (equipment_name,))
+
+            # 업데이트
+            update_parts = [
+                "ess_run_hours = ess_run_hours + ?",
+                "total_run_hours = total_run_hours + ?",
+                "ess_energy_kwh = ess_energy_kwh + ?",
+                "baseline_energy_kwh = baseline_energy_kwh + ?",
+                "saved_energy_kwh = saved_energy_kwh + ?",
+                "updated_at = CURRENT_TIMESTAMP"
+            ]
+            params = [delta_ess_hours, delta_total_hours, delta_ess_energy,
+                     delta_baseline_energy, delta_saved_energy]
+
+            if last_running_state is not None:
+                update_parts.append("last_running_state = ?")
+                params.append(last_running_state)
+
+            if last_ess_state is not None:
+                update_parts.append("last_ess_state = ?")
+                params.append(last_ess_state)
+
+            if session_start_time is not None:
+                update_parts.append("session_start_time = ?")
+                params.append(session_start_time)
+
+            params.append(equipment_name)
+
+            cursor.execute(f"""
+                UPDATE ess_cumulative_data
+                SET {', '.join(update_parts)}
+                WHERE equipment_name = ?
+            """, params)
+
+    def get_all_ess_cumulative(self) -> List[Dict]:
+        """모든 장비의 ESS 누적 데이터 조회"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM ess_cumulative_data ORDER BY equipment_name")
+            return [dict(row) for row in cursor.fetchall()]
+
+    def upsert_ess_daily(
+        self,
+        equipment_name: str,
+        date: str,
+        delta_ess_hours: float = 0.0,
+        delta_total_hours: float = 0.0,
+        delta_ess_energy: float = 0.0,
+        delta_baseline_energy: float = 0.0,
+        delta_saved_energy: float = 0.0
+    ):
+        """ESS 일별 데이터 업데이트 (UPSERT)"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                SELECT id FROM ess_daily_data
+                WHERE equipment_name = ? AND date = ?
+            """, (equipment_name, date))
+            existing = cursor.fetchone()
+
+            if existing:
+                cursor.execute("""
+                    UPDATE ess_daily_data
+                    SET ess_run_hours = ess_run_hours + ?,
+                        total_run_hours = total_run_hours + ?,
+                        ess_energy_kwh = ess_energy_kwh + ?,
+                        baseline_energy_kwh = baseline_energy_kwh + ?,
+                        saved_energy_kwh = saved_energy_kwh + ?,
+                        updated_at = CURRENT_TIMESTAMP
+                    WHERE equipment_name = ? AND date = ?
+                """, (delta_ess_hours, delta_total_hours, delta_ess_energy,
+                      delta_baseline_energy, delta_saved_energy,
+                      equipment_name, date))
+            else:
+                cursor.execute("""
+                    INSERT INTO ess_daily_data
+                    (equipment_name, date, ess_run_hours, total_run_hours,
+                     ess_energy_kwh, baseline_energy_kwh, saved_energy_kwh)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (equipment_name, date, delta_ess_hours, delta_total_hours,
+                      delta_ess_energy, delta_baseline_energy, delta_saved_energy))
+
+    def get_ess_daily_data(
+        self,
+        equipment_name: str = None,
+        date: str = None,
+        start_date: str = None,
+        end_date: str = None,
+        limit: int = 100
+    ) -> List[Dict]:
+        """ESS 일별 데이터 조회"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            query = "SELECT * FROM ess_daily_data WHERE 1=1"
+            params = []
+
+            if equipment_name:
+                query += " AND equipment_name = ?"
+                params.append(equipment_name)
+            if date:
+                query += " AND date = ?"
+                params.append(date)
+            if start_date:
+                query += " AND date >= ?"
+                params.append(start_date)
+            if end_date:
+                query += " AND date <= ?"
+                params.append(end_date)
+
+            query += f" ORDER BY date DESC, equipment_name LIMIT {limit}"
+
+            cursor.execute(query, params)
+            return [dict(row) for row in cursor.fetchall()]
+
+    def get_ess_summary_by_group(self, date: str = None) -> Dict:
+        """그룹별 ESS 요약 데이터 조회"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            if date:
+                # 특정 일자 데이터
+                cursor.execute("""
+                    SELECT equipment_name, ess_run_hours, total_run_hours,
+                           ess_energy_kwh, baseline_energy_kwh, saved_energy_kwh
+                    FROM ess_daily_data WHERE date = ?
+                """, (date,))
+            else:
+                # 누적 데이터
+                cursor.execute("""
+                    SELECT equipment_name, ess_run_hours, total_run_hours,
+                           ess_energy_kwh, baseline_energy_kwh, saved_energy_kwh
+                    FROM ess_cumulative_data
+                """)
+
+            rows = cursor.fetchall()
+
+            # 그룹별 집계
+            groups = {
+                'SWP': {'ess_hours': 0, 'total_hours': 0, 'ess_kwh': 0, 'baseline_kwh': 0, 'saved_kwh': 0},
+                'FWP': {'ess_hours': 0, 'total_hours': 0, 'ess_kwh': 0, 'baseline_kwh': 0, 'saved_kwh': 0},
+                'FAN': {'ess_hours': 0, 'total_hours': 0, 'ess_kwh': 0, 'baseline_kwh': 0, 'saved_kwh': 0},
+                'TOTAL': {'ess_hours': 0, 'total_hours': 0, 'ess_kwh': 0, 'baseline_kwh': 0, 'saved_kwh': 0}
+            }
+
+            for row in rows:
+                name = row['equipment_name']
+                if name.startswith('SWP'):
+                    group = 'SWP'
+                elif name.startswith('FWP'):
+                    group = 'FWP'
+                elif name.startswith('FAN'):
+                    group = 'FAN'
+                else:
+                    continue
+
+                groups[group]['ess_hours'] += row['ess_run_hours'] or 0
+                groups[group]['total_hours'] += row['total_run_hours'] or 0
+                groups[group]['ess_kwh'] += row['ess_energy_kwh'] or 0
+                groups[group]['baseline_kwh'] += row['baseline_energy_kwh'] or 0
+                groups[group]['saved_kwh'] += row['saved_energy_kwh'] or 0
+
+            # 전체 합계
+            for group in ['SWP', 'FWP', 'FAN']:
+                for key in groups[group]:
+                    groups['TOTAL'][key] += groups[group][key]
+
+            # 절감률 계산
+            for group in groups:
+                baseline = groups[group]['baseline_kwh']
+                if baseline > 0:
+                    groups[group]['savings_rate'] = (groups[group]['saved_kwh'] / baseline) * 100
+                else:
+                    groups[group]['savings_rate'] = 0.0
+
+            return groups
+
+    # ==================== ESS 보고서 쿼리 ====================
+
+    def get_ess_daily_report(self, date: str) -> Dict:
+        """
+        일별 ESS 보고서 데이터 조회
+
+        Args:
+            date: 조회할 날짜 (YYYY-MM-DD 형식)
+
+        Returns:
+            {
+                'date': '2025-12-02',
+                'equipment': [장비별 데이터...],
+                'groups': {'SWP': {...}, 'FWP': {...}, 'FAN': {...}, 'TOTAL': {...}}
+            }
+        """
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            # 해당 날짜의 장비별 데이터 조회
+            cursor.execute("""
+                SELECT equipment_name, ess_run_hours, total_run_hours,
+                       ess_energy_kwh, baseline_energy_kwh, saved_energy_kwh
+                FROM ess_daily_data
+                WHERE date = ?
+                ORDER BY equipment_name
+            """, (date,))
+
+            rows = cursor.fetchall()
+
+            # 장비별 데이터
+            equipment = []
+            for row in rows:
+                baseline = row['baseline_energy_kwh'] or 0
+                saved = row['saved_energy_kwh'] or 0
+                savings_rate = (saved / baseline * 100) if baseline > 0 else 0
+
+                equipment.append({
+                    'equipment_name': row['equipment_name'],
+                    'ess_run_hours': round(row['ess_run_hours'] or 0, 2),
+                    'total_run_hours': round(row['total_run_hours'] or 0, 2),
+                    'ess_energy_kwh': round(row['ess_energy_kwh'] or 0, 1),
+                    'baseline_energy_kwh': round(baseline, 1),
+                    'saved_energy_kwh': round(saved, 1),
+                    'savings_rate': round(savings_rate, 1)
+                })
+
+            # 그룹별 집계
+            groups = self.get_ess_summary_by_group(date)
+
+            return {
+                'date': date,
+                'equipment': equipment,
+                'groups': groups
+            }
+
+    def get_ess_period_report(self, start_date: str, end_date: str) -> Dict:
+        """
+        기간별 ESS 보고서 데이터 조회
+
+        Args:
+            start_date: 시작 날짜 (YYYY-MM-DD)
+            end_date: 종료 날짜 (YYYY-MM-DD)
+
+        Returns:
+            {
+                'start_date': '2025-12-01',
+                'end_date': '2025-12-02',
+                'daily_data': [일별 그룹별 데이터...],
+                'summary': {'SWP': {...}, ...}
+            }
+        """
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            # 일별 그룹별 집계
+            cursor.execute("""
+                SELECT date,
+                       SUM(CASE WHEN equipment_name LIKE 'SWP%' THEN saved_energy_kwh ELSE 0 END) as swp_saved,
+                       SUM(CASE WHEN equipment_name LIKE 'FWP%' THEN saved_energy_kwh ELSE 0 END) as fwp_saved,
+                       SUM(CASE WHEN equipment_name LIKE 'FAN%' THEN saved_energy_kwh ELSE 0 END) as fan_saved,
+                       SUM(saved_energy_kwh) as total_saved,
+                       SUM(baseline_energy_kwh) as total_baseline
+                FROM ess_daily_data
+                WHERE date >= ? AND date <= ?
+                GROUP BY date
+                ORDER BY date
+            """, (start_date, end_date))
+
+            daily_data = []
+            for row in cursor.fetchall():
+                baseline = row['total_baseline'] or 0
+                saved = row['total_saved'] or 0
+                savings_rate = (saved / baseline * 100) if baseline > 0 else 0
+
+                daily_data.append({
+                    'date': row['date'],
+                    'swp_saved_kwh': round(row['swp_saved'] or 0, 1),
+                    'fwp_saved_kwh': round(row['fwp_saved'] or 0, 1),
+                    'fan_saved_kwh': round(row['fan_saved'] or 0, 1),
+                    'total_saved_kwh': round(saved, 1),
+                    'savings_rate': round(savings_rate, 1)
+                })
+
+            # 기간 합계
+            cursor.execute("""
+                SELECT
+                       SUM(CASE WHEN equipment_name LIKE 'SWP%' THEN saved_energy_kwh ELSE 0 END) as swp_saved,
+                       SUM(CASE WHEN equipment_name LIKE 'SWP%' THEN baseline_energy_kwh ELSE 0 END) as swp_baseline,
+                       SUM(CASE WHEN equipment_name LIKE 'SWP%' THEN ess_run_hours ELSE 0 END) as swp_ess_hours,
+                       SUM(CASE WHEN equipment_name LIKE 'FWP%' THEN saved_energy_kwh ELSE 0 END) as fwp_saved,
+                       SUM(CASE WHEN equipment_name LIKE 'FWP%' THEN baseline_energy_kwh ELSE 0 END) as fwp_baseline,
+                       SUM(CASE WHEN equipment_name LIKE 'FWP%' THEN ess_run_hours ELSE 0 END) as fwp_ess_hours,
+                       SUM(CASE WHEN equipment_name LIKE 'FAN%' THEN saved_energy_kwh ELSE 0 END) as fan_saved,
+                       SUM(CASE WHEN equipment_name LIKE 'FAN%' THEN baseline_energy_kwh ELSE 0 END) as fan_baseline,
+                       SUM(CASE WHEN equipment_name LIKE 'FAN%' THEN ess_run_hours ELSE 0 END) as fan_ess_hours,
+                       SUM(saved_energy_kwh) as total_saved,
+                       SUM(baseline_energy_kwh) as total_baseline,
+                       SUM(ess_run_hours) as total_ess_hours
+                FROM ess_daily_data
+                WHERE date >= ? AND date <= ?
+            """, (start_date, end_date))
+
+            row = cursor.fetchone()
+
+            def calc_rate(saved, baseline):
+                return round((saved / baseline * 100) if baseline > 0 else 0, 1)
+
+            summary = {
+                'SWP': {
+                    'saved_kwh': round(row['swp_saved'] or 0, 1),
+                    'baseline_kwh': round(row['swp_baseline'] or 0, 1),
+                    'ess_hours': round(row['swp_ess_hours'] or 0, 1),
+                    'savings_rate': calc_rate(row['swp_saved'] or 0, row['swp_baseline'] or 0)
+                },
+                'FWP': {
+                    'saved_kwh': round(row['fwp_saved'] or 0, 1),
+                    'baseline_kwh': round(row['fwp_baseline'] or 0, 1),
+                    'ess_hours': round(row['fwp_ess_hours'] or 0, 1),
+                    'savings_rate': calc_rate(row['fwp_saved'] or 0, row['fwp_baseline'] or 0)
+                },
+                'FAN': {
+                    'saved_kwh': round(row['fan_saved'] or 0, 1),
+                    'baseline_kwh': round(row['fan_baseline'] or 0, 1),
+                    'ess_hours': round(row['fan_ess_hours'] or 0, 1),
+                    'savings_rate': calc_rate(row['fan_saved'] or 0, row['fan_baseline'] or 0)
+                },
+                'TOTAL': {
+                    'saved_kwh': round(row['total_saved'] or 0, 1),
+                    'baseline_kwh': round(row['total_baseline'] or 0, 1),
+                    'ess_hours': round(row['total_ess_hours'] or 0, 1),
+                    'savings_rate': calc_rate(row['total_saved'] or 0, row['total_baseline'] or 0)
+                }
+            }
+
+            return {
+                'start_date': start_date,
+                'end_date': end_date,
+                'daily_data': daily_data,
+                'summary': summary
+            }
+
+    def get_ess_equipment_report(self, equipment_name: str, start_date: str, end_date: str) -> Dict:
+        """
+        장비별 ESS 보고서 데이터 조회
+
+        Args:
+            equipment_name: 장비명 (예: SWP1)
+            start_date: 시작 날짜
+            end_date: 종료 날짜
+
+        Returns:
+            {
+                'equipment_name': 'SWP1',
+                'daily_data': [일별 데이터...],
+                'summary': {...}
+            }
+        """
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            # 일별 데이터
+            cursor.execute("""
+                SELECT date, ess_run_hours, total_run_hours,
+                       ess_energy_kwh, baseline_energy_kwh, saved_energy_kwh
+                FROM ess_daily_data
+                WHERE equipment_name = ? AND date >= ? AND date <= ?
+                ORDER BY date
+            """, (equipment_name, start_date, end_date))
+
+            daily_data = []
+            for row in cursor.fetchall():
+                baseline = row['baseline_energy_kwh'] or 0
+                saved = row['saved_energy_kwh'] or 0
+                savings_rate = (saved / baseline * 100) if baseline > 0 else 0
+
+                daily_data.append({
+                    'date': row['date'],
+                    'ess_run_hours': round(row['ess_run_hours'] or 0, 2),
+                    'total_run_hours': round(row['total_run_hours'] or 0, 2),
+                    'ess_energy_kwh': round(row['ess_energy_kwh'] or 0, 1),
+                    'baseline_energy_kwh': round(baseline, 1),
+                    'saved_energy_kwh': round(saved, 1),
+                    'savings_rate': round(savings_rate, 1)
+                })
+
+            # 합계
+            cursor.execute("""
+                SELECT SUM(ess_run_hours) as total_ess_hours,
+                       SUM(total_run_hours) as total_hours,
+                       SUM(ess_energy_kwh) as total_ess_energy,
+                       SUM(baseline_energy_kwh) as total_baseline,
+                       SUM(saved_energy_kwh) as total_saved
+                FROM ess_daily_data
+                WHERE equipment_name = ? AND date >= ? AND date <= ?
+            """, (equipment_name, start_date, end_date))
+
+            row = cursor.fetchone()
+            baseline = row['total_baseline'] or 0
+            saved = row['total_saved'] or 0
+            savings_rate = (saved / baseline * 100) if baseline > 0 else 0
+
+            summary = {
+                'ess_run_hours': round(row['total_ess_hours'] or 0, 2),
+                'total_run_hours': round(row['total_hours'] or 0, 2),
+                'ess_energy_kwh': round(row['total_ess_energy'] or 0, 1),
+                'baseline_energy_kwh': round(baseline, 1),
+                'saved_energy_kwh': round(saved, 1),
+                'savings_rate': round(savings_rate, 1)
+            }
+
+            return {
+                'equipment_name': equipment_name,
+                'start_date': start_date,
+                'end_date': end_date,
+                'daily_data': daily_data,
+                'summary': summary
+            }
+
+    def get_ess_monthly_report(self, year: int, month: int) -> Dict:
+        """
+        월간 ESS 보고서 데이터 조회
+
+        Args:
+            year: 연도 (예: 2025)
+            month: 월 (예: 12)
+
+        Returns:
+            {
+                'year': 2025,
+                'month': 12,
+                'equipment_summary': [장비별 월간 합계...],
+                'group_summary': {'SWP': {...}, ...},
+                'daily_data': [일별 전체 합계...]
+            }
+        """
+        # 월의 첫날과 마지막날 계산
+        start_date = f"{year:04d}-{month:02d}-01"
+        if month == 12:
+            end_date = f"{year + 1:04d}-01-01"
+        else:
+            end_date = f"{year:04d}-{month + 1:02d}-01"
+
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            # 장비별 월간 합계
+            cursor.execute("""
+                SELECT equipment_name,
+                       SUM(ess_run_hours) as ess_run_hours,
+                       SUM(total_run_hours) as total_run_hours,
+                       SUM(ess_energy_kwh) as ess_energy_kwh,
+                       SUM(baseline_energy_kwh) as baseline_energy_kwh,
+                       SUM(saved_energy_kwh) as saved_energy_kwh
+                FROM ess_daily_data
+                WHERE date >= ? AND date < ?
+                GROUP BY equipment_name
+                ORDER BY equipment_name
+            """, (start_date, end_date))
+
+            equipment_summary = []
+            for row in cursor.fetchall():
+                baseline = row['baseline_energy_kwh'] or 0
+                saved = row['saved_energy_kwh'] or 0
+                savings_rate = (saved / baseline * 100) if baseline > 0 else 0
+
+                equipment_summary.append({
+                    'equipment_name': row['equipment_name'],
+                    'ess_run_hours': round(row['ess_run_hours'] or 0, 1),
+                    'total_run_hours': round(row['total_run_hours'] or 0, 1),
+                    'ess_energy_kwh': round(row['ess_energy_kwh'] or 0, 1),
+                    'baseline_energy_kwh': round(baseline, 1),
+                    'saved_energy_kwh': round(saved, 1),
+                    'savings_rate': round(savings_rate, 1)
+                })
+
+            # 일별 전체 합계
+            cursor.execute("""
+                SELECT date,
+                       SUM(saved_energy_kwh) as total_saved,
+                       SUM(baseline_energy_kwh) as total_baseline
+                FROM ess_daily_data
+                WHERE date >= ? AND date < ?
+                GROUP BY date
+                ORDER BY date
+            """, (start_date, end_date))
+
+            daily_data = []
+            for row in cursor.fetchall():
+                baseline = row['total_baseline'] or 0
+                saved = row['total_saved'] or 0
+                savings_rate = (saved / baseline * 100) if baseline > 0 else 0
+
+                daily_data.append({
+                    'date': row['date'],
+                    'total_saved_kwh': round(saved, 1),
+                    'savings_rate': round(savings_rate, 1)
+                })
+
+            # 기간별 보고서 재사용 (그룹 요약)
+            # end_date를 실제 마지막 날짜로 변경
+            from calendar import monthrange
+            last_day = monthrange(year, month)[1]
+            actual_end_date = f"{year:04d}-{month:02d}-{last_day:02d}"
+
+            period_report = self.get_ess_period_report(start_date, actual_end_date)
+
+            return {
+                'year': year,
+                'month': month,
+                'equipment_summary': equipment_summary,
+                'group_summary': period_report['summary'],
+                'daily_data': daily_data
             }
 
     # ==================== 유틸리티 ====================

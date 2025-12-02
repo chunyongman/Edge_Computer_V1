@@ -49,6 +49,265 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+class ESSTracker:
+    """
+    ESS 운전 시간 및 에너지 추적기
+
+    ESS 모드 조건: Running + frequency < 60Hz
+    """
+
+    # 정격 용량 (kW)
+    RATED_POWERS = {
+        'SWP1': 132, 'SWP2': 132, 'SWP3': 132,
+        'FWP1': 75, 'FWP2': 75, 'FWP3': 75,
+        'FAN1': 54.3, 'FAN2': 54.3, 'FAN3': 54.3, 'FAN4': 54.3
+    }
+
+    EQUIPMENT_NAMES = ['SWP1', 'SWP2', 'SWP3', 'FWP1', 'FWP2', 'FWP3',
+                       'FAN1', 'FAN2', 'FAN3', 'FAN4']
+
+    def __init__(self, db: DatabaseManager):
+        self.db = db
+        self.last_update_time = time.time()
+
+        # 장비별 마지막 상태 (메모리 캐시)
+        self.last_states = {}
+        for name in self.EQUIPMENT_NAMES:
+            self.last_states[name] = {
+                'running': False,
+                'ess_mode': False,  # freq < 60Hz
+                'frequency': 0.0
+            }
+
+        # DB에서 기존 누적 데이터 로드
+        self._load_from_db()
+
+    def _load_from_db(self):
+        """DB에서 기존 상태 로드"""
+        for name in self.EQUIPMENT_NAMES:
+            data = self.db.get_or_create_ess_cumulative(name)
+            self.last_states[name]['db_running'] = bool(data.get('last_running_state', 0))
+            self.last_states[name]['db_ess'] = bool(data.get('last_ess_state', 0))
+
+    def update(self, equipment: List[Dict]) -> Dict:
+        """
+        장비 상태 업데이트 및 ESS 시간/에너지 계산
+
+        Args:
+            equipment: 10개 장비 상태 리스트
+
+        Returns:
+            ESS 데이터 딕셔너리 (PLC 쓰기용)
+        """
+        now = time.time()
+        delta_seconds = now - self.last_update_time
+        delta_hours = delta_seconds / 3600.0
+        self.last_update_time = now
+
+        today_str = datetime.now().strftime('%Y-%m-%d')
+
+        # 개별 장비 데이터
+        equipment_data = []
+
+        for i, eq in enumerate(equipment):
+            if i >= len(self.EQUIPMENT_NAMES):
+                break
+
+            name = self.EQUIPMENT_NAMES[i]
+            rated_power = self.RATED_POWERS[name]
+
+            # 운전 상태 확인
+            running = eq.get('running', False) or eq.get('running_fwd', False) or eq.get('running_bwd', False)
+            frequency = eq.get('frequency', 0.0)
+
+            # ESS 모드 조건: Running + frequency < 60Hz
+            ess_mode = running and frequency > 0 and frequency < 60.0
+
+            # 에너지 계산 (이번 주기)
+            if running and frequency > 0:
+                # 실제 전력 (큐빅 법칙)
+                actual_power = rated_power * (frequency / 60.0) ** 3
+                # 60Hz 기준 전력
+                baseline_power = rated_power
+
+                # 에너지 (kWh)
+                delta_ess_energy = actual_power * delta_hours if ess_mode else 0.0
+                delta_baseline_energy = baseline_power * delta_hours if running else 0.0
+                delta_saved_energy = (baseline_power - actual_power) * delta_hours if ess_mode else 0.0
+
+                # 운전 시간
+                delta_total_hours = delta_hours if running else 0.0
+                delta_ess_hours = delta_hours if ess_mode else 0.0
+            else:
+                delta_ess_energy = 0.0
+                delta_baseline_energy = 0.0
+                delta_saved_energy = 0.0
+                delta_total_hours = 0.0
+                delta_ess_hours = 0.0
+
+            # DB 업데이트 (누적 데이터)
+            if delta_ess_hours > 0 or delta_total_hours > 0:
+                self.db.update_ess_cumulative(
+                    equipment_name=name,
+                    delta_ess_hours=delta_ess_hours,
+                    delta_total_hours=delta_total_hours,
+                    delta_ess_energy=delta_ess_energy,
+                    delta_baseline_energy=delta_baseline_energy,
+                    delta_saved_energy=delta_saved_energy,
+                    last_running_state=1 if running else 0,
+                    last_ess_state=1 if ess_mode else 0
+                )
+
+                # 일별 데이터 업데이트
+                self.db.upsert_ess_daily(
+                    equipment_name=name,
+                    date=today_str,
+                    delta_ess_hours=delta_ess_hours,
+                    delta_total_hours=delta_total_hours,
+                    delta_ess_energy=delta_ess_energy,
+                    delta_baseline_energy=delta_baseline_energy,
+                    delta_saved_energy=delta_saved_energy
+                )
+
+            # 마지막 상태 업데이트
+            self.last_states[name]['running'] = running
+            self.last_states[name]['ess_mode'] = ess_mode
+            self.last_states[name]['frequency'] = frequency
+
+        # DB에서 누적 데이터 조회
+        cumulative_data = self.db.get_all_ess_cumulative()
+        today_data = self.db.get_ess_daily_data(date=today_str)
+
+        # 응답 데이터 구성
+        return self._format_response(cumulative_data, today_data)
+
+    def _format_response(self, cumulative_data: List[Dict], today_data: List[Dict]) -> Dict:
+        """
+        PLC 쓰기용 응답 데이터 포맷
+
+        Returns:
+            {
+                'equipment': [10개 장비 데이터],
+                'groups': {'SWP': {...}, 'FWP': {...}, 'FAN': {...}, 'TOTAL': {...}},
+                'today': {'equipment': [...], 'groups': {...}}
+            }
+        """
+        # 장비별 데이터 매핑
+        cumulative_map = {d['equipment_name']: d for d in cumulative_data}
+        today_map = {d['equipment_name']: d for d in today_data}
+
+        # 개별 장비 데이터
+        equipment = []
+        for name in self.EQUIPMENT_NAMES:
+            cum = cumulative_map.get(name, {})
+            ess_hours = cum.get('ess_run_hours', 0) or 0
+            total_hours = cum.get('total_run_hours', 0) or 0
+            ess_kwh = cum.get('ess_energy_kwh', 0) or 0
+            baseline_kwh = cum.get('baseline_energy_kwh', 0) or 0
+            saved_kwh = cum.get('saved_energy_kwh', 0) or 0
+
+            # 절감률 계산
+            savings_rate = (saved_kwh / baseline_kwh * 100) if baseline_kwh > 0 else 0.0
+
+            equipment.append({
+                'name': name,
+                'ess_hours': ess_hours,
+                'total_hours': total_hours,
+                'ess_kwh': ess_kwh,
+                'baseline_kwh': baseline_kwh,
+                'saved_kwh': saved_kwh,
+                'savings_rate': savings_rate
+            })
+
+        # 그룹별 집계
+        groups = {
+            'SWP': {'ess_hours': 0, 'total_hours': 0, 'ess_kwh': 0, 'baseline_kwh': 0, 'saved_kwh': 0},
+            'FWP': {'ess_hours': 0, 'total_hours': 0, 'ess_kwh': 0, 'baseline_kwh': 0, 'saved_kwh': 0},
+            'FAN': {'ess_hours': 0, 'total_hours': 0, 'ess_kwh': 0, 'baseline_kwh': 0, 'saved_kwh': 0},
+            'TOTAL': {'ess_hours': 0, 'total_hours': 0, 'ess_kwh': 0, 'baseline_kwh': 0, 'saved_kwh': 0}
+        }
+
+        for eq in equipment:
+            name = eq['name']
+            if name.startswith('SWP'):
+                group = 'SWP'
+            elif name.startswith('FWP'):
+                group = 'FWP'
+            elif name.startswith('FAN'):
+                group = 'FAN'
+            else:
+                continue
+
+            groups[group]['ess_hours'] += eq['ess_hours']
+            groups[group]['total_hours'] += eq['total_hours']
+            groups[group]['ess_kwh'] += eq['ess_kwh']
+            groups[group]['baseline_kwh'] += eq['baseline_kwh']
+            groups[group]['saved_kwh'] += eq['saved_kwh']
+
+        # 전체 합계
+        for g in ['SWP', 'FWP', 'FAN']:
+            for key in groups[g]:
+                groups['TOTAL'][key] += groups[g][key]
+
+        # 그룹별 절감률
+        for g in groups:
+            baseline = groups[g]['baseline_kwh']
+            groups[g]['savings_rate'] = (groups[g]['saved_kwh'] / baseline * 100) if baseline > 0 else 0.0
+
+        # 오늘 데이터
+        today_equipment = []
+        for name in self.EQUIPMENT_NAMES:
+            td = today_map.get(name, {})
+            today_equipment.append({
+                'name': name,
+                'ess_hours': td.get('ess_run_hours', 0) or 0,
+                'total_hours': td.get('total_run_hours', 0) or 0,
+                'saved_kwh': td.get('saved_energy_kwh', 0) or 0,
+                'baseline_kwh': td.get('baseline_energy_kwh', 0) or 0
+            })
+
+        # 오늘 그룹별 집계
+        today_groups = {
+            'SWP': {'ess_hours': 0, 'saved_kwh': 0, 'baseline_kwh': 0},
+            'FWP': {'ess_hours': 0, 'saved_kwh': 0, 'baseline_kwh': 0},
+            'FAN': {'ess_hours': 0, 'saved_kwh': 0, 'baseline_kwh': 0},
+            'TOTAL': {'ess_hours': 0, 'saved_kwh': 0, 'baseline_kwh': 0}
+        }
+
+        for eq in today_equipment:
+            name = eq['name']
+            if name.startswith('SWP'):
+                group = 'SWP'
+            elif name.startswith('FWP'):
+                group = 'FWP'
+            elif name.startswith('FAN'):
+                group = 'FAN'
+            else:
+                continue
+
+            today_groups[group]['ess_hours'] += eq['ess_hours']
+            today_groups[group]['saved_kwh'] += eq['saved_kwh']
+            today_groups[group]['baseline_kwh'] += eq['baseline_kwh']
+
+        for g in ['SWP', 'FWP', 'FAN']:
+            for key in today_groups[g]:
+                today_groups['TOTAL'][key] += today_groups[g][key]
+
+        # 오늘 절감률
+        for g in today_groups:
+            baseline = today_groups[g]['baseline_kwh']
+            today_groups[g]['savings_rate'] = (today_groups[g]['saved_kwh'] / baseline * 100) if baseline > 0 else 0.0
+
+        return {
+            'equipment': equipment,
+            'groups': groups,
+            'today': {
+                'equipment': today_equipment,
+                'groups': today_groups
+            }
+        }
+
+
 class EdgeAISystem:
     """Edge AI 통합 시스템 (EDGE_AI_REAL 기반 + PLC Simulator 연결)"""
 
@@ -84,6 +343,10 @@ class EdgeAISystem:
 
         # VFD 이상 징후 추적 (장비별 현재 활성 anomaly_id)
         self.active_anomalies = {}  # {equipment_id: anomaly_id}
+
+        # ESS 운전 시간 및 에너지 추적
+        self.ess_tracker = ESSTracker(self.db)
+        self.last_ess_update = time.time()
 
         # 온도 시퀀스 버퍼 (30분, 90개 데이터 포인트)
         self.temp_buffer = {
@@ -262,8 +525,12 @@ class EdgeAISystem:
                 # 대수 제어 명령 전송 (팬 START/STOP)
                 self._apply_fan_count_control(control_decision.er_fan_count)
 
-                # 에너지 절감 데이터 쓰기
-                savings_for_plc = self._format_savings_for_plc(savings_data, equipment)
+                # ESS 운전 시간 및 에너지 업데이트 (먼저 계산)
+                ess_data = self.ess_tracker.update(equipment)
+                self.plc.write_ess_data(ess_data)
+
+                # 에너지 절감 데이터 쓰기 (ESS DB 값 사용하여 통일)
+                savings_for_plc = self._format_savings_for_plc(savings_data, equipment, ess_data)
                 self.plc.write_energy_savings(savings_for_plc)
 
                 # VFD 진단 점수 및 중증도 레벨 쓰기
@@ -313,20 +580,19 @@ class EdgeAISystem:
             decision.er_fan_freq    # FAN4
         ]
 
-    def _format_savings_for_plc(self, savings_data: Dict, equipment: List[Dict] = None) -> Dict:
+    def _format_savings_for_plc(self, savings_data: Dict, equipment: List[Dict] = None, ess_data: Dict = None) -> Dict:
         """
         AI 계산기 출력을 PLC 쓰기 포맷으로 변환
 
         Args:
             savings_data: ai_calculator.calculate_energy_savings() 출력
             equipment: 개별 장비 데이터 리스트 (주파수 포함)
+            ess_data: ESS 트래커에서 계산된 데이터 (DB 기반 - 통일된 데이터 소스)
 
         Returns:
             PLC write_energy_savings() 형식
         """
         realtime = savings_data.get("realtime", {})
-        today = savings_data.get("today", {})
-        month = savings_data.get("month", {})
 
         # 시스템 절감률 (total, swp, fwp, fan)
         total = realtime.get("total", {})
@@ -339,14 +605,29 @@ class EdgeAISystem:
         rated_powers = [132, 132, 132, 75, 75, 75, 54.3, 54.3, 54.3, 54.3]
         equipment_powers = []
 
+        # 운전 중인 장비 확인 및 개별 절감 전력/절감률 계산
+        equipment_savings = [0.0] * 10
+        equipment_savings_ratio = [0.0] * 10  # 개별 절감률 추가
+        running_status = [False] * 10
+
         if equipment:
             for i, eq in enumerate(equipment):
                 freq = eq.get("frequency", 0)
                 running = eq.get("running", False) or eq.get("running_fwd", False) or eq.get("running_bwd", False)
+                running_status[i] = running
                 if running and freq > 0:
                     power = rated_powers[i] * (freq / 60) ** 3
+                    # 절감 전력 = 60Hz 기준 전력 - 실제 전력
+                    savings = rated_powers[i] - power
+                    equipment_savings[i] = max(0, savings)
+                    # 개별 절감률 = (절감전력 / 정격전력) × 100
+                    if rated_powers[i] > 0:
+                        equipment_savings_ratio[i] = (savings / rated_powers[i]) * 100
+                    else:
+                        equipment_savings_ratio[i] = 0.0
                 else:
                     power = 0
+                    equipment_savings_ratio[i] = 0.0  # 정지 장비는 0%
                 equipment_powers.append(power)
         else:
             equipment_powers = [0] * 10
@@ -356,17 +637,28 @@ class EdgeAISystem:
             "swp_ratio": swp.get("savings_rate", 0.0),
             "fwp_ratio": fwp.get("savings_rate", 0.0),
             "fan_ratio": fan.get("savings_rate", 0.0),
-            # 개별 장비 절감 전력 (kW) - 현재는 단순화, 필요시 확장
-            "equipment_0": swp.get("savings_kw", 0.0) / 3,  # SWP1
-            "equipment_1": swp.get("savings_kw", 0.0) / 3,  # SWP2
-            "equipment_2": swp.get("savings_kw", 0.0) / 3,  # SWP3
-            "equipment_3": fwp.get("savings_kw", 0.0) / 3,  # FWP1
-            "equipment_4": fwp.get("savings_kw", 0.0) / 3,  # FWP2
-            "equipment_5": fwp.get("savings_kw", 0.0) / 3,  # FWP3
-            "equipment_6": fan.get("savings_kw", 0.0) / 4,  # FAN1
-            "equipment_7": fan.get("savings_kw", 0.0) / 4,  # FAN2
-            "equipment_8": fan.get("savings_kw", 0.0) / 4,  # FAN3
-            "equipment_9": fan.get("savings_kw", 0.0) / 4,  # FAN4
+            # 개별 장비 절감 전력 (kW) - 운전 중인 장비만 절감 있음
+            "equipment_0": equipment_savings[0],  # SWP1
+            "equipment_1": equipment_savings[1],  # SWP2
+            "equipment_2": equipment_savings[2],  # SWP3
+            "equipment_3": equipment_savings[3],  # FWP1
+            "equipment_4": equipment_savings[4],  # FWP2
+            "equipment_5": equipment_savings[5],  # FWP3
+            "equipment_6": equipment_savings[6],  # FAN1
+            "equipment_7": equipment_savings[7],  # FAN2
+            "equipment_8": equipment_savings[8],  # FAN3
+            "equipment_9": equipment_savings[9],  # FAN4
+            # 개별 장비 절감률 (%) - 운전 중인 장비만 절감 있음
+            "equipment_ratio_0": equipment_savings_ratio[0],  # SWP1
+            "equipment_ratio_1": equipment_savings_ratio[1],  # SWP2
+            "equipment_ratio_2": equipment_savings_ratio[2],  # SWP3
+            "equipment_ratio_3": equipment_savings_ratio[3],  # FWP1
+            "equipment_ratio_4": equipment_savings_ratio[4],  # FWP2
+            "equipment_ratio_5": equipment_savings_ratio[5],  # FWP3
+            "equipment_ratio_6": equipment_savings_ratio[6],  # FAN1
+            "equipment_ratio_7": equipment_savings_ratio[7],  # FAN2
+            "equipment_ratio_8": equipment_savings_ratio[8],  # FAN3
+            "equipment_ratio_9": equipment_savings_ratio[9],  # FAN4
             # 개별 장비 실제 전력 (kW) - 큐빅 법칙으로 계산
             "equipment_power_0": equipment_powers[0],  # SWP1
             "equipment_power_1": equipment_powers[1],  # SWP2
@@ -378,9 +670,11 @@ class EdgeAISystem:
             "equipment_power_7": equipment_powers[7],  # FAN2
             "equipment_power_8": equipment_powers[8],  # FAN3
             "equipment_power_9": equipment_powers[9],  # FAN4
-            # 누적 절감량 (kWh)
-            "today_kwh": today.get("total_kwh_saved", 0.0),
-            "month_kwh": month.get("total_kwh_saved", 0.0),
+            # 누적 절감량 (kWh) - ESS DB 값 사용 (통일된 데이터 소스)
+            # ess_data['today']['groups']['TOTAL']['saved_kwh']: 오늘 ESS 모드 절감량
+            # ess_data['groups']['TOTAL']['saved_kwh']: 전체 누적 절감량
+            "today_kwh": ess_data.get("today", {}).get("groups", {}).get("TOTAL", {}).get("saved_kwh", 0.0) if ess_data else 0.0,
+            "month_kwh": ess_data.get("groups", {}).get("TOTAL", {}).get("saved_kwh", 0.0) if ess_data else 0.0,
             # 60Hz 고정 전력 (kW)
             "total_power_60hz": total.get("power_60hz", 0.0),
             "swp_power_60hz": swp.get("power_60hz", 0.0),

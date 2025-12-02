@@ -469,6 +469,348 @@ async def clear_vfd_anomaly(anomaly_id: str, user: str = "Operator"):
     return {"success": True, "anomaly_id": anomaly_id}
 
 
+# ----- ESS 보고서 API -----
+
+@app.get("/api/reports/ess/daily")
+async def get_ess_daily_report(date: str = Query(..., description="날짜 (YYYY-MM-DD)")):
+    """일별 ESS 보고서 조회 (특정 날짜의 장비별/그룹별 절감량)"""
+    db = get_db()
+    report = db.get_ess_daily_report(date)
+
+    if not report:
+        return {
+            "success": True,
+            "data": {"equipment": [], "groups": []},
+            "date": date,
+            "timestamp": datetime.now().isoformat()
+        }
+
+    return {
+        "success": True,
+        "data": report,
+        "date": date,
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@app.get("/api/reports/ess/period")
+async def get_ess_period_report(
+    start_date: str = Query(..., description="시작일 (YYYY-MM-DD)"),
+    end_date: str = Query(..., description="종료일 (YYYY-MM-DD)")
+):
+    """기간별 ESS 보고서 조회 (일별 추이 및 요약)"""
+    db = get_db()
+    report = db.get_ess_period_report(start_date, end_date)
+
+    return {
+        "success": True,
+        "data": report,
+        "period": {"start": start_date, "end": end_date},
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@app.get("/api/reports/ess/equipment/{equipment_name}")
+async def get_ess_equipment_report(
+    equipment_name: str,
+    start_date: str = Query(..., description="시작일 (YYYY-MM-DD)"),
+    end_date: str = Query(..., description="종료일 (YYYY-MM-DD)")
+):
+    """장비별 ESS 보고서 조회 (특정 장비의 일별 데이터)"""
+    db = get_db()
+    report = db.get_ess_equipment_report(equipment_name, start_date, end_date)
+
+    return {
+        "success": True,
+        "data": report,
+        "equipment": equipment_name,
+        "period": {"start": start_date, "end": end_date},
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@app.get("/api/reports/ess/monthly")
+async def get_ess_monthly_report(
+    year: int = Query(..., description="연도"),
+    month: int = Query(..., ge=1, le=12, description="월 (1-12)")
+):
+    """월별 ESS 보고서 조회 (장비별 요약, 그룹별 요약, 일별 데이터)"""
+    db = get_db()
+    report = db.get_ess_monthly_report(year, month)
+
+    return {
+        "success": True,
+        "data": report,
+        "year": year,
+        "month": month,
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@app.get("/api/reports/ess/csv/daily")
+async def download_ess_daily_csv(date: str = Query(..., description="날짜 (YYYY-MM-DD)")):
+    """일별 ESS 보고서 CSV 다운로드"""
+    from fastapi.responses import Response
+    import io
+    import csv
+
+    db = get_db()
+    report = db.get_ess_daily_report(date)
+
+    # CSV 생성
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    # BOM for Excel Korean support
+    output.write('\ufeff')
+
+    # 헤더
+    writer.writerow([f"ESS 일별 보고서 - {date}"])
+    writer.writerow([])
+
+    # 장비별 데이터
+    writer.writerow(["[장비별 절감 현황]"])
+    writer.writerow(["장비명", "ESS 운전시간(h)", "절감량(kWh)", "절감률(%)", "기준 전력(kWh)", "ESS 전력(kWh)"])
+
+    if report and "equipment" in report:
+        for eq in report["equipment"]:
+            writer.writerow([
+                eq.get("equipment_name", ""),
+                round(eq.get("ess_run_hours", 0), 2),
+                round(eq.get("saved_energy_kwh", 0), 2),
+                round(eq.get("savings_rate", 0), 2),
+                round(eq.get("baseline_energy_kwh", 0), 2),
+                round(eq.get("ess_energy_kwh", 0), 2)
+            ])
+
+    writer.writerow([])
+
+    # 그룹별 데이터
+    writer.writerow(["[그룹별 절감 현황]"])
+    writer.writerow(["그룹명", "ESS 운전시간(h)", "절감량(kWh)", "절감률(%)", "기준 전력(kWh)", "ESS 전력(kWh)"])
+
+    if report and "groups" in report:
+        groups = report["groups"]
+        for group_name in ['SWP', 'FWP', 'FAN', 'TOTAL']:
+            if group_name in groups:
+                grp = groups[group_name]
+                writer.writerow([
+                    group_name,
+                    round(grp.get("ess_hours", 0), 2),
+                    round(grp.get("saved_kwh", 0), 2),
+                    round(grp.get("savings_rate", 0), 2),
+                    round(grp.get("baseline_kwh", 0), 2),
+                    round(grp.get("ess_kwh", 0), 2)
+                ])
+
+    csv_content = output.getvalue()
+
+    return Response(
+        content=csv_content,
+        media_type="text/csv; charset=utf-8",
+        headers={
+            "Content-Disposition": f'attachment; filename="ESS_Daily_Report_{date}.csv"'
+        }
+    )
+
+
+@app.get("/api/reports/ess/csv/period")
+async def download_ess_period_csv(
+    start_date: str = Query(..., description="시작일 (YYYY-MM-DD)"),
+    end_date: str = Query(..., description="종료일 (YYYY-MM-DD)")
+):
+    """기간별 ESS 보고서 CSV 다운로드"""
+    from fastapi.responses import Response
+    import io
+    import csv
+
+    db = get_db()
+    report = db.get_ess_period_report(start_date, end_date)
+
+    # CSV 생성
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    output.write('\ufeff')
+
+    writer.writerow([f"ESS 기간별 보고서 - {start_date} ~ {end_date}"])
+    writer.writerow([])
+
+    # 요약 (그룹별)
+    writer.writerow(["[기간 요약 - 그룹별]"])
+    summary = report.get("summary", {})
+    writer.writerow(["그룹", "절감량(kWh)", "절감률(%)", "ESS 운전시간(h)", "기준 전력(kWh)"])
+    for group_name in ['SWP', 'FWP', 'FAN', 'TOTAL']:
+        if group_name in summary:
+            grp = summary[group_name]
+            writer.writerow([
+                group_name,
+                round(grp.get("saved_kwh", 0), 2),
+                round(grp.get("savings_rate", 0), 2),
+                round(grp.get("ess_hours", 0), 2),
+                round(grp.get("baseline_kwh", 0), 2)
+            ])
+    writer.writerow([])
+
+    # 일별 추이
+    writer.writerow(["[일별 추이]"])
+    writer.writerow(["날짜", "SWP 절감(kWh)", "FWP 절감(kWh)", "FAN 절감(kWh)", "총 절감량(kWh)", "절감률(%)"])
+
+    for day in report.get("daily_data", []):
+        writer.writerow([
+            day.get("date", ""),
+            round(day.get("swp_saved_kwh", 0), 2),
+            round(day.get("fwp_saved_kwh", 0), 2),
+            round(day.get("fan_saved_kwh", 0), 2),
+            round(day.get("total_saved_kwh", 0), 2),
+            round(day.get("savings_rate", 0), 2)
+        ])
+
+    csv_content = output.getvalue()
+
+    return Response(
+        content=csv_content,
+        media_type="text/csv; charset=utf-8",
+        headers={
+            "Content-Disposition": f'attachment; filename="ESS_Period_Report_{start_date}_to_{end_date}.csv"'
+        }
+    )
+
+
+@app.get("/api/reports/ess/csv/equipment/{equipment_name}")
+async def download_ess_equipment_csv(
+    equipment_name: str,
+    start_date: str = Query(..., description="시작일 (YYYY-MM-DD)"),
+    end_date: str = Query(..., description="종료일 (YYYY-MM-DD)")
+):
+    """장비별 ESS 보고서 CSV 다운로드"""
+    from fastapi.responses import Response
+    import io
+    import csv
+
+    db = get_db()
+    report = db.get_ess_equipment_report(equipment_name, start_date, end_date)
+
+    # CSV 생성
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    output.write('\ufeff')
+
+    writer.writerow([f"ESS 장비별 보고서 - {equipment_name} ({start_date} ~ {end_date})"])
+    writer.writerow([])
+
+    # 요약
+    writer.writerow(["[장비 요약]"])
+    summary = report.get("summary", {})
+    writer.writerow(["총 절감량(kWh)", round(summary.get("saved_kwh", 0), 2)])
+    writer.writerow(["평균 절감률(%)", round(summary.get("savings_rate", 0), 2)])
+    writer.writerow(["총 ESS 운전시간(h)", round(summary.get("ess_hours", 0), 2)])
+    writer.writerow([])
+
+    # 일별 데이터
+    writer.writerow(["[일별 데이터]"])
+    writer.writerow(["날짜", "ESS 운전시간(h)", "절감량(kWh)", "절감률(%)", "기준 전력(kWh)", "ESS 전력(kWh)"])
+
+    for day in report.get("daily_data", []):
+        writer.writerow([
+            day.get("date", ""),
+            round(day.get("ess_run_hours", 0), 2),
+            round(day.get("saved_energy_kwh", 0), 2),
+            round(day.get("savings_rate", 0), 2),
+            round(day.get("baseline_energy_kwh", 0), 2),
+            round(day.get("ess_energy_kwh", 0), 2)
+        ])
+
+    csv_content = output.getvalue()
+
+    return Response(
+        content=csv_content,
+        media_type="text/csv; charset=utf-8",
+        headers={
+            "Content-Disposition": f'attachment; filename="ESS_Equipment_Report_{equipment_name}_{start_date}_to_{end_date}.csv"'
+        }
+    )
+
+
+@app.get("/api/reports/ess/csv/monthly")
+async def download_ess_monthly_csv(
+    year: int = Query(..., description="연도"),
+    month: int = Query(..., ge=1, le=12, description="월 (1-12)")
+):
+    """월별 ESS 보고서 CSV 다운로드"""
+    from fastapi.responses import Response
+    import io
+    import csv
+
+    db = get_db()
+    report = db.get_ess_monthly_report(year, month)
+
+    # CSV 생성
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    output.write('\ufeff')
+
+    writer.writerow([f"ESS 월별 보고서 - {year}년 {month}월"])
+    writer.writerow([])
+
+    # 장비별 요약
+    writer.writerow(["[장비별 월간 요약]"])
+    writer.writerow(["장비명", "ESS 운전시간(h)", "절감량(kWh)", "절감률(%)", "기준 전력(kWh)", "ESS 전력(kWh)"])
+
+    for eq in report.get("equipment_summary", []):
+        writer.writerow([
+            eq.get("equipment_name", ""),
+            round(eq.get("ess_run_hours", 0), 2),
+            round(eq.get("saved_energy_kwh", 0), 2),
+            round(eq.get("savings_rate", 0), 2),
+            round(eq.get("baseline_energy_kwh", 0), 2),
+            round(eq.get("ess_energy_kwh", 0), 2)
+        ])
+
+    writer.writerow([])
+
+    # 그룹별 요약
+    writer.writerow(["[그룹별 월간 요약]"])
+    writer.writerow(["그룹명", "ESS 운전시간(h)", "절감량(kWh)", "절감률(%)", "기준 전력(kWh)"])
+
+    group_summary = report.get("group_summary", {})
+    for group_name in ['SWP', 'FWP', 'FAN', 'TOTAL']:
+        if group_name in group_summary:
+            grp = group_summary[group_name]
+            writer.writerow([
+                group_name,
+                round(grp.get("ess_hours", 0), 2),
+                round(grp.get("saved_kwh", 0), 2),
+                round(grp.get("savings_rate", 0), 2),
+                round(grp.get("baseline_kwh", 0), 2)
+            ])
+
+    writer.writerow([])
+
+    # 일별 데이터
+    writer.writerow(["[일별 상세 데이터]"])
+    writer.writerow(["날짜", "절감량(kWh)", "절감률(%)"])
+
+    for day in report.get("daily_data", []):
+        writer.writerow([
+            day.get("date", ""),
+            round(day.get("total_saved_kwh", 0), 2),
+            round(day.get("savings_rate", 0), 2)
+        ])
+
+    csv_content = output.getvalue()
+
+    return Response(
+        content=csv_content,
+        media_type="text/csv; charset=utf-8",
+        headers={
+            "Content-Disposition": f'attachment; filename="ESS_Monthly_Report_{year}_{month:02d}.csv"'
+        }
+    )
+
+
 # ===== 서버 시작 =====
 
 def start_api_server(host: str = "0.0.0.0", port: int = 8000):

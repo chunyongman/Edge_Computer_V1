@@ -386,8 +386,18 @@ class EdgeModbusClient:
                 device_id=self.slave_id
             )
 
+            # 개별 장비 절감률 (% × 10) - 10개 장비
+            equipment_ratio = [int(savings_data.get(f"equipment_ratio_{i}", 0) * 10) for i in range(10)]
+
+            result8 = self.client.write_registers(
+                address=config.MODBUS_REGISTERS["AI_EQUIPMENT_SAVINGS_RATIO_START"],
+                values=equipment_ratio,
+                device_id=self.slave_id
+            )
+
             if result1.isError() or result2.isError() or result3.isError() or \
-               result4.isError() or result5.isError() or result6.isError() or result7.isError():
+               result4.isError() or result5.isError() or result6.isError() or \
+               result7.isError() or result8.isError():
                 print(f"[Edge AI] [ERROR] 에너지 절감 데이터 쓰기 실패")
                 return False
 
@@ -548,4 +558,184 @@ class EdgeModbusClient:
 
         except Exception as e:
             print(f"[Edge AI] [ERROR] STOP 명령 전송 오류: {e}")
+            return False
+
+    def write_ess_data(self, ess_data: Dict) -> bool:
+        """
+        ESS 운전 데이터를 PLC에 쓰기
+
+        Args:
+            ess_data: {
+                'equipment': [10개 장비 데이터],
+                'groups': {'SWP': {...}, 'FWP': {...}, 'FAN': {...}, 'TOTAL': {...}},
+                'today': {'equipment': [...], 'groups': {...}}
+            }
+
+        Returns:
+            성공 여부
+        """
+        if not self.connected:
+            return False
+
+        try:
+            # === 개별 장비 누적 데이터 ===
+            equipment = ess_data.get('equipment', [])
+
+            # ESS 운전시간 (hours × 10)
+            ess_hours = [int((eq.get('ess_hours', 0) or 0) * 10) for eq in equipment]
+            while len(ess_hours) < 10:
+                ess_hours.append(0)
+
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_RUN_HOURS_START"],
+                values=ess_hours[:10],
+                device_id=self.slave_id
+            )
+
+            # 총 운전시간 (hours × 10)
+            total_hours = [int((eq.get('total_hours', 0) or 0) * 10) for eq in equipment]
+            while len(total_hours) < 10:
+                total_hours.append(0)
+
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_TOTAL_HOURS_START"],
+                values=total_hours[:10],
+                device_id=self.slave_id
+            )
+
+            # ESS 모드 소비 전력량 (kWh × 10)
+            ess_kwh = [int((eq.get('ess_kwh', 0) or 0) * 10) for eq in equipment]
+            while len(ess_kwh) < 10:
+                ess_kwh.append(0)
+
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_ENERGY_KWH_START"],
+                values=ess_kwh[:10],
+                device_id=self.slave_id
+            )
+
+            # 60Hz 기준 전력량 (kWh × 10)
+            baseline_kwh = [int((eq.get('baseline_kwh', 0) or 0) * 10) for eq in equipment]
+            while len(baseline_kwh) < 10:
+                baseline_kwh.append(0)
+
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_BASELINE_KWH_START"],
+                values=baseline_kwh[:10],
+                device_id=self.slave_id
+            )
+
+            # 절감 전력량 (kWh × 10)
+            saved_kwh = [int((eq.get('saved_kwh', 0) or 0) * 10) for eq in equipment]
+            while len(saved_kwh) < 10:
+                saved_kwh.append(0)
+
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_SAVED_KWH_START"],
+                values=saved_kwh[:10],
+                device_id=self.slave_id
+            )
+
+            # 절감률 (% × 10)
+            savings_rate = [int((eq.get('savings_rate', 0) or 0) * 10) for eq in equipment]
+            while len(savings_rate) < 10:
+                savings_rate.append(0)
+
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_SAVINGS_RATE_START"],
+                values=savings_rate[:10],
+                device_id=self.slave_id
+            )
+
+            # === 그룹별 요약 데이터 ===
+            groups = ess_data.get('groups', {})
+            group_order = ['SWP', 'FWP', 'FAN', 'TOTAL']
+
+            # 그룹별 ESS 운전시간
+            group_ess_hours = [int((groups.get(g, {}).get('ess_hours', 0) or 0) * 10) for g in group_order]
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_GROUP_ESS_HOURS_START"],
+                values=group_ess_hours,
+                device_id=self.slave_id
+            )
+
+            # 그룹별 총 운전시간
+            group_total_hours = [int((groups.get(g, {}).get('total_hours', 0) or 0) * 10) for g in group_order]
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_GROUP_TOTAL_HOURS_START"],
+                values=group_total_hours,
+                device_id=self.slave_id
+            )
+
+            # 그룹별 ESS 모드 소비량
+            group_ess_kwh = [int((groups.get(g, {}).get('ess_kwh', 0) or 0) * 10) for g in group_order]
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_GROUP_ESS_KWH_START"],
+                values=group_ess_kwh,
+                device_id=self.slave_id
+            )
+
+            # 그룹별 60Hz 기준 전력량
+            group_baseline_kwh = [int((groups.get(g, {}).get('baseline_kwh', 0) or 0) * 10) for g in group_order]
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_GROUP_BASELINE_KWH_START"],
+                values=group_baseline_kwh,
+                device_id=self.slave_id
+            )
+
+            # 그룹별 절감량
+            group_saved_kwh = [int((groups.get(g, {}).get('saved_kwh', 0) or 0) * 10) for g in group_order]
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_GROUP_SAVED_KWH_START"],
+                values=group_saved_kwh,
+                device_id=self.slave_id
+            )
+
+            # 그룹별 절감률
+            group_savings_rate = [int((groups.get(g, {}).get('savings_rate', 0) or 0) * 10) for g in group_order]
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_GROUP_SAVINGS_RATE_START"],
+                values=group_savings_rate,
+                device_id=self.slave_id
+            )
+
+            # === 오늘 데이터 ===
+            today = ess_data.get('today', {})
+            today_equipment = today.get('equipment', [])
+            today_groups = today.get('groups', {})
+
+            # 오늘 개별 ESS 운전시간 (hours × 100 for more precision)
+            today_ess_hours = [int((eq.get('ess_hours', 0) or 0) * 100) for eq in today_equipment]
+            while len(today_ess_hours) < 10:
+                today_ess_hours.append(0)
+
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_TODAY_ESS_HOURS_START"],
+                values=today_ess_hours[:10],
+                device_id=self.slave_id
+            )
+
+            # 오늘 개별 절감량
+            today_saved_kwh = [int((eq.get('saved_kwh', 0) or 0) * 10) for eq in today_equipment]
+            while len(today_saved_kwh) < 10:
+                today_saved_kwh.append(0)
+
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_TODAY_SAVED_KWH_START"],
+                values=today_saved_kwh[:10],
+                device_id=self.slave_id
+            )
+
+            # 오늘 그룹별 절감량
+            today_group_saved = [int((today_groups.get(g, {}).get('saved_kwh', 0) or 0) * 10) for g in group_order]
+            self.client.write_registers(
+                address=config.MODBUS_REGISTERS["ESS_TODAY_GROUP_SAVED_KWH_START"],
+                values=today_group_saved,
+                device_id=self.slave_id
+            )
+
+            return True
+
+        except Exception as e:
+            print(f"[Edge AI] [ERROR] ESS 데이터 쓰기 오류: {e}")
             return False
