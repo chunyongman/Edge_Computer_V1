@@ -4,12 +4,15 @@ Edge Computer API Server
 - 알람 이력
 - 이벤트 로그
 - 운전 이력 (제어 명령 이력)
+- 사용자 인증
 """
 
 import logging
+import hashlib
+import secrets
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict, Any
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
@@ -87,6 +90,61 @@ class VFDAnomalyAcknowledge(BaseModel):
     """VFD 이상 징후 확인 요청"""
     anomaly_id: str
     user: str = "Operator"
+
+
+class LoginRequest(BaseModel):
+    """로그인 요청"""
+    username: str
+    password: str
+
+
+class ChangePasswordRequest(BaseModel):
+    """비밀번호 변경 요청"""
+    current_password: str
+    new_password: str
+
+
+class UserUpdateRequest(BaseModel):
+    """사용자 정보 업데이트 요청"""
+    role: Optional[str] = None
+    display_name: Optional[str] = None
+    is_active: Optional[bool] = None
+
+
+class UserCreateRequest(BaseModel):
+    """사용자 생성 요청"""
+    username: str
+    password: str
+    role: str = "viewer"
+    display_name: Optional[str] = None
+
+
+class ResetPasswordRequest(BaseModel):
+    """비밀번호 초기화 요청"""
+    new_password: str
+
+
+# 역할별 권한 정의
+# 게스트(비로그인): home, system_overview, dashboard, vfd_diagnostics, trend, history, alarm
+# 운전자: 게스트 + diagram, fan_diagram, advanced
+# 관리자: 운전자 + settings, 사용자 관리
+ROLE_PERMISSIONS = {
+    "admin": {
+        "tabs": ["home", "system_overview", "dashboard", "diagram", "fan_diagram",
+                 "advanced", "vfd_diagnostics", "trend", "settings", "history", "alarm"],
+        "can_control": True,
+        "can_manage_users": True
+    },
+    "operator": {
+        "tabs": ["home", "system_overview", "dashboard", "diagram", "fan_diagram",
+                 "advanced", "vfd_diagnostics", "trend", "history", "alarm"],
+        "can_control": True,
+        "can_manage_users": False
+    }
+}
+
+# 게스트(비로그인) 접근 가능 탭
+GUEST_TABS = ["home", "system_overview", "dashboard", "vfd_diagnostics", "trend", "history", "alarm"]
 
 
 # ===== API 엔드포인트 =====
@@ -809,6 +867,303 @@ async def download_ess_monthly_csv(
             "Content-Disposition": f'attachment; filename="ESS_Monthly_Report_{year}_{month:02d}.csv"'
         }
     )
+
+
+# ===== 인증 API =====
+
+def get_current_user(authorization: Optional[str] = Header(None)) -> Optional[Dict]:
+    """현재 로그인한 사용자 조회 (헤더에서 토큰 추출)"""
+    if not authorization:
+        return None
+
+    # "Bearer <token>" 형식
+    if authorization.startswith("Bearer "):
+        token = authorization[7:]
+    else:
+        token = authorization
+
+    db = get_db()
+    session = db.get_session(token)
+    if session and session.get("is_active"):
+        return session
+    return None
+
+
+@app.post("/api/auth/login")
+async def login(request: LoginRequest):
+    """로그인"""
+    db = get_db()
+
+    # 기본 사용자 초기화 (최초 실행 시)
+    db.init_default_users()
+
+    user = db.get_user_by_username(request.username)
+    if not user:
+        raise HTTPException(status_code=401, detail="사용자를 찾을 수 없습니다")
+
+    if not user.get("is_active"):
+        raise HTTPException(status_code=401, detail="비활성화된 계정입니다")
+
+    # 비밀번호 확인
+    password_hash = hashlib.sha256(request.password.encode()).hexdigest()
+    if password_hash != user.get("password_hash"):
+        raise HTTPException(status_code=401, detail="비밀번호가 일치하지 않습니다")
+
+    # 세션 생성
+    session_token = secrets.token_urlsafe(32)
+    db.create_session(user["id"], session_token, expires_hours=8)
+    db.update_user_last_login(user["id"])
+
+    # 권한 정보 가져오기
+    role = user.get("role", "operator")
+    permissions = ROLE_PERMISSIONS.get(role, ROLE_PERMISSIONS["operator"])
+
+    logger.info(f"✅ 로그인 성공: {user['username']} (역할: {role})")
+
+    return {
+        "success": True,
+        "message": "로그인 성공",
+        "data": {
+            "token": session_token,
+            "user": {
+                "id": user["id"],
+                "username": user["username"],
+                "role": role,
+                "display_name": user.get("display_name"),
+            },
+            "permissions": permissions
+        }
+    }
+
+
+@app.post("/api/auth/logout")
+async def logout(authorization: Optional[str] = Header(None)):
+    """로그아웃"""
+    if not authorization:
+        raise HTTPException(status_code=401, detail="인증 토큰이 필요합니다")
+
+    token = authorization[7:] if authorization.startswith("Bearer ") else authorization
+
+    db = get_db()
+    if db.invalidate_session(token):
+        logger.info("✅ 로그아웃 성공")
+        return {"success": True, "message": "로그아웃 되었습니다"}
+    else:
+        return {"success": False, "message": "세션을 찾을 수 없습니다"}
+
+
+@app.get("/api/auth/me")
+async def get_current_user_info(authorization: Optional[str] = Header(None)):
+    """현재 로그인한 사용자 정보 조회"""
+    user = get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="인증이 필요합니다")
+
+    role = user.get("role", "operator")
+    permissions = ROLE_PERMISSIONS.get(role, ROLE_PERMISSIONS["operator"])
+
+    return {
+        "success": True,
+        "data": {
+            "user": {
+                "id": user["user_id"],
+                "username": user["username"],
+                "role": role,
+                "display_name": user.get("display_name"),
+            },
+            "permissions": permissions
+        }
+    }
+
+
+@app.get("/api/auth/permissions")
+async def get_permissions():
+    """모든 역할별 권한 정보 조회"""
+    return {
+        "success": True,
+        "data": ROLE_PERMISSIONS
+    }
+
+
+@app.post("/api/auth/change-password")
+async def change_password(
+    request: ChangePasswordRequest,
+    authorization: Optional[str] = Header(None)
+):
+    """비밀번호 변경"""
+    user = get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="인증이 필요합니다")
+
+    db = get_db()
+
+    # 현재 비밀번호 확인
+    full_user = db.get_user_by_username(user["username"])
+    current_hash = hashlib.sha256(request.current_password.encode()).hexdigest()
+    if current_hash != full_user.get("password_hash"):
+        raise HTTPException(status_code=400, detail="현재 비밀번호가 일치하지 않습니다")
+
+    # 새 비밀번호 설정
+    new_hash = hashlib.sha256(request.new_password.encode()).hexdigest()
+    db.update_user_password(user["user_id"], new_hash)
+
+    logger.info(f"✅ 비밀번호 변경: {user['username']}")
+
+    return {"success": True, "message": "비밀번호가 변경되었습니다"}
+
+
+# ===== 사용자 관리 API (관리자 전용) =====
+
+@app.get("/api/users")
+async def get_all_users(authorization: Optional[str] = Header(None)):
+    """모든 사용자 조회 (관리자 전용)"""
+    user = get_current_user(authorization)
+    if not user or user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="관리자 권한이 필요합니다")
+
+    db = get_db()
+    users = db.get_all_users()
+
+    return {
+        "success": True,
+        "data": users
+    }
+
+
+@app.post("/api/users")
+async def create_user(
+    request: UserCreateRequest,
+    authorization: Optional[str] = Header(None)
+):
+    """새 사용자 생성 (관리자 전용)"""
+    current_user = get_current_user(authorization)
+    if not current_user or current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="관리자 권한이 필요합니다")
+
+    db = get_db()
+
+    # 유효한 역할인지 확인
+    if request.role not in ROLE_PERMISSIONS:
+        raise HTTPException(status_code=400, detail="유효하지 않은 역할입니다")
+
+    # 사용자 중복 확인
+    if db.get_user_by_username(request.username):
+        raise HTTPException(status_code=400, detail="이미 존재하는 사용자명입니다")
+
+    # 사용자명 유효성 검사
+    if len(request.username) < 3:
+        raise HTTPException(status_code=400, detail="사용자명은 3자 이상이어야 합니다")
+
+    if len(request.password) < 6:
+        raise HTTPException(status_code=400, detail="비밀번호는 6자 이상이어야 합니다")
+
+    # 비밀번호 해시
+    password_hash = hashlib.sha256(request.password.encode()).hexdigest()
+
+    # 사용자 생성
+    display_name = request.display_name or request.username
+    user_id = db.create_user(request.username, password_hash, request.role, display_name)
+
+    logger.info(f"✅ 새 사용자 생성: {request.username} (역할: {request.role})")
+
+    return {
+        "success": True,
+        "message": "사용자가 생성되었습니다",
+        "data": {"user_id": user_id, "username": request.username}
+    }
+
+
+@app.put("/api/users/{user_id}")
+async def update_user(
+    user_id: int,
+    request: UserUpdateRequest,
+    authorization: Optional[str] = Header(None)
+):
+    """사용자 정보 업데이트 (관리자 전용)"""
+    current_user = get_current_user(authorization)
+    if not current_user or current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="관리자 권한이 필요합니다")
+
+    db = get_db()
+
+    # 유효한 역할인지 확인
+    if request.role and request.role not in ROLE_PERMISSIONS:
+        raise HTTPException(status_code=400, detail="유효하지 않은 역할입니다")
+
+    is_active = None
+    if request.is_active is not None:
+        is_active = 1 if request.is_active else 0
+
+    success = db.update_user(
+        user_id,
+        role=request.role,
+        display_name=request.display_name,
+        is_active=is_active
+    )
+
+    if success:
+        # 역할이 변경되면 해당 사용자의 세션 무효화
+        if request.role or (request.is_active is not None and not request.is_active):
+            db.invalidate_all_user_sessions(user_id)
+
+        logger.info(f"✅ 사용자 정보 업데이트: ID={user_id}")
+        return {"success": True, "message": "사용자 정보가 업데이트되었습니다"}
+    else:
+        return {"success": False, "message": "업데이트할 내용이 없습니다"}
+
+
+@app.post("/api/users/{user_id}/reset-password")
+async def reset_user_password(
+    user_id: int,
+    request: ResetPasswordRequest,
+    authorization: Optional[str] = Header(None)
+):
+    """사용자 비밀번호 초기화 (관리자 전용)"""
+    current_user = get_current_user(authorization)
+    if not current_user or current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="관리자 권한이 필요합니다")
+
+    if len(request.new_password) < 6:
+        raise HTTPException(status_code=400, detail="비밀번호는 6자 이상이어야 합니다")
+
+    db = get_db()
+
+    # 새 비밀번호 해시
+    new_hash = hashlib.sha256(request.new_password.encode()).hexdigest()
+    db.update_user_password(user_id, new_hash)
+
+    # 해당 사용자의 모든 세션 무효화
+    db.invalidate_all_user_sessions(user_id)
+
+    logger.info(f"✅ 비밀번호 초기화: user_id={user_id}")
+
+    return {"success": True, "message": "비밀번호가 초기화되었습니다"}
+
+
+@app.delete("/api/users/{user_id}")
+async def delete_user(
+    user_id: int,
+    authorization: Optional[str] = Header(None)
+):
+    """사용자 완전 삭제 (관리자 전용)"""
+    current_user = get_current_user(authorization)
+    if not current_user or current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="관리자 권한이 필요합니다")
+
+    # 자기 자신은 삭제 불가
+    if current_user.get("user_id") == user_id:
+        raise HTTPException(status_code=400, detail="자기 자신은 삭제할 수 없습니다")
+
+    db = get_db()
+
+    # 사용자 완전 삭제 (세션도 함께 삭제됨)
+    success = db.delete_user(user_id)
+
+    if success:
+        logger.info(f"✅ 사용자 완전 삭제: user_id={user_id}")
+        return {"success": True, "message": "사용자가 삭제되었습니다"}
+    else:
+        raise HTTPException(status_code=404, detail="사용자를 찾을 수 없습니다")
 
 
 # ===== 서버 시작 =====

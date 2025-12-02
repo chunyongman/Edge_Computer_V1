@@ -1631,6 +1631,194 @@ class DatabaseManager:
 
             return stats
 
+    # ==================== 사용자 인증 ====================
+
+    def create_user(
+        self,
+        username: str,
+        password_hash: str,
+        role: str = "viewer",
+        display_name: str = None
+    ) -> Optional[int]:
+        """사용자 생성"""
+        try:
+            with self.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT INTO users (username, password_hash, role, display_name)
+                    VALUES (?, ?, ?, ?)
+                """, (username, password_hash, role, display_name or username))
+                user_id = cursor.lastrowid
+                logger.info(f"✅ 사용자 생성: {username} (역할: {role})")
+                return user_id
+        except sqlite3.IntegrityError:
+            logger.warning(f"⚠️ 사용자 이미 존재: {username}")
+            return None
+
+    def get_user_by_username(self, username: str) -> Optional[Dict]:
+        """사용자명으로 사용자 조회"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT id, username, password_hash, role, display_name, is_active, created_at, last_login
+                FROM users WHERE username = ?
+            """, (username,))
+            row = cursor.fetchone()
+            if row:
+                return dict(row)
+            return None
+
+    def get_user_by_id(self, user_id: int) -> Optional[Dict]:
+        """ID로 사용자 조회"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT id, username, role, display_name, is_active, created_at, last_login
+                FROM users WHERE id = ?
+            """, (user_id,))
+            row = cursor.fetchone()
+            if row:
+                return dict(row)
+            return None
+
+    def update_user_last_login(self, user_id: int):
+        """마지막 로그인 시간 업데이트"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE users SET last_login = ? WHERE id = ?
+            """, (datetime.now(), user_id))
+
+    def get_all_users(self) -> List[Dict]:
+        """모든 사용자 조회"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT id, username, role, display_name, is_active, created_at, last_login
+                FROM users ORDER BY id
+            """)
+            return [dict(row) for row in cursor.fetchall()]
+
+    def update_user(self, user_id: int, role: str = None, display_name: str = None, is_active: int = None) -> bool:
+        """사용자 정보 업데이트"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            updates = []
+            params = []
+            if role is not None:
+                updates.append("role = ?")
+                params.append(role)
+            if display_name is not None:
+                updates.append("display_name = ?")
+                params.append(display_name)
+            if is_active is not None:
+                updates.append("is_active = ?")
+                params.append(is_active)
+
+            if not updates:
+                return False
+
+            params.append(user_id)
+            cursor.execute(f"""
+                UPDATE users SET {', '.join(updates)} WHERE id = ?
+            """, params)
+            return cursor.rowcount > 0
+
+    def update_user_password(self, user_id: int, password_hash: str) -> bool:
+        """비밀번호 업데이트"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE users SET password_hash = ? WHERE id = ?
+            """, (password_hash, user_id))
+            return cursor.rowcount > 0
+
+    def delete_user(self, user_id: int) -> bool:
+        """사용자 완전 삭제"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            # 먼저 해당 사용자의 세션 삭제
+            cursor.execute("DELETE FROM user_sessions WHERE user_id = ?", (user_id,))
+            # 사용자 삭제
+            cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+            return cursor.rowcount > 0
+
+    def create_session(self, user_id: int, session_token: str, expires_hours: int = 8) -> int:
+        """세션 생성"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            expires_at = datetime.now() + timedelta(hours=expires_hours)
+            cursor.execute("""
+                INSERT INTO user_sessions (session_token, user_id, expires_at)
+                VALUES (?, ?, ?)
+            """, (session_token, user_id, expires_at))
+            return cursor.lastrowid
+
+    def get_session(self, session_token: str) -> Optional[Dict]:
+        """세션 조회"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT s.id, s.session_token, s.user_id, s.created_at, s.expires_at, s.is_valid,
+                       u.username, u.role, u.display_name, u.is_active
+                FROM user_sessions s
+                JOIN users u ON s.user_id = u.id
+                WHERE s.session_token = ? AND s.is_valid = 1 AND s.expires_at > ?
+            """, (session_token, datetime.now()))
+            row = cursor.fetchone()
+            if row:
+                return dict(row)
+            return None
+
+    def invalidate_session(self, session_token: str) -> bool:
+        """세션 무효화"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE user_sessions SET is_valid = 0 WHERE session_token = ?
+            """, (session_token,))
+            return cursor.rowcount > 0
+
+    def invalidate_all_user_sessions(self, user_id: int) -> int:
+        """특정 사용자의 모든 세션 무효화"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE user_sessions SET is_valid = 0 WHERE user_id = ?
+            """, (user_id,))
+            return cursor.rowcount
+
+    def cleanup_expired_sessions(self):
+        """만료된 세션 정리"""
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE user_sessions SET is_valid = 0 WHERE expires_at < ?
+            """, (datetime.now(),))
+            return cursor.rowcount
+
+    def init_default_users(self):
+        """기본 사용자 초기화 (최초 실행 시)"""
+        import hashlib
+
+        # admin 사용자가 없으면 기본 사용자 생성
+        if not self.get_user_by_username("admin"):
+            # 기본 비밀번호: admin123 (SHA-256 해시)
+            admin_hash = hashlib.sha256("admin123".encode()).hexdigest()
+            self.create_user("admin", admin_hash, "admin", "관리자")
+
+        if not self.get_user_by_username("operator"):
+            # 기본 비밀번호: operator123
+            operator_hash = hashlib.sha256("operator123".encode()).hexdigest()
+            self.create_user("operator", operator_hash, "operator", "운전자")
+
+        if not self.get_user_by_username("viewer"):
+            # 기본 비밀번호: viewer123
+            viewer_hash = hashlib.sha256("viewer123".encode()).hexdigest()
+            self.create_user("viewer", viewer_hash, "viewer", "조회자")
+
+        logger.info("✅ 기본 사용자 초기화 완료")
+
 
 # 싱글톤 인스턴스
 _db_manager: Optional[DatabaseManager] = None
