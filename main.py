@@ -518,23 +518,31 @@ class EdgeAISystem:
                 self._process_vfd_anomalies(equipment, diagnosis_scores, severity_levels, diagnosis_details)
 
                 # ===== Step 7: PLC로 제어 명령 전송 =====
-                # 목표 주파수 쓰기
-                target_frequencies = self._extract_target_frequencies(control_decision)
-                self.plc.write_ai_target_frequency(target_frequencies)
+                # 일시정지 상태 확인 - paused면 PLC 쓰기 건너뛰기
+                if is_edge_paused():
+                    # 일시정지 상태: PLC 쓰기 건너뛰고 Fallback 모드 유지
+                    if self.cycle_count % 10 == 0:  # 10초마다 로그
+                        pause_info = get_edge_pause_info()
+                        logger.info(f"⏸️  [PAUSED] PLC 쓰기 건너뜀 (Fallback PID 모드) - 차단자: {pause_info.get('paused_by')}")
+                else:
+                    # 정상 운전: AI 최적화 모드로 PLC 쓰기
+                    # 목표 주파수 쓰기
+                    target_frequencies = self._extract_target_frequencies(control_decision)
+                    self.plc.write_ai_target_frequency(target_frequencies)
 
-                # 대수 제어 명령 전송 (팬 START/STOP)
-                self._apply_fan_count_control(control_decision.er_fan_count)
+                    # 대수 제어 명령 전송 (팬 START/STOP)
+                    self._apply_fan_count_control(control_decision.er_fan_count)
 
-                # ESS 운전 시간 및 에너지 업데이트 (먼저 계산)
-                ess_data = self.ess_tracker.update(equipment)
-                self.plc.write_ess_data(ess_data)
+                    # ESS 운전 시간 및 에너지 업데이트 (먼저 계산)
+                    ess_data = self.ess_tracker.update(equipment)
+                    self.plc.write_ess_data(ess_data)
 
-                # 에너지 절감 데이터 쓰기 (ESS DB 값 사용하여 통일)
-                savings_for_plc = self._format_savings_for_plc(savings_data, equipment, ess_data)
-                self.plc.write_energy_savings(savings_for_plc)
+                    # 에너지 절감 데이터 쓰기 (ESS DB 값 사용하여 통일)
+                    savings_for_plc = self._format_savings_for_plc(savings_data, equipment, ess_data)
+                    self.plc.write_energy_savings(savings_for_plc)
 
-                # VFD 진단 점수 및 중증도 레벨 쓰기
-                self.plc.write_vfd_diagnosis(diagnosis_scores, severity_levels)
+                    # VFD 진단 점수 및 중증도 레벨 쓰기
+                    self.plc.write_vfd_diagnosis(diagnosis_scores, severity_levels)
 
                 # ===== Step 8: 주기적 상태 출력 (10초마다) =====
                 if time.time() - last_status_time >= 10:
@@ -898,6 +906,24 @@ def start_api_server_thread():
         start_api_server(host="0.0.0.0", port=8000)
     except Exception as e:
         logger.error(f"API 서버 시작 실패: {e}")
+
+
+def is_edge_paused() -> bool:
+    """Edge Computer 일시정지 상태 확인"""
+    try:
+        from api_server import is_paused
+        return is_paused()
+    except:
+        return False
+
+
+def get_edge_pause_info() -> dict:
+    """Edge Computer 일시정지 정보 반환"""
+    try:
+        from api_server import get_pause_info
+        return get_pause_info()
+    except:
+        return {"paused": False, "paused_by": None, "paused_at": None}
 
 
 def main():

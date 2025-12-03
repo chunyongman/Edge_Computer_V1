@@ -21,6 +21,15 @@ from src.database.db_manager import DatabaseManager
 
 logger = logging.getLogger(__name__)
 
+# ===== Edge Computer 제어 상태 (전역) =====
+# main.py의 EdgeAISystem과 공유됨
+edge_control_state = {
+    "paused": False,
+    "paused_by": None,
+    "paused_at": None,
+    "system_ref": None  # EdgeAISystem 참조 (main.py에서 설정)
+}
+
 # FastAPI 앱 생성
 app = FastAPI(
     title="Edge Computer API",
@@ -1164,6 +1173,130 @@ async def delete_user(
         return {"success": True, "message": "사용자가 삭제되었습니다"}
     else:
         raise HTTPException(status_code=404, detail="사용자를 찾을 수 없습니다")
+
+
+# ===== Edge Computer 제어 API =====
+
+class PauseRequest(BaseModel):
+    """일시정지 요청"""
+    username: str = "HMI"
+
+
+class ResumeRequest(BaseModel):
+    """재개 요청"""
+    username: str = "HMI"
+
+
+@app.get("/api/control/status")
+async def get_control_status():
+    """Edge Computer 제어 상태 조회"""
+    return {
+        "success": True,
+        "paused": edge_control_state["paused"],
+        "paused_by": edge_control_state["paused_by"],
+        "paused_at": edge_control_state["paused_at"],
+        "running": not edge_control_state["paused"],
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@app.post("/api/control/pause")
+async def pause_edge_computer(request: PauseRequest):
+    """
+    Edge Computer AI 계산 일시정지
+
+    - PLC 쓰기 중지 (목표 주파수, ESS 데이터 등)
+    - PLC가 자체 PID 제어로 전환 (Fallback 모드)
+    """
+    if edge_control_state["paused"]:
+        return {
+            "success": False,
+            "message": "이미 일시정지 상태입니다",
+            "paused_by": edge_control_state["paused_by"],
+            "paused_at": edge_control_state["paused_at"]
+        }
+
+    edge_control_state["paused"] = True
+    edge_control_state["paused_by"] = request.username
+    edge_control_state["paused_at"] = datetime.now().isoformat()
+
+    logger.warning(f"⏸️  [PAUSE] Edge Computer 일시정지됨 - 요청자: {request.username}")
+    logger.warning("   → PLC 쓰기 중지, Fallback PID 모드로 전환")
+
+    # 이벤트 로그
+    db = get_db()
+    db.insert_event(
+        event_type="control",
+        source="HMI",
+        description=f"Edge Computer 일시정지 (요청자: {request.username})",
+        details={"action": "pause", "username": request.username}
+    )
+
+    return {
+        "success": True,
+        "message": "Edge Computer가 일시정지되었습니다. PLC가 Fallback PID 모드로 전환됩니다.",
+        "paused_by": request.username,
+        "paused_at": edge_control_state["paused_at"]
+    }
+
+
+@app.post("/api/control/resume")
+async def resume_edge_computer(request: ResumeRequest):
+    """
+    Edge Computer AI 계산 재개
+
+    - PLC 쓰기 재개 (AI 최적화 모드 복귀)
+    """
+    if not edge_control_state["paused"]:
+        return {
+            "success": False,
+            "message": "이미 실행 중입니다"
+        }
+
+    previous_paused_by = edge_control_state["paused_by"]
+    previous_paused_at = edge_control_state["paused_at"]
+
+    edge_control_state["paused"] = False
+    edge_control_state["paused_by"] = None
+    edge_control_state["paused_at"] = None
+
+    logger.info(f"▶️  [RESUME] Edge Computer 재개됨 - 요청자: {request.username}")
+    logger.info("   → AI 최적화 모드로 복귀")
+
+    # 이벤트 로그
+    db = get_db()
+    db.insert_event(
+        event_type="control",
+        source="HMI",
+        description=f"Edge Computer 재개 (요청자: {request.username})",
+        details={
+            "action": "resume",
+            "username": request.username,
+            "previous_paused_by": previous_paused_by,
+            "previous_paused_at": previous_paused_at
+        }
+    )
+
+    return {
+        "success": True,
+        "message": "Edge Computer가 재개되었습니다. AI 최적화 모드로 복귀합니다.",
+        "resumed_by": request.username,
+        "resumed_at": datetime.now().isoformat()
+    }
+
+
+def is_paused() -> bool:
+    """Edge Computer 일시정지 상태 확인 (main.py에서 호출)"""
+    return edge_control_state["paused"]
+
+
+def get_pause_info() -> dict:
+    """일시정지 정보 반환 (main.py에서 호출)"""
+    return {
+        "paused": edge_control_state["paused"],
+        "paused_by": edge_control_state["paused_by"],
+        "paused_at": edge_control_state["paused_at"]
+    }
 
 
 # ===== 서버 시작 =====
