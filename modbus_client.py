@@ -577,12 +577,21 @@ class EdgeModbusClient:
         if not self.connected:
             return False
 
+        # 안전한 값 변환 함수 (0 ~ 65535 범위로 클램핑)
+        def safe_uint16(value, multiplier=1):
+            """값을 0~65535 범위의 unsigned 16-bit integer로 변환"""
+            try:
+                result = int((value or 0) * multiplier)
+                return max(0, min(65535, result))
+            except (TypeError, ValueError):
+                return 0
+
         try:
             # === 개별 장비 누적 데이터 ===
             equipment = ess_data.get('equipment', [])
 
             # ESS 운전시간 (hours × 10)
-            ess_hours = [int((eq.get('ess_hours', 0) or 0) * 10) for eq in equipment]
+            ess_hours = [safe_uint16(eq.get('ess_hours', 0), 10) for eq in equipment]
             while len(ess_hours) < 10:
                 ess_hours.append(0)
 
@@ -593,7 +602,7 @@ class EdgeModbusClient:
             )
 
             # 총 운전시간 (hours × 10)
-            total_hours = [int((eq.get('total_hours', 0) or 0) * 10) for eq in equipment]
+            total_hours = [safe_uint16(eq.get('total_hours', 0), 10) for eq in equipment]
             while len(total_hours) < 10:
                 total_hours.append(0)
 
@@ -604,7 +613,7 @@ class EdgeModbusClient:
             )
 
             # ESS 모드 소비 전력량 (kWh × 10)
-            ess_kwh = [int((eq.get('ess_kwh', 0) or 0) * 10) for eq in equipment]
+            ess_kwh = [safe_uint16(eq.get('ess_kwh', 0), 10) for eq in equipment]
             while len(ess_kwh) < 10:
                 ess_kwh.append(0)
 
@@ -615,7 +624,7 @@ class EdgeModbusClient:
             )
 
             # 60Hz 기준 전력량 (kWh × 10)
-            baseline_kwh = [int((eq.get('baseline_kwh', 0) or 0) * 10) for eq in equipment]
+            baseline_kwh = [safe_uint16(eq.get('baseline_kwh', 0), 10) for eq in equipment]
             while len(baseline_kwh) < 10:
                 baseline_kwh.append(0)
 
@@ -626,7 +635,7 @@ class EdgeModbusClient:
             )
 
             # 절감 전력량 (kWh × 10)
-            saved_kwh = [int((eq.get('saved_kwh', 0) or 0) * 10) for eq in equipment]
+            saved_kwh = [safe_uint16(eq.get('saved_kwh', 0), 10) for eq in equipment]
             while len(saved_kwh) < 10:
                 saved_kwh.append(0)
 
@@ -637,7 +646,7 @@ class EdgeModbusClient:
             )
 
             # 절감률 (% × 10)
-            savings_rate = [int((eq.get('savings_rate', 0) or 0) * 10) for eq in equipment]
+            savings_rate = [safe_uint16(eq.get('savings_rate', 0), 10) for eq in equipment]
             while len(savings_rate) < 10:
                 savings_rate.append(0)
 
@@ -652,7 +661,7 @@ class EdgeModbusClient:
             group_order = ['SWP', 'FWP', 'FAN', 'TOTAL']
 
             # 그룹별 ESS 운전시간
-            group_ess_hours = [int((groups.get(g, {}).get('ess_hours', 0) or 0) * 10) for g in group_order]
+            group_ess_hours = [safe_uint16(groups.get(g, {}).get('ess_hours', 0), 10) for g in group_order]
             self.client.write_registers(
                 address=config.MODBUS_REGISTERS["ESS_GROUP_ESS_HOURS_START"],
                 values=group_ess_hours,
@@ -660,7 +669,7 @@ class EdgeModbusClient:
             )
 
             # 그룹별 총 운전시간
-            group_total_hours = [int((groups.get(g, {}).get('total_hours', 0) or 0) * 10) for g in group_order]
+            group_total_hours = [safe_uint16(groups.get(g, {}).get('total_hours', 0), 10) for g in group_order]
             self.client.write_registers(
                 address=config.MODBUS_REGISTERS["ESS_GROUP_TOTAL_HOURS_START"],
                 values=group_total_hours,
@@ -668,7 +677,7 @@ class EdgeModbusClient:
             )
 
             # 그룹별 ESS 모드 소비량
-            group_ess_kwh = [int((groups.get(g, {}).get('ess_kwh', 0) or 0) * 10) for g in group_order]
+            group_ess_kwh = [safe_uint16(groups.get(g, {}).get('ess_kwh', 0), 10) for g in group_order]
             self.client.write_registers(
                 address=config.MODBUS_REGISTERS["ESS_GROUP_ESS_KWH_START"],
                 values=group_ess_kwh,
@@ -676,7 +685,7 @@ class EdgeModbusClient:
             )
 
             # 그룹별 60Hz 기준 전력량
-            group_baseline_kwh = [int((groups.get(g, {}).get('baseline_kwh', 0) or 0) * 10) for g in group_order]
+            group_baseline_kwh = [safe_uint16(groups.get(g, {}).get('baseline_kwh', 0), 10) for g in group_order]
             self.client.write_registers(
                 address=config.MODBUS_REGISTERS["ESS_GROUP_BASELINE_KWH_START"],
                 values=group_baseline_kwh,
@@ -684,7 +693,8 @@ class EdgeModbusClient:
             )
 
             # 그룹별 절감량
-            group_saved_kwh = [int((groups.get(g, {}).get('saved_kwh', 0) or 0) * 10) for g in group_order]
+            group_saved_kwh = [safe_uint16(groups.get(g, {}).get('saved_kwh', 0), 10) for g in group_order]
+            print(f"[Edge AI] 그룹별 절감량 PLC 쓰기: {group_order} = {group_saved_kwh} (레지스터 {config.MODBUS_REGISTERS['ESS_GROUP_SAVED_KWH_START']})")
             self.client.write_registers(
                 address=config.MODBUS_REGISTERS["ESS_GROUP_SAVED_KWH_START"],
                 values=group_saved_kwh,
@@ -692,7 +702,8 @@ class EdgeModbusClient:
             )
 
             # 그룹별 절감률
-            group_savings_rate = [int((groups.get(g, {}).get('savings_rate', 0) or 0) * 10) for g in group_order]
+            group_savings_rate = [safe_uint16(groups.get(g, {}).get('savings_rate', 0), 10) for g in group_order]
+            print(f"[Edge AI] 그룹별 절감률 PLC 쓰기: {group_order} = {group_savings_rate} (레지스터 {config.MODBUS_REGISTERS['ESS_GROUP_SAVINGS_RATE_START']})")
             self.client.write_registers(
                 address=config.MODBUS_REGISTERS["ESS_GROUP_SAVINGS_RATE_START"],
                 values=group_savings_rate,
@@ -705,7 +716,7 @@ class EdgeModbusClient:
             today_groups = today.get('groups', {})
 
             # 오늘 개별 ESS 운전시간 (hours × 100 for more precision)
-            today_ess_hours = [int((eq.get('ess_hours', 0) or 0) * 100) for eq in today_equipment]
+            today_ess_hours = [safe_uint16(eq.get('ess_hours', 0), 100) for eq in today_equipment]
             while len(today_ess_hours) < 10:
                 today_ess_hours.append(0)
 
@@ -716,7 +727,7 @@ class EdgeModbusClient:
             )
 
             # 오늘 개별 절감량
-            today_saved_kwh = [int((eq.get('saved_kwh', 0) or 0) * 10) for eq in today_equipment]
+            today_saved_kwh = [safe_uint16(eq.get('saved_kwh', 0), 10) for eq in today_equipment]
             while len(today_saved_kwh) < 10:
                 today_saved_kwh.append(0)
 
@@ -727,7 +738,7 @@ class EdgeModbusClient:
             )
 
             # 오늘 그룹별 절감량
-            today_group_saved = [int((today_groups.get(g, {}).get('saved_kwh', 0) or 0) * 10) for g in group_order]
+            today_group_saved = [safe_uint16(today_groups.get(g, {}).get('saved_kwh', 0), 10) for g in group_order]
             self.client.write_registers(
                 address=config.MODBUS_REGISTERS["ESS_TODAY_GROUP_SAVED_KWH_START"],
                 values=today_group_saved,
